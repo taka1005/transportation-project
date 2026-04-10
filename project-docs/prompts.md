@@ -432,3 +432,123 @@ Repo name: transportation-project. Visibility: public. Teammate username: TBD. A
 **Response / 応答:**
 
 Confirmed repo name and visibility. Teammate username deferred. Asked to at least confirm gh auth status check to proceed with push.
+
+---
+
+## Prompt #24–27
+
+**Date / 日付:** 2026-04-08
+
+**Japanese / 日本語 (consolidated):**
+
+github.com / finished / よい / まだわからないのであとで聞きます。
+
+**English:**
+
+Target: github.com (not github.mit.edu). Auth login completed. Confirmed auth check OK. Teammate username TBD.
+
+**Response / 応答:**
+
+Confirmed gh auth login to github.com (account: taka1005). Created .gitignore (excluding data/raw/, .claude/, __pycache__, etc.). Initialized git repo, committed all project docs, and force-pushed to existing public repo https://github.com/taka1005/transportation-project. Provided command for adding teammate as collaborator later.
+
+---
+
+## Prompt #28
+
+**Date / 日付:** 2026-04-09
+
+**Japanese / 日本語:**
+
+AlexのIDは、a13xys
+
+**English:**
+
+Alex's GitHub ID is a13xys.
+
+**Response / 応答:**
+
+Attempted to add a13xys as collaborator to taka1005/transportation-project. User a13xys not found on github.com (404). Likely a github.mit.edu username or typo. Asked user to verify with Alex.
+
+---
+
+## Prompt #29–30
+
+**Date / 日付:** 2026-04-09
+
+**Japanese / 日本語 (consolidated):**
+
+mitのgithubに存在するのかも / 1
+
+**English:**
+
+The ID might exist on MIT's GitHub. / Option 1 (ask Alex to create a github.com account).
+
+**Response / 応答:**
+
+Explained that github.mit.edu users cannot be added as collaborators on github.com repos. Offered 3 options. User chose option 1: ask Alex to create a github.com account. Awaiting Alex's new github.com username.
+
+---
+
+## Prompt #31
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+ユーザーIDがわかりました。limyushengalexander（+ 誤って別プロジェクトのプロンプトを貼り付け）
+
+**English:**
+
+Found the user ID: limyushengalexander. (Also accidentally pasted a prompt from another project — confirmed as a mistake.)
+
+**Response / 応答:**
+
+Verified user limyushengalexander exists on github.com. Successfully sent collaborator invitation with push (write) permission to taka1005/transportation-project. Alex needs to accept the invitation via GitHub notification or invitation URL.
+
+---
+
+## Prompt #32
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+このプランでは、bluebike standが満車になるときはどう対処するように設計されているんだっけ
+
+**English:**
+
+How does the current plan handle when a Bluebike stand becomes full?
+
+**Response / 応答:**
+
+The current research plan does not explicitly address Bluebikes dock fullness. Explained the issue: when a station is full, bike returns are not recorded — arrivals are censored from the data, potentially underestimating arrival rate λ. Outlined 3 options: (1) do nothing and analyze as-is, (2) exclude full-capacity periods from analysis (requires inventory reconstruction like Analytics Edge project), (3) at minimum document as a limitation in the report. Recommended option 3 as mandatory, option 2 if feasible. Awaiting user decision.
+
+---
+
+## Prompt #33
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+これに対応して。そして、データを収集できたらまずそれをビジュアライズして、見せて欲しい。そこで追加の問いが出てくるかもしれない。
+
+**English:**
+
+Address the dock fullness issue. And once data is collected, visualize it and show me first. Additional questions may arise from the visualizations.
+
+**Response / 応答:**
+
+Updated research plan: added Step 1.3.5 (dock fullness censoring — inventory reconstruction, flagging, exclusion, limitation documentation) and new Section 1.5 (Exploratory Data Visualization with checkpoint). Built data pipeline (src/data_pipeline.py) and visualization script (src/visualize_exploratory.py). Generated 8 figures:
+
+Bluebikes findings:
+- Kendall T: morning 8am peak (commuter), weekday-heavy, CV=1.96 (far from Poisson)
+- MIT Vassar St: evening 16-18h peak (residential), weekend-heavy, CV=1.54 (also non-Poisson)
+- Strong seasonal decline Sep→Dec
+- MIT Vassar St inventory reconstruction shows unrealistically high values (~800+), suggesting data issue or reconstruction logic needs review
+
+MBTA Red Line findings:
+- Average headway ~5min, fairly stable across hours
+- CV=0.47 (North) / 0.40 (South) — CV < 1, indicating more regular than Poisson (schedule-driven)
+
+Flagged MIT Vassar St inventory issue for user review.

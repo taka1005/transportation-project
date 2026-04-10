@@ -22,20 +22,33 @@ Timeline: 2026-04-08 → 2026-05-08
 
 ### 1.2 Define Arrival Events
 
-- [ ] **1.2.1** Define "arrival" for Bluebikes: trip end (bike return) at two selected stations:
-  - Station A: Near Kendall/MIT station
-  - Station B: MIT Vassar St (near Westgate)
-- [ ] **1.2.2** Define "arrival" for MBTA: train arrival at Kendall/MIT Red Line station
-- [ ] **1.2.3** Document arrival definitions in the data dictionary
+- [x] **1.2.1** Define "arrival" for Bluebikes: trip end (bike return) at two selected stations:
+  - Station A: M32004 (Kendall T)
+  - Station B: M32042 (MIT Vassar St)
+- [x] **1.2.2** Define "arrival" for MBTA: train arrival at Kendall/MIT Red Line station (place-knncl)
+- [x] **1.2.3** Document arrival definitions in the data dictionary
 
 ### 1.3 Data Pipeline Construction
 
-- [ ] **1.3.1** Build pipeline to extract arrival timestamps from Bluebikes data
-- [ ] **1.3.2** Build pipeline to extract arrival timestamps from MBTA data
-- [ ] **1.3.3** Compute inter-arrival times for both systems
-- [ ] **1.3.4** Validate pipeline output (spot-check timestamps, handle missing data)
+- [x] **1.3.1** Build pipeline to extract arrival timestamps from Bluebikes data
+- [x] **1.3.2** Build pipeline to extract arrival timestamps from MBTA data
+- [x] **1.3.3** Compute inter-arrival times for both systems
+- [x] **1.3.4** Validate pipeline output (spot-check timestamps, handle missing data)
   - Segment data to operating hours only
-  - Flag periods of service disruption and exclude from primary analysis
+  - Flag periods of service disruption and exclude from primary analysis (6.8% flagged)
+- [ ] **1.3.5** Address Bluebikes dock fullness censoring (initial reconstruction done — needs refinement)
+  - Reconstruct approximate station inventory using arrival/departure counts
+  - Flag time periods where station is likely at full capacity (arrivals are censored)
+  - Exclude full-capacity periods from primary arrival-process analysis
+  - Document censoring as a known limitation in the report
+
+### 1.5 Exploratory Data Visualization
+
+- [ ] **1.5.1** Visualize Bluebikes arrival patterns (time-of-day, day-of-week, monthly)
+- [ ] **1.5.2** Visualize MBTA arrival patterns and headways
+- [ ] **1.5.3** Visualize inter-arrival time distributions (histograms) for both systems
+- [ ] **1.5.4** Visualize estimated dock fullness periods for Bluebikes stations
+  - > **Checkpoint:** Review visualizations with user before proceeding to Phase 2. Additional questions may arise.
 
 ### 1.4 Select Queueing Baseline
 
