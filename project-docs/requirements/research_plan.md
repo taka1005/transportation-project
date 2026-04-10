@@ -43,25 +43,16 @@ Timeline: 2026-04-08 → 2026-05-08
   - MIT Vassar St: at capacity 0.4%, empty 6.3%
   - Reconstruct approximate station inventory using arrival/departure counts
   - Flag time periods where station is likely at full capacity (arrivals are censored)
-  - Exclude full-capacity periods from primary arrival-process analysis
+  - Exclusion of full-capacity periods will be applied in Phase 2 analysis
   - Document censoring as a known limitation in the report
 
-### 1.5 Exploratory Data Visualization
+### 1.4 Exploratory Data Visualization
 
-- [ ] **1.5.1** Visualize Bluebikes arrival patterns (time-of-day, day-of-week, monthly)
-- [ ] **1.5.2** Visualize MBTA arrival patterns and headways
-- [ ] **1.5.3** Visualize inter-arrival time distributions (histograms) for both systems
-- [ ] **1.5.4** Visualize estimated dock fullness periods for Bluebikes stations
+- [ ] **1.4.1** Visualize Bluebikes arrival patterns (time-of-day, day-of-week, monthly)
+- [ ] **1.4.2** Visualize MBTA arrival patterns and headways
+- [ ] **1.4.3** Visualize inter-arrival time distributions (histograms) for both systems
+- [ ] **1.4.4** Visualize estimated dock fullness periods for Bluebikes stations
   - > **Checkpoint:** Review visualizations with user before proceeding to Phase 2. Additional questions may arise.
-
-### 1.4 Select Queueing Baseline
-
-- [ ] **1.4.1** Confirm M/M/1 as the primary Poisson-based queueing model
-- [ ] **1.4.2** Define service time assumptions for each system
-  - Bluebikes: dwell time direction (TBD — to be finalized after data exploration)
-  - MBTA: to be defined
-  - > **Decision needed (deferred):** Service time definitions will be finalized after initial data exploration in Phase 1. Will revisit before Phase 3.
-- [ ] **1.4.3** Document model assumptions and parameters
 
 ---
 
@@ -96,6 +87,15 @@ Timeline: 2026-04-08 → 2026-05-08
 ---
 
 ## Phase 3: Queueing Analysis and Simulation (Week 3: Apr 22–28)
+
+### 3.0 Select Queueing Baseline
+
+- [ ] **3.0.1** Confirm M/M/1 as the primary Poisson-based queueing model
+- [ ] **3.0.2** Define service time assumptions for each system
+  - Bluebikes: dwell time direction (TBD — to be finalized based on Phase 1–2 findings)
+  - MBTA: to be defined
+  - > **Decision needed (deferred):** Service time definitions will be finalized after descriptive analysis. Will revisit before simulation.
+- [ ] **3.0.3** Document model assumptions and parameters
 
 ### 3.1 M/M/1 Analytical Baseline
 

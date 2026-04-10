@@ -663,6 +663,114 @@ Implemented look-ahead corrected inventory reconstruction. Obtained actual dock 
 
 ---
 
+## Prompt #43
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+いったんプッシュだけして。まだ次には進まないで。
+
+**English:**
+
+Just push for now. Don't proceed to the next step yet.
+
+**Response / 応答:**
+
+Regenerated CSVs, committed, and pushed to GitHub. Awaiting further instructions.
+
+---
+
+## Prompt #44
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+research planの1.4と1.5が逆になってるね。修正して
+
+**English:**
+
+Sections 1.4 and 1.5 are in the wrong order in the research plan. Please fix.
+
+**Response / 応答:**
+
+Fixed ordering: 1.4 (Select Queueing Baseline) now comes before 1.5 (Exploratory Data Visualization).
+
+---
+
+## Prompt #45–46
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語 (consolidated):**
+
+1.4のqueueing baselineはなぜここでやるんだっけ。phase1.5に必要？ / そうしてください
+
+**English:**
+
+Why is the queueing baseline selection in 1.4? Is it needed for 1.5? / Yes, please move it.
+
+**Response / 応答:**
+
+Agreed that queueing baseline selection is not needed for visualization and fits better before Phase 3 simulation. Moved it to Phase 3.0. Renumbered: Phase 1 now ends with 1.4 (Exploratory Data Visualization). Phase 3 starts with 3.0 (Select Queueing Baseline) before 3.1 (M/M/1 Analytical Baseline).
+
+---
+
+## Prompt #47
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+mbtaの生データをみるにはどうしたらいい？全部CSVにすると重すぎるので、少しだけ見せて欲しい。
+
+**English:**
+
+How can I view the raw MBTA data? Converting all to CSV would be too heavy, so just show me a small sample.
+
+**Response / 応答:**
+
+Showed 10-row sample of raw MBTA Parquet data for Red Line Kendall/MIT (2025-09-02). Displayed both raw Unix timestamps and human-readable arrival times with key columns: arrival_time, direction, headway (actual vs scheduled), travel_time, dwell_time, vehicle_label. Explained each column's meaning.
+
+---
+
+## Prompt #48
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+mbta_arrivalのデータを解説して。
+
+**English:**
+
+Explain the mbta_arrivals data.
+
+**Response / 応答:**
+
+Provided detailed explanation of all 31 columns in mbta_arrivals.parquet, organized into 4 groups: (1) primary analysis columns (arrival_time, direction, headway actual/scheduled, interarrival_sec, disruption flag, headway_ratio), (2) station/route info (all filtered to Red Line Kendall/MIT), (3) vehicle/trip info, (4) operational timing. Clarified the difference between headway_trunk_seconds (MBTA-computed) and interarrival_sec (pipeline-computed) — nearly identical but analysis will use interarrival_sec.
+
+---
+
+## Prompt #49–50
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語 (consolidated):**
+
+現在のブルーバイクのインターアライバルのグラフは満車時のデータはのぞかれていますか？ / それは、Phase2で行う予定だからいいんだっけ？無駄にPhase1を複雑にはしたくない。
+
+**English:**
+
+Is the current Bluebikes inter-arrival graph excluding full-capacity data? / That's planned for Phase 2, right? I don't want to unnecessarily complicate Phase 1.
+
+**Response / 応答:**
+
+Confirmed that current visualizations do NOT exclude full-capacity periods. Agreed with user that Phase 1 handles flagging only; actual exclusion of full-capacity periods should be applied in Phase 2 analysis. Updated Step 1.3.5 to clarify this distinction.
+
+---
+
 ## Prompt #37
 
 **Date / 日付:** 2026-04-10
