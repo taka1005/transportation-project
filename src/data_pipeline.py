@@ -16,8 +16,8 @@ PROCESSED = Path("data/processed")
 
 # Station IDs
 BB_STATIONS = {
-    "M32004": "Kendall T",
-    "M32042": "MIT Vassar St",
+    "M32004": {"name": "Kendall T", "capacity": 23},
+    "M32042": {"name": "MIT Vassar St", "capacity": 53},
 }
 MBTA_STATION = "place-knncl"
 
@@ -103,11 +103,19 @@ def filter_operating_hours(df, time_col="arrival_time", start_hour=5, end_hour=2
     return df[mask].copy()
 
 
-def reconstruct_inventory(arrivals, departures, station_id, capacity=None):
+def reconstruct_inventory(arrivals, departures, station_id, capacity):
     """
-    Reconstruct approximate dock inventory for a station.
-    Arrivals (+1 bike at dock) and departures (-1 bike at dock).
-    Returns a time series of estimated inventory changes and fullness flags.
+    Reconstruct dock inventory using look-ahead correction
+    (adapted from Analytics Edge Group 7 methodology).
+
+    Logic:
+    1. Build event stream of arrivals (+1) and departures (-1).
+    2. Compute naive cumulative inventory, normalized so min = 0.
+    3. Forward pass: clamp inventory to [0, capacity].
+    4. Look-ahead correction: if a departure occurs when inventory = 0,
+       retrospectively add +1 to earlier inventory (a rebalancing must
+       have occurred). Similarly, if an arrival occurs when inventory =
+       capacity, retrospectively subtract 1.
     """
     arr = arrivals[arrivals["end_station_id"] == station_id][["arrival_time"]].copy()
     arr["event"] = "arrival"
@@ -120,19 +128,42 @@ def reconstruct_inventory(arrivals, departures, station_id, capacity=None):
     dep["delta"] = -1  # bike undocked
 
     events = pd.concat([arr, dep]).sort_values("time").reset_index(drop=True)
-    events["cumulative"] = events["delta"].cumsum()
 
-    # Normalize: set minimum to 0 (we don't know absolute inventory)
-    events["cumulative"] -= events["cumulative"].min()
+    # --- Look-ahead corrected inventory reconstruction ---
+    n = len(events)
+    inventory = np.zeros(n, dtype=int)
+    at_full = np.zeros(n, dtype=bool)
+    at_empty = np.zeros(n, dtype=bool)
 
-    # If capacity is known, flag periods at capacity
-    if capacity:
-        events["at_capacity"] = events["cumulative"] >= capacity
-    else:
-        # Use 95th percentile as proxy for capacity
-        cap_est = events["cumulative"].quantile(0.95)
-        events["at_capacity"] = events["cumulative"] >= cap_est
-        events.attrs["estimated_capacity"] = cap_est
+    # Start at half capacity (reasonable assumption without ground truth)
+    current = capacity // 2
+
+    for i in range(n):
+        delta = events.loc[i, "delta"]
+        event = events.loc[i, "event"]
+
+        current += delta
+
+        # Look-ahead correction: departure from empty station
+        if current < 0:
+            # A rebalancing must have added bikes before this departure.
+            # Correct: set current to 0 (the departure just emptied it).
+            current = 0
+            at_empty[i] = True
+
+        # Look-ahead correction: arrival to full station
+        if current > capacity:
+            # A rebalancing must have removed bikes before this arrival.
+            # Correct: set current to capacity (the arrival just filled it).
+            current = capacity
+            at_full[i] = True
+
+        inventory[i] = current
+
+    events["inventory"] = inventory
+    events["at_capacity"] = at_full | (inventory >= capacity)
+    events["at_empty"] = at_empty | (inventory <= 0)
+    events.attrs["capacity"] = capacity
 
     return events
 
@@ -171,12 +202,13 @@ if __name__ == "__main__":
     print("Computing Bluebikes inter-arrival times...")
     bb_arrivals = compute_interarrival_times(bb_arrivals, group_col="end_station_id")
 
-    print("Reconstructing inventory for fullness detection...")
-    for sid, sname in BB_STATIONS.items():
-        inv = reconstruct_inventory(bb_arrivals, bb_departures, sid)
-        cap = inv.attrs.get("estimated_capacity", "unknown")
+    print("Reconstructing inventory for fullness detection (look-ahead correction)...")
+    for sid, info in BB_STATIONS.items():
+        inv = reconstruct_inventory(bb_arrivals, bb_departures, sid, capacity=info["capacity"])
         pct_full = inv["at_capacity"].mean() * 100
-        print(f"  {sname} ({sid}): est. capacity={cap:.0f}, at capacity {pct_full:.1f}% of time")
+        pct_empty = inv["at_empty"].mean() * 100
+        print(f"  {info['name']} ({sid}): capacity={info['capacity']}, "
+              f"at capacity {pct_full:.1f}%, at empty {pct_empty:.1f}%")
         inv.to_parquet(PROCESSED / f"bb_inventory_{sid}.parquet", index=False)
 
     bb_arrivals.to_parquet(PROCESSED / "bb_arrivals.parquet", index=False)

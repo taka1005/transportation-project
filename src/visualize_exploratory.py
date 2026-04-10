@@ -19,7 +19,10 @@ plt.rcParams.update({
     "axes.labelsize": 11,
 })
 
-BB_STATIONS = {"M32004": "Kendall T", "M32042": "MIT Vassar St"}
+BB_STATIONS = {
+    "M32004": {"name": "Kendall T", "capacity": 23},
+    "M32042": {"name": "MIT Vassar St", "capacity": 53},
+}
 
 
 def load_data():
@@ -34,12 +37,12 @@ def load_data():
 def plot_bb_arrivals_by_hour(bb):
     """Bluebikes arrivals by hour of day, per station."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
-    for i, (sid, sname) in enumerate(BB_STATIONS.items()):
+    for i, (sid, info) in enumerate(BB_STATIONS.items()):
         subset = bb[bb["end_station_id"] == sid]
         subset["hour"] = subset["arrival_time"].dt.hour
         counts = subset.groupby("hour").size()
         axes[i].bar(counts.index, counts.values, color="steelblue", alpha=0.8)
-        axes[i].set_title(f"{sname} ({sid})")
+        axes[i].set_title(f"{info['name']} ({sid})")
         axes[i].set_xlabel("Hour of Day")
         axes[i].set_xticks(range(0, 24, 2))
     axes[0].set_ylabel("Total Arrivals (Sep–Dec 2025)")
@@ -53,12 +56,12 @@ def plot_bb_arrivals_by_dow(bb):
     """Bluebikes arrivals by day of week, per station."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
     dow_labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    for i, (sid, sname) in enumerate(BB_STATIONS.items()):
+    for i, (sid, info) in enumerate(BB_STATIONS.items()):
         subset = bb[bb["end_station_id"] == sid]
         subset["dow"] = subset["arrival_time"].dt.dayofweek
         counts = subset.groupby("dow").size().reindex(range(7), fill_value=0)
         axes[i].bar(range(7), counts.values, color="darkorange", alpha=0.8)
-        axes[i].set_title(f"{sname} ({sid})")
+        axes[i].set_title(f"{info['name']} ({sid})")
         axes[i].set_xticks(range(7))
         axes[i].set_xticklabels(dow_labels)
         axes[i].set_xlabel("Day of Week")
@@ -72,12 +75,12 @@ def plot_bb_arrivals_by_dow(bb):
 def plot_bb_daily_arrivals(bb):
     """Bluebikes daily arrival counts over time."""
     fig, axes = plt.subplots(2, 1, figsize=(14, 8), sharex=True)
-    for i, (sid, sname) in enumerate(BB_STATIONS.items()):
+    for i, (sid, info) in enumerate(BB_STATIONS.items()):
         subset = bb[bb["end_station_id"] == sid]
         daily = subset.set_index("arrival_time").resample("D").size()
         axes[i].plot(daily.index, daily.values, color="steelblue", linewidth=0.8)
         axes[i].fill_between(daily.index, daily.values, alpha=0.3, color="steelblue")
-        axes[i].set_title(f"{sname} ({sid})")
+        axes[i].set_title(f"{info['name']} ({sid})")
         axes[i].set_ylabel("Daily Arrivals")
         axes[i].xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
         axes[i].xaxis.set_major_locator(mdates.WeekdayLocator(interval=2))
@@ -90,7 +93,7 @@ def plot_bb_daily_arrivals(bb):
 def plot_bb_interarrival_hist(bb):
     """Histogram of Bluebikes inter-arrival times."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-    for i, (sid, sname) in enumerate(BB_STATIONS.items()):
+    for i, (sid, info) in enumerate(BB_STATIONS.items()):
         subset = bb[(bb["end_station_id"] == sid) & (bb["interarrival_sec"].notna())]
         iat = subset["interarrival_sec"]
         # Clip to reasonable range for visualization
@@ -103,7 +106,7 @@ def plot_bb_interarrival_hist(bb):
         lam = 1.0 / mean_iat
         axes[i].plot(x, lam * np.exp(-lam * x), "r-", linewidth=2,
                      label=f"Exp(λ={lam:.4f})")
-        axes[i].set_title(f"{sname} ({sid})\nMean={mean_iat:.0f}s, CV={iat_clipped.std()/mean_iat:.2f}")
+        axes[i].set_title(f"{info['name']} ({sid})\nMean={mean_iat:.0f}s, CV={iat_clipped.std()/mean_iat:.2f}")
         axes[i].set_xlabel("Inter-arrival Time (seconds)")
         axes[i].set_ylabel("Density")
         axes[i].legend()
@@ -163,8 +166,10 @@ def plot_mbta_interarrival_hist(mbta):
     print(f"  Saved: {FIGURES / 'mbta_interarrival_hist.png'}")
 
 
-def plot_bb_inventory(sid, sname):
+def plot_bb_inventory(sid, info):
     """Plot reconstructed inventory over a sample week."""
+    sname = info["name"]
+    capacity = info["capacity"]
     inv = pd.read_parquet(PROCESSED / f"bb_inventory_{sid}.parquet")
     inv["time"] = pd.to_datetime(inv["time"])
     # Pick a sample week (first full week of October)
@@ -173,17 +178,26 @@ def plot_bb_inventory(sid, sname):
     week = inv[(inv["time"] >= start) & (inv["time"] < end)]
 
     fig, ax = plt.subplots(figsize=(14, 5))
-    ax.plot(week["time"], week["cumulative"], color="steelblue", linewidth=0.8)
-    ax.fill_between(week["time"], week["cumulative"], alpha=0.3, color="steelblue")
-    # Shade full-capacity periods
+    ax.plot(week["time"], week["inventory"], color="steelblue", linewidth=0.8)
+    ax.fill_between(week["time"], week["inventory"], alpha=0.3, color="steelblue")
+    # Capacity line
+    ax.axhline(y=capacity, color="red", linestyle="--", linewidth=1.5, label=f"Capacity ({capacity} docks)")
+    ax.axhline(y=0, color="orange", linestyle="--", linewidth=1.0, label="Empty")
+    # Mark full and empty periods
     if week["at_capacity"].any():
-        full_periods = week[week["at_capacity"]]
-        ax.scatter(full_periods["time"], full_periods["cumulative"],
-                   color="red", s=5, alpha=0.5, label="At estimated capacity")
-        ax.legend()
-    ax.set_title(f"{sname} ({sid}): Estimated Dock Inventory (Oct 6–12, 2025)", fontweight="bold")
+        full = week[week["at_capacity"]]
+        ax.scatter(full["time"], full["inventory"], color="red", s=8, alpha=0.7, zorder=5,
+                   label=f"At capacity ({week['at_capacity'].mean()*100:.1f}%)")
+    if week["at_empty"].any():
+        empty = week[week["at_empty"]]
+        ax.scatter(empty["time"], empty["inventory"], color="orange", s=8, alpha=0.7, zorder=5,
+                   label=f"Empty ({week['at_empty'].mean()*100:.1f}%)")
+    ax.set_ylim(-1, capacity + 5)
+    ax.set_title(f"{sname} ({sid}): Reconstructed Dock Inventory (Oct 6–12, 2025)\n"
+                 f"Look-ahead corrected, capacity={capacity}", fontweight="bold")
     ax.set_xlabel("Date/Time")
-    ax.set_ylabel("Estimated Bikes at Station")
+    ax.set_ylabel("Bikes at Station")
+    ax.legend(loc="upper right", fontsize=9)
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%a %m/%d %H:%M"))
     fig.autofmt_xdate()
     fig.tight_layout()
@@ -200,8 +214,8 @@ if __name__ == "__main__":
     plot_bb_arrivals_by_dow(bb)
     plot_bb_daily_arrivals(bb)
     plot_bb_interarrival_hist(bb)
-    for sid, sname in BB_STATIONS.items():
-        plot_bb_inventory(sid, sname)
+    for sid, info in BB_STATIONS.items():
+        plot_bb_inventory(sid, info)
 
     print("\n--- MBTA Visualizations ---")
     plot_mbta_headway_by_hour(mbta)

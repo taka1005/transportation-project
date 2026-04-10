@@ -573,6 +573,96 @@ Explained data locations (local paths for raw/processed/figures). Explained Parq
 
 ---
 
+## Prompt #38
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+bb_arrivalでstation_nameとend_station_nameの違いは
+
+**English:**
+
+What is the difference between station_name and end_station_name in bb_arrivals?
+
+**Response / 応答:**
+
+Both referred to the same station name — redundant. Cleaned up: added start_station_name, removed redundant station_id/station_name. Final columns: ride_id, started_at, arrival_time, start_station_id, start_station_name, end_station_id, end_station_name, interarrival_sec. Re-ran pipeline, regenerated CSVs and figures, pushed to GitHub.
+
+---
+
+## Prompt #39
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+スタートとエンドのステーションIDと名前を書いてくれたらいいと思うんだけど
+
+**English:**
+
+I think it would be better to include both start and end station IDs and names.
+
+**Response / 応答:**
+
+Implemented as part of Prompt #38 response (see above).
+
+---
+
+## Prompt #40
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+ブルーバイクの本当の需要を推定する方法は、他の論文にあると思うが、それを考慮する必要があると思うので、その旨は論文に書いておくべきだと思う。それを4.2のところにメモしておいて。
+
+**English:**
+
+I believe methods for estimating true (unconstrained) demand for Bluebikes exist in other papers. We should acknowledge this in our report. Please add a note about it under section 4.2.
+
+**Response / 応答:**
+
+Added note to Step 4.2.1 in research plan: report's Limitations section should acknowledge that observed Bluebikes arrivals are censored when docks are full (underestimating true demand), and cite relevant literature on latent/unconstrained demand estimation for bike-share systems.
+
+---
+
+## Prompt #41
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+inventoryが常にtrueフラグが立っているので、全く機能していないと思います。これは次のステップで対処する予定ですね？
+
+**English:**
+
+The inventory always has the true flag, so I think it's not working at all. This will be addressed in the next step, right?
+
+**Response / 応答:**
+
+Confirmed the issue: naive cumulative inventory was unrealistic (MIT Vassar St reaching 800+) due to unrecorded rebalancing operations. Step 1.3.5 was still pending. Offered 3 approaches: (1) Analytics Edge look-ahead correction, (2) heuristic approximation, (3) document as limitation only. User chose option 1.
+
+---
+
+## Prompt #42
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+1.で。そんなに難しくないはず。
+
+**English:**
+
+Option 1. It shouldn't be that difficult.
+
+**Response / 応答:**
+
+Implemented look-ahead corrected inventory reconstruction. Obtained actual dock capacities (Kendall T: 23, MIT Vassar St: 53) from Bluebikes station list. Algorithm: starts at half capacity, clamps to [0, capacity], and when impossible states occur (departure from empty or arrival to full), corrects by assuming rebalancing occurred. Results now realistic: Kendall T at capacity 5.3%/empty 2.7%, MIT Vassar St at capacity 0.4%/empty 6.3%. Regenerated inventory visualizations showing proper 0-to-capacity range with capacity line and flagged periods. Marked Step 1.3.5 as complete.
+
+---
+
 ## Prompt #37
 
 **Date / 日付:** 2026-04-10

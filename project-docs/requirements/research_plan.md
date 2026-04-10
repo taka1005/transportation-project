@@ -36,7 +36,11 @@ Timeline: 2026-04-08 → 2026-05-08
 - [x] **1.3.4** Validate pipeline output (spot-check timestamps, handle missing data)
   - Segment data to operating hours only
   - Flag periods of service disruption and exclude from primary analysis (6.8% flagged)
-- [ ] **1.3.5** Address Bluebikes dock fullness censoring (initial reconstruction done — needs refinement)
+- [x] **1.3.5** Address Bluebikes dock fullness censoring
+  - Implemented look-ahead corrected inventory reconstruction
+  - Station capacities: Kendall T = 23, MIT Vassar St = 53
+  - Kendall T: at capacity 5.3%, empty 2.7%
+  - MIT Vassar St: at capacity 0.4%, empty 6.3%
   - Reconstruct approximate station inventory using arrival/departure counts
   - Flag time periods where station is likely at full capacity (arrivals are censored)
   - Exclude full-capacity periods from primary arrival-process analysis
@@ -130,6 +134,7 @@ Timeline: 2026-04-08 → 2026-05-08
 ### 4.2 Final Report
 
 - [ ] **4.2.1** Draft report structure (problem statement, formulation, hypotheses, methods, results, conclusions)
+  - > **Note for Limitations section:** Bluebikes arrival data is censored when docks are full — observed arrivals underestimate true demand. Methods for estimating unconstrained (latent) demand exist in the literature (e.g., censored regression, EM-based approaches) but are beyond this study's scope. The report should acknowledge this limitation and cite relevant work on latent demand estimation for bike-share systems.
 - [ ] **4.2.2** Write main report (max 5 pages excluding references)
 - [ ] **4.2.3** Prepare appendix with supplementary figures, tables, simulation details (max 10 pages)
 - [ ] **4.2.4** Add references
