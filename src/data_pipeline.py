@@ -30,7 +30,7 @@ def load_bluebikes_arrivals():
         df = pd.read_csv(
             f,
             usecols=["ride_id", "ended_at", "end_station_id", "end_station_name",
-                      "started_at", "start_station_id"],
+                      "started_at", "start_station_id", "start_station_name"],
             parse_dates=["ended_at", "started_at"],
         )
         dfs.append(df)
@@ -39,8 +39,13 @@ def load_bluebikes_arrivals():
     # Filter to selected stations (arrivals = trip ends at station)
     arrivals = all_trips[all_trips["end_station_id"].isin(BB_STATIONS.keys())].copy()
     arrivals = arrivals.rename(columns={"ended_at": "arrival_time"})
-    arrivals["station_id"] = arrivals["end_station_id"]
-    arrivals["station_name"] = arrivals["station_id"].map(BB_STATIONS)
+    arrivals = arrivals[["ride_id", "started_at", "arrival_time",
+                         "start_station_id", "start_station_name",
+                         "end_station_id", "end_station_name",
+                         "interarrival_sec"]].copy() if "interarrival_sec" in arrivals.columns else \
+               arrivals[["ride_id", "started_at", "arrival_time",
+                         "start_station_id", "start_station_name",
+                         "end_station_id", "end_station_name"]].copy()
     arrivals = arrivals.sort_values("arrival_time").reset_index(drop=True)
 
     # Also extract departures (trip starts) for inventory reconstruction
@@ -104,7 +109,7 @@ def reconstruct_inventory(arrivals, departures, station_id, capacity=None):
     Arrivals (+1 bike at dock) and departures (-1 bike at dock).
     Returns a time series of estimated inventory changes and fullness flags.
     """
-    arr = arrivals[arrivals["station_id"] == station_id][["arrival_time"]].copy()
+    arr = arrivals[arrivals["end_station_id"] == station_id][["arrival_time"]].copy()
     arr["event"] = "arrival"
     arr = arr.rename(columns={"arrival_time": "time"})
     arr["delta"] = 1  # bike docked
@@ -164,7 +169,7 @@ if __name__ == "__main__":
     print(f"  Arrivals after filter: {len(bb_arrivals)}")
 
     print("Computing Bluebikes inter-arrival times...")
-    bb_arrivals = compute_interarrival_times(bb_arrivals, group_col="station_id")
+    bb_arrivals = compute_interarrival_times(bb_arrivals, group_col="end_station_id")
 
     print("Reconstructing inventory for fullness detection...")
     for sid, sname in BB_STATIONS.items():

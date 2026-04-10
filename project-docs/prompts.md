@@ -552,3 +552,39 @@ MBTA Red Line findings:
 - CV=0.47 (North) / 0.40 (South) — CV < 1, indicating more regular than Poisson (schedule-driven)
 
 Flagged MIT Vassar St inventory issue for user review.
+
+---
+
+## Prompt #34–36
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語 (consolidated):**
+
+データはどこで見れるの？ / どうやってparquetファイルを見れるの / yes please
+
+**English:**
+
+Where can I see the data? / How do I view parquet files? / Yes please (convert to CSV and push).
+
+**Response / 応答:**
+
+Explained data locations (local paths for raw/processed/figures). Explained Parquet is binary — recommended Python or CSV conversion. User chose CSV conversion. Converted all 4 processed Parquet files to CSV (bb_arrivals 3.4MB, bb_inventory_M32004 0.9MB, bb_inventory_M32042 1.8MB, mbta_arrivals 11.5MB). Pushed src/, outputs/figures/, data/processed/*.csv, and updated docs to GitHub. Alex can now view data and figures at https://github.com/taka1005/transportation-project.
+
+---
+
+## Prompt #37
+
+**Date / 日付:** 2026-04-10
+
+**Japanese / 日本語:**
+
+bb_arrivalでstation_nameとend_station_nameの違いは
+
+**English:**
+
+What is the difference between station_name and end_station_name in bb_arrivals?
+
+**Response / 応答:**
+
+Both refer to the same station name. `end_station_name` comes from the raw Bluebikes CSV, while `station_name` was mapped from `end_station_id` via the BB_STATIONS dictionary in the pipeline. Content is identical but `station_name` is cleaner. Offered to remove the redundant `end_station_name` column.

@@ -35,7 +35,7 @@ def plot_bb_arrivals_by_hour(bb):
     """Bluebikes arrivals by hour of day, per station."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
     for i, (sid, sname) in enumerate(BB_STATIONS.items()):
-        subset = bb[bb["station_id"] == sid]
+        subset = bb[bb["end_station_id"] == sid]
         subset["hour"] = subset["arrival_time"].dt.hour
         counts = subset.groupby("hour").size()
         axes[i].bar(counts.index, counts.values, color="steelblue", alpha=0.8)
@@ -54,7 +54,7 @@ def plot_bb_arrivals_by_dow(bb):
     fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
     dow_labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     for i, (sid, sname) in enumerate(BB_STATIONS.items()):
-        subset = bb[bb["station_id"] == sid]
+        subset = bb[bb["end_station_id"] == sid]
         subset["dow"] = subset["arrival_time"].dt.dayofweek
         counts = subset.groupby("dow").size().reindex(range(7), fill_value=0)
         axes[i].bar(range(7), counts.values, color="darkorange", alpha=0.8)
@@ -73,7 +73,7 @@ def plot_bb_daily_arrivals(bb):
     """Bluebikes daily arrival counts over time."""
     fig, axes = plt.subplots(2, 1, figsize=(14, 8), sharex=True)
     for i, (sid, sname) in enumerate(BB_STATIONS.items()):
-        subset = bb[bb["station_id"] == sid]
+        subset = bb[bb["end_station_id"] == sid]
         daily = subset.set_index("arrival_time").resample("D").size()
         axes[i].plot(daily.index, daily.values, color="steelblue", linewidth=0.8)
         axes[i].fill_between(daily.index, daily.values, alpha=0.3, color="steelblue")
@@ -91,7 +91,7 @@ def plot_bb_interarrival_hist(bb):
     """Histogram of Bluebikes inter-arrival times."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
     for i, (sid, sname) in enumerate(BB_STATIONS.items()):
-        subset = bb[(bb["station_id"] == sid) & (bb["interarrival_sec"].notna())]
+        subset = bb[(bb["end_station_id"] == sid) & (bb["interarrival_sec"].notna())]
         iat = subset["interarrival_sec"]
         # Clip to reasonable range for visualization
         iat_clipped = iat[iat.between(0, iat.quantile(0.99))]
