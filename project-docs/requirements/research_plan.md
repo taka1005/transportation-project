@@ -48,10 +48,10 @@ Timeline: 2026-04-08 → 2026-05-08
 
 ### 1.4 Exploratory Data Visualization
 
-- [ ] **1.4.1** Visualize Bluebikes arrival patterns (time-of-day, day-of-week, monthly)
-- [ ] **1.4.2** Visualize MBTA arrival patterns and headways
-- [ ] **1.4.3** Visualize inter-arrival time distributions (histograms) for both systems
-- [ ] **1.4.4** Visualize estimated dock fullness periods for Bluebikes stations
+- [x] **1.4.1** Visualize Bluebikes arrival patterns (time-of-day, day-of-week, monthly)
+- [x] **1.4.2** Visualize MBTA arrival patterns and headways
+- [x] **1.4.3** Visualize inter-arrival time distributions (histograms) for both systems
+- [x] **1.4.4** Visualize estimated dock fullness periods for Bluebikes stations
   - > **Checkpoint:** Review visualizations with user before proceeding to Phase 2. Additional questions may arise.
 
 ---
