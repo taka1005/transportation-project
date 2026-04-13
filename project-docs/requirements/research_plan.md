@@ -45,8 +45,9 @@ Timeline: 2026-04-08 → 2026-05-08
   - Flag time periods where station is likely at full capacity (arrivals are censored)
   - Exclusion of full-capacity periods will be applied in Phase 2 analysis
   - Document censoring as a known limitation in the report
-
-    # ALEX NOTE: TO FIND LITERATURE (IF ANY) ON DOCK FULLNESS ADJUSTMENT. IF CANNOT FIND, TO EXPLAIN IN REPORT AND PRESENTATION AND STATE LIMITATION OF EXCLUSION OF FULL CAPACITY PERIODS. IF CAN FIND, EXPLORE METHODS USED. IF EASY TO DO WITHIN TIMEFRAME OF PROJECT, IMPLEMENT. IF NOT EASY, STATE LIMITATION OF EXCLUSION OF FULL CAPACITY PERIODS IN REPORT AND PRESENTATION AND INCLUDE IN FUTURE WORK SESSION
+- [ ] **1.3.6** *(Alex)* Literature review on dock fullness adjustment methods for bike-share systems
+  - If methods exist and are feasible within the project timeframe: implement
+  - Otherwise: document as a limitation and include in Future Work section of the report
 
 ### 1.4 Exploratory Data Visualization
 
@@ -55,32 +56,45 @@ Timeline: 2026-04-08 → 2026-05-08
 - [x] **1.4.3** Visualize inter-arrival time distributions (histograms) for both systems
 - [x] **1.4.4** Visualize estimated dock fullness periods for Bluebikes stations
   - > **Checkpoint:** Review visualizations with user before proceeding to Phase 2. Additional questions may arise.
-
-      # ALEX NOTE: TO REVIEW VISUALIZATIONS AND COME UP WITH QUESTIONS
+- [ ] **1.4.5** *(Alex)* Review visualizations and identify additional questions or issues
 
 ---
 
 ## Phase 2: Descriptive Arrival-Process Analysis (Week 2: Apr 15–21)
 
-### 2.1 Summary Statistics for actual data
+### 2.1 Summary Statistics
 
-- [ ] **2.1.1** Compute mean, standard deviation, coefficient of variation (CV), and skewness of inter-arrival times for Bluebikes
-- [ ] **2.1.2** Compute the same statistics for MBTA
-- [ ] **2.1.3** Compare CV to 1.0 (CV = 1 is the theoretical value for exponential inter-arrival times under a Poisson process)
-
-      # ALEX NOTE: TO REVIEW CV VALUES AND GIVE SOME FORM OF ANALYSIS HERE. WHAT DOES CV LESS THAN 1 MEAN? WHAT DOES CV GREATER THAN 1 MEAN? WHAT ABOUT THE MAGNITUDE OF VALUES (IF ONE HAS CV=0.2 AND THE OTHER HAS CV=0.8, DOES THIS MEAN THE OTHER IS MORE POSSION?)
-
-      # ALEX NOTE: WE CAN SEE IF ITS POSSIBLE TO CHECK BASED ON TIME (PEAK PERIODS, NON PEAK PERIODS) FOR BOTH MODES WHAT THE CVs ARE AND ANALYZE THAT TOO?
+- [x] **2.1.1** Compute mean, standard deviation, coefficient of variation (CV), and skewness of inter-arrival times for Bluebikes
+  - Kendall T: mean=11.4min, CV=1.69, skewness=6.6
+  - MIT Vassar St: mean=6.4min, CV=1.90, skewness=7.5
+  - Both stations CV > 1 (more variable than Poisson)
+- [x] **2.1.2** Compute the same statistics for MBTA
+  - Northbound: mean=6.5min, CV=0.71, skewness=3.3
+  - Southbound: mean=6.3min, CV=0.63, skewness=4.5
+  - Both directions CV < 1 (more regular than Poisson, schedule-driven)
+  - Note: overnight gaps (last train → first train) excluded by computing inter-arrival times within operating days only
+- [x] **2.1.3** Compare CV to 1.0 (CV = 1 is the theoretical value for exponential inter-arrival times under a Poisson process)
+  - Interpret CV < 1 (more regular than Poisson, e.g., schedule-driven) vs. CV > 1 (more variable than Poisson, e.g., bursty demand)
+  - Discuss the magnitude of deviation: how close to 1 is "close enough" for practical purposes?
+  - Bluebikes: CV=1.69–1.90 (overdispersed, bursty demand driven by time-of-day non-stationarity)
+  - MBTA: CV=0.63–0.71 (underdispersed, schedule-driven regularity with operational noise)
+  - All four systems reject Poisson; Bluebikes and MBTA deviate in opposite directions
+  - > **Taka memo:** MIT Vassar St (residential) having higher CV than Kendall T (transit hub) is surprising. A station with steady all-day traffic may appear more Poisson-like over a full day. However, when segmented into 1-hour windows, the residential station may actually be closer to Poisson — to be tested in Step 2.1.4.
+- [x] **2.1.4** Segment CV analysis by time-of-day (peak vs. off-peak) and day-of-week for both systems
+  - Assess whether Poisson holds better during certain periods (e.g., off-peak may be more Poisson-like)
+  - Kendall T: strong peak/off-peak difference (1.98 vs 1.34); off-peak and late night approach Poisson (CV≈1.0 at midnight)
+  - MIT Vassar St: smaller peak/off-peak difference (1.71 vs 1.56); CV > 1 at all hours
+  - MBTA: CV < 1 at all hours; weekends more regular than weekdays
+  - Taka hypothesis (residential station more Poisson when segmented hourly) not supported — Kendall T approaches Poisson faster in off-peak
 
 ### 2.2 Distribution Fitting and Comparison
 
 - [ ] **2.2.1** Plot empirical inter-arrival time distributions (histograms, CDFs) for both systems
 - [ ] **2.2.2** Fit exponential distribution to observed inter-arrival times
 - [ ] **2.2.3** Fit candidate non-Poisson distributions (e.g., log-normal, Weibull, gamma) and select best-fit
+  - Document rationale for candidate distribution selection and cite relevant literature
 - [ ] **2.2.4** Perform goodness-of-fit tests (Kolmogorov-Smirnov, Anderson-Darling, chi-squared) to formally test the exponential (Poisson) hypothesis
-
-      # ALEX NOTE: EXPLAIN WHY WE ARE USING BOTH EMPIRICAL AND NON-POISSON ARRIVAL DISTRIBUTIONS. HOW DID WE CHOOSE THE SPECIFIC NON-POISSON ARRIVAL DISTRIBUTIONS? ANY EXISTING LITERATURE?
-
+- [ ] **2.2.5** Explain in the report why both empirical and parametric non-Poisson distributions are used (empirical captures real-world behavior without assumptions; parametric alternatives test whether a known family fits better than exponential)
 
 ### 2.3 Arrival Count Analysis
 
@@ -102,13 +116,13 @@ Timeline: 2026-04-08 → 2026-05-08
 ### 3.0 Select Queueing Baseline
 
 - [ ] **3.0.1** Confirm M/M/1 as the primary Poisson-based queueing model
+  - Document why M/M/1 was selected (simplest memoryless queueing model; serves as a baseline to measure the cost of the Poisson assumption)
+  - Briefly compare with alternatives (M/G/1, G/G/1) and cite relevant literature
 - [ ] **3.0.2** Define service time assumptions for each system
   - Bluebikes: dwell time direction (TBD — to be finalized based on Phase 1–2 findings)
   - MBTA: to be defined
   - > **Decision needed (deferred):** Service time definitions will be finalized after descriptive analysis. Will revisit before simulation.
 - [ ] **3.0.3** Document model assumptions and parameters
-
-  # ALEX NOTE: EXPLAIN WHY WE CHOSE OUR POISSON BASED QUEUING MODEL M/M/1. WHY DID WE SELECT IT OVER OTHERS? COMPARISON WITH OTHER METHODS? ANY EXISTING LITERATURE?
 
 ### 3.1 M/M/1 Analytical Baseline
 
@@ -153,17 +167,14 @@ Timeline: 2026-04-08 → 2026-05-08
 - [ ] **4.2.4** Add references
   - > **Checkpoint:** Review draft report with user before finalization.
 - [ ] **4.2.5** Finalize report for submission by 5/8 11:59pm ET
-
-      # ALEX NOTE: TO EDIT REPORT AND ALSO READ ALL CODE AND COMMENT ON CODE SO WE UNDERSTAND THE LOGIC AND FLOW OF THE CODE
-
-
-
+- [ ] **4.2.6** *(Alex)* Review and edit report for clarity and consistency
+- [ ] **4.2.7** *(Alex)* Read all code and add comments explaining logic and flow
 
 ### 4.3 Reproducibility (per Recitation 8 guidelines)
 
 - [ ] **4.3.1** Initialize Git repository and push to GitHub
 - [ ] **4.3.2** Create `environment.yml` (or `requirements.txt`) with all dependencies and pinned versions
-- [ ] **4.3.3** FIX RANDOM SEEDS IN ALL SIMULATION CODE FOR REPRODUCIBLE RESULTS
+- [ ] **4.3.3** Fix random seeds in all simulation code for reproducible results
 - [ ] **4.3.4** Write `README.md` with:
   - Project title and description
   - Installation and environment setup instructions
