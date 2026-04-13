@@ -46,6 +46,8 @@ Timeline: 2026-04-08 → 2026-05-08
   - Exclusion of full-capacity periods will be applied in Phase 2 analysis
   - Document censoring as a known limitation in the report
 
+    # ALEX NOTE: TO FIND LITERATURE (IF ANY) ON DOCK FULLNESS ADJUSTMENT. IF CANNOT FIND, TO EXPLAIN IN REPORT AND PRESENTATION AND STATE LIMITATION OF EXCLUSION OF FULL CAPACITY PERIODS. IF CAN FIND, EXPLORE METHODS USED. IF EASY TO DO WITHIN TIMEFRAME OF PROJECT, IMPLEMENT. IF NOT EASY, STATE LIMITATION OF EXCLUSION OF FULL CAPACITY PERIODS IN REPORT AND PRESENTATION AND INCLUDE IN FUTURE WORK SESSION
+
 ### 1.4 Exploratory Data Visualization
 
 - [x] **1.4.1** Visualize Bluebikes arrival patterns (time-of-day, day-of-week, monthly)
@@ -54,15 +56,21 @@ Timeline: 2026-04-08 → 2026-05-08
 - [x] **1.4.4** Visualize estimated dock fullness periods for Bluebikes stations
   - > **Checkpoint:** Review visualizations with user before proceeding to Phase 2. Additional questions may arise.
 
+      # ALEX NOTE: TO REVIEW VISUALIZATIONS AND COME UP WITH QUESTIONS
+
 ---
 
 ## Phase 2: Descriptive Arrival-Process Analysis (Week 2: Apr 15–21)
 
-### 2.1 Summary Statistics
+### 2.1 Summary Statistics for actual data
 
 - [ ] **2.1.1** Compute mean, standard deviation, coefficient of variation (CV), and skewness of inter-arrival times for Bluebikes
 - [ ] **2.1.2** Compute the same statistics for MBTA
 - [ ] **2.1.3** Compare CV to 1.0 (CV = 1 is the theoretical value for exponential inter-arrival times under a Poisson process)
+
+      # ALEX NOTE: TO REVIEW CV VALUES AND GIVE SOME FORM OF ANALYSIS HERE. WHAT DOES CV LESS THAN 1 MEAN? WHAT DOES CV GREATER THAN 1 MEAN? WHAT ABOUT THE MAGNITUDE OF VALUES (IF ONE HAS CV=0.2 AND THE OTHER HAS CV=0.8, DOES THIS MEAN THE OTHER IS MORE POSSION?)
+
+      # ALEX NOTE: WE CAN SEE IF ITS POSSIBLE TO CHECK BASED ON TIME (PEAK PERIODS, NON PEAK PERIODS) FOR BOTH MODES WHAT THE CVs ARE AND ANALYZE THAT TOO?
 
 ### 2.2 Distribution Fitting and Comparison
 
@@ -70,6 +78,9 @@ Timeline: 2026-04-08 → 2026-05-08
 - [ ] **2.2.2** Fit exponential distribution to observed inter-arrival times
 - [ ] **2.2.3** Fit candidate non-Poisson distributions (e.g., log-normal, Weibull, gamma) and select best-fit
 - [ ] **2.2.4** Perform goodness-of-fit tests (Kolmogorov-Smirnov, Anderson-Darling, chi-squared) to formally test the exponential (Poisson) hypothesis
+
+      # ALEX NOTE: EXPLAIN WHY WE ARE USING BOTH EMPIRICAL AND NON-POISSON ARRIVAL DISTRIBUTIONS. HOW DID WE CHOOSE THE SPECIFIC NON-POISSON ARRIVAL DISTRIBUTIONS? ANY EXISTING LITERATURE?
+
 
 ### 2.3 Arrival Count Analysis
 
@@ -96,6 +107,8 @@ Timeline: 2026-04-08 → 2026-05-08
   - MBTA: to be defined
   - > **Decision needed (deferred):** Service time definitions will be finalized after descriptive analysis. Will revisit before simulation.
 - [ ] **3.0.3** Document model assumptions and parameters
+
+  # ALEX NOTE: EXPLAIN WHY WE CHOSE OUR POISSON BASED QUEUING MODEL M/M/1. WHY DID WE SELECT IT OVER OTHERS? COMPARISON WITH OTHER METHODS? ANY EXISTING LITERATURE?
 
 ### 3.1 M/M/1 Analytical Baseline
 
@@ -141,11 +154,16 @@ Timeline: 2026-04-08 → 2026-05-08
   - > **Checkpoint:** Review draft report with user before finalization.
 - [ ] **4.2.5** Finalize report for submission by 5/8 11:59pm ET
 
+      # ALEX NOTE: TO EDIT REPORT AND ALSO READ ALL CODE AND COMMENT ON CODE SO WE UNDERSTAND THE LOGIC AND FLOW OF THE CODE
+
+
+
+
 ### 4.3 Reproducibility (per Recitation 8 guidelines)
 
 - [ ] **4.3.1** Initialize Git repository and push to GitHub
 - [ ] **4.3.2** Create `environment.yml` (or `requirements.txt`) with all dependencies and pinned versions
-- [ ] **4.3.3** Fix random seeds in all simulation code for reproducible results
+- [ ] **4.3.3** FIX RANDOM SEEDS IN ALL SIMULATION CODE FOR REPRODUCIBLE RESULTS
 - [ ] **4.3.4** Write `README.md` with:
   - Project title and description
   - Installation and environment setup instructions
