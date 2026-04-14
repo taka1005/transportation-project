@@ -1416,3 +1416,165 @@ That proposal works.
 **Response / 応答:**
 
 Decision D5 resolved: Bluebikes = dock occupancy time, MBTA = dwell time. Updated research_plan.md (decision table and Step 3.0.2).
+
+---
+
+## Prompt #86
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+いったんプッシュして続けて。
+
+**English:**
+
+Push and continue.
+
+**Response / 応答:**
+
+Pushed Phase 2 work (566dcc9). Proceeded to Phase 3. Completed Steps 3.0.1–3.0.3: confirmed M/M/1 as baseline (closed-form solutions, isolates arrival assumption), documented service time definitions and model assumptions. Updated research_plan.md.
+
+---
+
+## Prompt #87
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+ブルーバイクはスタンドごとにキャパシティがあり、ドックごとにサービス時間を定義することも
+
+**English:**
+
+Bluebikes stations have capacity per stand, and you could define service time per dock...
+
+**Response / 応答:**
+
+Recognized the multi-server nature: Kendall T has 23 docks (servers), MIT Vassar St has 53. Proposed three approaches: (A) keep M/M/1 for clean isolation of arrival-process effect, (B) switch to M/M/c for realism, (C) do both. Recommended (A) for research focus clarity, with (C) as option for robustness.
+
+---
+
+## Prompt #88
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+両方やってみたいけど、M/M/cをやる際の問題はどのドックにどのバイクがはいったかはわからないよね？
+
+**English:**
+
+I'd like to try both, but the problem with M/M/c is we don't know which bike went into which dock, right?
+
+**Response / 応答:**
+
+Confirmed individual dock-bike mapping is unavailable. However, M/M/c does not require per-dock tracking — it needs only λ (station arrival rate), μ (per-server service rate, estimable from station-level averages via Little's Law or inventory data), and c (dock count, known). Proposed estimating μ from reconstructed inventory data. Awaiting confirmation to proceed with both M/M/1 and M/M/c.
+
+---
+
+## Prompt #89
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+では両方やってください。
+
+**English:**
+
+Please do both (M/M/1 and M/M/c).
+
+**Response / 応答:**
+
+Created src/phase3_queueing.py (analytical) and src/phase3_simulation.py (SimPy DES). Computed M/M/1 and M/M/c analytical predictions: Bluebikes M/M/1 unstable (ρ>>1), M/M/c stable. MBTA M/M/1 stable (ρ=0.15–0.19). Built DES with 3 arrival variants (exponential, empirical, best-fit) × 10 replications × 20,000 arrivals. Key results: Poisson underestimates Bluebikes Wq by 6–7x (Kendall T), overestimates MBTA Wq by 5–12x. MIT Vassar St has zero wait regardless of arrival process (ample dock capacity). Empirical and best-fit DES produce nearly identical results. Updated research_plan.md.
+
+---
+
+## Prompt #90
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+bluebikeはドックがいっぱいの時もあるはずですが、その時間帯は待ち時間にはならない？拒否するだけだから？それとも満車の時間帯を分析から省いているから？
+
+**English:**
+
+When Bluebike docks are full, doesn't that count as wait time? Or is it just a rejection? Or are full-capacity periods excluded from analysis?
+
+**Response / 応答:**
+
+Identified that the current simulation has a modeling problem: (1) SimPy uses infinite queue (customers wait forever), but reality is rejection (no waiting), (2) full-capacity periods not yet excluded from analysis. Explained that M/M/c/c (Erlang B, loss model) is more appropriate — blocking probability as the key metric instead of wait time. Proposed three options: (A) switch to Erlang B, (B) keep M/M/c as theoretical comparison, (C) drop BB queueing analysis and focus on MBTA. Awaiting user decision.
+
+---
+
+## Prompt #91
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+(A)と(B)を両方やればいいのでは。あと、満車フラグって全く使われていない？満車時のデータはのぞいて分析するのではなかったっけ？どこでどのデータを使っているかはっきりさせて。
+
+**English:**
+
+Why not do both (A) and (B)? Also, is the fullness flag not being used at all? Weren't we supposed to exclude full-capacity data from analysis? Clarify where each dataset is being used.
+
+**Response / 応答:**
+
+Audited all code for fullness flag usage. Found that `at_capacity` flag is generated in the pipeline and displayed in exploratory visualizations, but **NOT used for exclusion in Phase 2 or Phase 3** — despite the plan stating "exclusion will be applied in Phase 2 analysis." This means: (1) Phase 2 inter-arrival times include censored periods (λ underestimated), (2) Phase 3 λ and service time estimates are affected. Proposed fix: exclude full-capacity periods from BB analysis in Phase 2 and 3, add Erlang B (M/M/c/c), keep M/M/c for theoretical comparison. Awaiting confirmation.
+
+---
+
+## Prompt #92
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+M/M/c/cで満車時の拒否確率を計算するなら、満車時間帯のデータもあると良いよね。適切に使い分けてほしいんだけど、アイデアを示して。
+
+**English:**
+
+If we're computing blocking probability with M/M/c/c, it would be useful to have the full-capacity data too. I'd like you to use the data appropriately for each purpose — show me your idea.
+
+**Response / 応答:**
+
+Proposed data usage strategy by analysis purpose: (1) λ estimation — exclude full-capacity periods to get true demand rate, (2) distribution fitting — exclude for unbiased estimates, (3) μ estimation — exclude to avoid inventory bias at capacity, (4) M/M/c — use corrected λ,μ as theoretical baseline, (5) M/M/c/c (Erlang B) — use corrected λ,μ to predict blocking probability, (6) Erlang B validation — compare predicted blocking probability against actual observed full-capacity rate (Kendall T 5.3%, MIT Vassar St 0.4%). Awaiting confirmation.
+
+---
+
+## Prompt #93
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+OK.大規模な修正になるのでリサーチプランにしっかり記録してから実行してください。
+
+**English:**
+
+OK. This is a large-scale revision, so document it thoroughly in the research plan before executing.
+
+**Response / 応答:**
+
+Added Section 3.2a "Fullness Correction and Model Revision" to research_plan.md. Documented: data usage strategy table (which analyses exclude/use fullness data and why), 7 modification steps (3.2a.1–3.2a.7) covering exclusion implementation, Phase 2 re-run, μ re-estimation, Erlang B computation, M/M/c re-run, DES re-run with finite capacity, and figure updates. Updated Section 3.3 to reflect both M/M/c and M/M/c/c for Bluebikes. Added decisions D10 (BB queueing model selection) and D11 (BB fullness data handling) to summary table.
+
+---
+
+## Prompt #94
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+OK
+
+**English:**
+
+OK (proceed with execution).
+
+**Response / 応答:**
+
+Executed Steps 3.2a.1–3.2a.6. Created fullness_filter.py, phase2_rerun.py, phase3_revised.py. Key results: (1) Fullness exclusion affects 11% of Kendall T data, minimal impact on MIT Vassar St, (2) Phase 2 stats change slightly (CV 1.69→1.75 for Kendall T), Weibull still best fit, (3) Erlang B predicts 0.07% blocking vs 5.32% observed — 75× gap reveals exponential service time assumption is also violated, (4) DES with empirical arrivals: Poisson underestimates Wq by 6.6× and blocking by 6×, but even empirical DES cannot reproduce observed fullness rate, indicating service process non-stationarity. Updated research_plan.md.

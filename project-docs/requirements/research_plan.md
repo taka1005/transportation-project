@@ -139,35 +139,89 @@ Timeline: 2026-04-08 → 2026-05-08
 
 ### 3.0 Select Queueing Baseline
 
-- [ ] **3.0.1** Confirm M/M/1 as the primary Poisson-based queueing model
+- [x] **3.0.1** Confirm M/M/1 as the primary Poisson-based queueing model
   - Document why M/M/1 was selected (simplest memoryless queueing model; serves as a baseline to measure the cost of the Poisson assumption)
   - Briefly compare with alternatives (M/G/1, G/G/1) and cite relevant literature
-- [ ] **3.0.2** Define service time assumptions for each system
+  - M/M/1 chosen because: (1) closed-form solutions for Wq, Lq, W enable direct comparison, (2) isolates the arrival-process assumption (both arrival and service memoryless), (3) M/G/1 generalizes service but conflates two effects, G/G/1 has no closed-form solution
+- [x] **3.0.2** Define service time assumptions for each system
   - Bluebikes: dock occupancy time (time a bike occupies a dock slot from arrival until next departure)
   - MBTA: dwell time (time a train is stopped at the platform)
   - > **Decision D5 resolved:** Bluebikes = dock occupancy, MBTA = dwell time
-- [ ] **3.0.3** Document model assumptions and parameters
+- [x] **3.0.3** Document model assumptions and parameters
+  - M/M/1 assumptions: Poisson arrivals (rate λ), exponential service (rate μ), single server, FCFS, infinite queue, steady state (λ < μ)
 
 ### 3.1 M/M/1 Analytical Baseline
 
-- [ ] **3.1.1** Compute M/M/1 theoretical predictions using observed mean arrival rate (λ) and assumed service rate (μ):
-  - Average delay (Wq)
-  - Average queue length (Lq)
-  - Average system time (W)
-- [ ] **3.1.2** Compute predictions for both Bluebikes and MBTA
+- [x] **3.1.1** Compute M/M/1 and M/M/c theoretical predictions using observed mean arrival rate (λ) and service rate (μ):
+  - Average delay (Wq), average queue length (Lq), average system time (W)
+  - M/M/c uses Erlang C formula; c = dock count for Bluebikes, c = 1 for MBTA
+  - Bluebikes service rate estimated via Little's Law (avg inventory / arrival rate)
+  - MBTA service rate from dwell time data
+- [x] **3.1.2** Compute predictions for both Bluebikes and MBTA
+  - Bluebikes M/M/1: UNSTABLE (ρ=11.8–17.8) — single-server model physically inappropriate
+  - Bluebikes M/M/c: stable (ρ_server=0.34–0.51), near-zero wait times — consistent with real-world observation
+  - MBTA M/M/1: stable (ρ=0.15–0.19), low wait times (10–19 sec)
+  - Key finding: Bluebikes analysis must use M/M/c (not M/M/1) as the Poisson baseline
 
 ### 3.2 Discrete-Event Simulation (SimPy)
 
-- [ ] **3.2.1** Build a discrete-event simulation using SimPy with the empirical inter-arrival distribution
-- [ ] **3.2.2** Build a DES variant using the best-fit non-Poisson distribution from Phase 2
-- [ ] **3.2.3** Run simulations for both Bluebikes and MBTA
-- [ ] **3.2.4** Collect simulation outputs: average delay, average queue length, average system time
-- [ ] **3.2.5** Validate simulation (warm-up period, sufficient run length, multiple replications for confidence intervals)
+- [x] **3.2.1** Build a discrete-event simulation using SimPy with the empirical inter-arrival distribution
+- [x] **3.2.2** Build a DES variant using the best-fit non-Poisson distribution from Phase 2
+- [x] **3.2.3** Run simulations for both Bluebikes and MBTA
+- [x] **3.2.4** Collect simulation outputs: average delay, average queue length, average system time
+- [x] **3.2.5** Validate simulation (warm-up period, sufficient run length, multiple replications for confidence intervals)
+  - 2,000 warmup arrivals, 20,000 total, 10 replications with 95% CI
+  - Poisson DES matches analytical solutions (M/M/1 within 2%, M/M/c within 0.2% for W)
+  - Key results: Poisson underestimates Bluebikes Wq by 6–7x, overestimates MBTA Wq by 5–12x
+  - Empirical and best-fit DES produce nearly identical results (Weibull/Log-normal are good approximations)
+
+### 3.2a Fullness Correction and Model Revision (inserted retroactively)
+
+> **Background:** Phase 2 and initial Phase 3 results did NOT exclude Bluebikes full-capacity periods from analysis, despite Step 1.3.5 planning to do so. This introduces censoring bias (λ underestimated, service time estimates skewed). Additionally, the M/M/c infinite-queue model does not match Bluebikes reality (full docks reject arrivals, no waiting). This section corrects both issues.
+
+**Data usage strategy:**
+
+| Analysis | Full-capacity data | Purpose |
+|---|---|---|
+| λ estimation (BB) | **Exclude** | Recover true (unconstrained) arrival rate |
+| Distribution fitting (BB) | **Exclude** | Unbiased inter-arrival time distribution |
+| μ estimation (BB inventory) | **Exclude** | Avoid capacity-clamped inventory bias |
+| M/M/c analytical (BB) | Use corrected λ, μ | Theoretical baseline (infinite queue) |
+| M/M/c/c Erlang B (BB) | Use corrected λ, μ | Predict blocking probability |
+| Erlang B validation | **Use observed fullness rate** | Compare predicted vs actual blocking |
+| MBTA analysis | No change | No fullness censoring issue |
+
+**Modification steps:**
+
+- [x] **3.2a.1** Implement full-capacity exclusion for Bluebikes inter-arrival times
+  - Created src/fullness_filter.py: merges overlapping full-capacity periods, excludes affected IATs
+  - Kendall T: 1,145 arrivals excluded (11.0%), MIT Vassar St: 176 excluded (0.9%)
+- [x] **3.2a.2** Re-run Phase 2 Bluebikes analysis with corrected data
+  - Created src/phase2_rerun.py: before/after comparison
+  - Kendall T: CV 1.69→1.75 (+3.6%), Weibull c=0.730→0.716
+  - MIT Vassar St: virtually unchanged (CV 1.90→1.90)
+  - Weibull remains best-fit for both stations after correction
+- [x] **3.2a.3** Re-estimate μ from inventory data excluding full-capacity periods
+  - Kendall T: mean service 8,083→7,549 sec (−6.6%), ρ_server 0.51→0.49
+  - MIT Vassar St: mean service 6,886→6,699 sec (−2.7%), ρ_server 0.34→0.33
+- [x] **3.2a.4** Compute M/M/c/c (Erlang B) analytical predictions for Bluebikes
+  - Kendall T: Erlang B predicts 0.07% blocking, observed fullness is 5.32% — **75× gap**
+  - MIT Vassar St: Erlang B predicts ≈0%, observed 0.42%
+  - Gap indicates exponential service time assumption is also violated (non-stationary dock occupancy)
+- [x] **3.2a.5** Re-run M/M/c analytical predictions with corrected λ, μ
+  - Kendall T: Wq=0.9s (corrected), MIT Vassar St: Wq≈0
+- [x] **3.2a.6** Re-run DES simulations for Bluebikes with corrected inter-arrival data
+  - Infinite queue: Poisson Wq=1.6s vs Empirical Wq=10.8s (6.6× underestimate)
+  - Finite capacity: Poisson block=0.10% vs Empirical block=0.60% (6× underestimate)
+  - Both models show Poisson underestimates congestion, but even empirical-arrival DES cannot reproduce observed 5.3% fullness — service process non-stationarity is the missing factor
+- [ ] **3.2a.7** Update all Bluebikes figures and tables with corrected results
 
 ### 3.3 Error Quantification
 
-- [ ] **3.3.1** Compare M/M/1 predictions vs. empirical-DES outcomes for each metric
-- [ ] **3.3.2** Compare M/M/1 predictions vs. best-fit-DES outcomes for each metric
+- [ ] **3.3.1** Compare Poisson-based predictions vs. empirical-DES outcomes for each metric
+  - Bluebikes: M/M/c and M/M/c/c vs DES
+  - MBTA: M/M/1 vs DES
+- [ ] **3.3.2** Compare Poisson-based predictions vs. best-fit-DES outcomes for each metric
 - [ ] **3.3.3** Quantify relative and absolute error for each metric and each system
 - [ ] **3.3.4** Visualize the comparison (tables and/or plots)
 
@@ -229,3 +283,5 @@ Timeline: 2026-04-08 → 2026-05-08
 | D7 | Simulation framework | **Resolved** | SimPy (Python) |
 | D8 | Presentation format | **Resolved** | Slide presentation (15 min + Q&A) |
 | D9 | MBTA Red Line station | **Resolved** | Kendall/MIT |
+| D10 | Bluebikes queueing model | **Resolved** | M/M/c (infinite queue, theoretical) + M/M/c/c (Erlang B, loss/rejection model). M/M/1 unstable for BB |
+| D11 | Bluebikes fullness data handling | **Resolved** | Exclude from λ/μ estimation and distribution fitting; use observed fullness rate to validate Erlang B blocking probability |
