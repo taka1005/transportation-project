@@ -239,10 +239,24 @@ Timeline: 2026-04-08 → 2026-05-08
 
 ### 4.1 Cross-Modal Synthesis
 
-- [ ] **4.1.1** Compare Poisson-fit quality: Bluebikes (user-driven) vs. MBTA (schedule-driven)
-- [ ] **4.1.2** Compare M/M/1 error magnitude across the two systems
-- [ ] **4.1.3** Identify conditions under which Poisson is a reasonable engineering approximation
-- [ ] **4.1.4** Identify conditions where Poisson breaks down and more general approaches are needed
+- [x] **4.1.1** Compare Poisson-fit quality: Bluebikes (user-driven) vs. MBTA (schedule-driven)
+  - Both reject Poisson but in opposite directions: BB overdispersed (CV=1.75–1.90), MBTA underdispersed (CV=0.63–0.71)
+  - Best-fit: Weibull for BB (bursty demand), Log-normal for MBTA (scheduled + noise)
+  - MBTA deviates more strongly from exponential (KS=0.27–0.29) than BB (KS=0.13–0.14)
+- [x] **4.1.2** Compare M/M/1 error magnitude across the two systems
+  - BB Kendall T (M/M/c): Poisson underestimates Wq by ~7× (1.6s vs 10.8s)
+  - MBTA: Poisson overestimates Wq by 5–12× (20.5s vs 4.2s North, 10.9s vs 0.9s South)
+  - Error directions are opposite: Poisson is anti-conservative for BB, conservative for MBTA
+  - Erlang B vs observed blocking (0.07% vs 5.32%) reveals service non-stationarity as additional error source
+- [x] **4.1.3** Identify conditions under which Poisson is a reasonable engineering approximation
+  - Short time windows with stable arrival rate (e.g., BB Kendall T midnight CV≈1.0)
+  - High-capacity systems where arrival process doesn't matter (BB MIT Vassar St, 53 docks → Wq≈0 always)
+  - Low-utilization systems where Poisson overestimates (conservative): MBTA ρ=0.15–0.20
+- [x] **4.1.4** Identify conditions where Poisson breaks down and more general approaches are needed
+  - Strong time-of-day non-stationarity (BB peak hours, CV>2)
+  - Schedule-driven systems (MBTA, Poisson overestimates by 5–12×)
+  - Finite-capacity systems at moderate utilization (BB Kendall T: blocking prediction off by 75×)
+  - When both arrival AND service processes are non-stationary (blocking rate cannot be reproduced by correcting arrivals alone)
 
 ### 4.2 Final Report
 

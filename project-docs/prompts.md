@@ -1599,6 +1599,42 @@ Integrated Erlang B and finite-capacity DES from phase3_revised.py into phase3_s
 
 ---
 
+## Prompt #100
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+プッシュして
+
+**English:**
+
+Push.
+
+**Response / 応答:**
+
+Unstaged parquet files (too large for GitHub), committed and pushed (f4e9125).
+
+---
+
+## Prompt #101
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+4.1をすべて進めて。重要な判断があれば私に聞いて。
+
+**English:**
+
+Complete all of 4.1. Ask me if there are important decisions.
+
+**Response / 応答:**
+
+Completed Steps 4.1.1–4.1.4 (Cross-Modal Synthesis). Key findings: (1) Both systems reject Poisson but in opposite directions — BB overdispersed, MBTA underdispersed; (2) Poisson error: BB underestimates Wq by 7×, MBTA overestimates by 5–12×; (3) Poisson works when: short time windows, high capacity, low utilization (conservative); (4) Poisson breaks when: strong non-stationarity, schedule-driven systems, finite capacity at moderate utilization, and when both arrival and service are non-stationary. Updated research_plan.md. No decisions required — synthesis is based on established results.
+
+---
+
 ## Prompt #92
 
 **Date / 日付:** 2026-04-13
