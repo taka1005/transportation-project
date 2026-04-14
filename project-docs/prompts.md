@@ -1635,6 +1635,96 @@ Completed Steps 4.1.1–4.1.4 (Cross-Modal Synthesis). Key findings: (1) Both sy
 
 ---
 
+## Prompt #102
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+ここまでプッシュして休止します。
+
+**English:**
+
+Push and pause here.
+
+**Response / 応答:**
+
+Committed Phase 4.1 and pushed (1c20a05). Summarized progress: Phase 1–3 and 4.1 complete. Next: Phase 4.2 (report writing).
+
+---
+
+## Prompt #103
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+MBTAで10.9秒の待ち時間が過大評価とは思えないのですがそうなんですか？
+
+**English:**
+
+I find it hard to believe that 10.9 seconds of wait time is an overestimate for MBTA. Is it really?
+
+**Response / 応答:**
+
+Clarified that Wq in this model is TRAIN wait time (time a train waits to access the platform), not PASSENGER wait time. With ρ=0.15, trains rarely queue. Poisson overestimates by assuming random arrivals (occasional bunching), predicting 10.9s vs actual 0.9s. The relative error (12×) matters for capacity planning, but the absolute values are both small. Suggested the report should note that MBTA's absolute Wq is negligible in practice and Poisson's overestimate is conservative (safe-side error).
+
+---
+
+## Prompt #104
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+本来待ち時間は0ですよね？なぜ実測0.9秒になるの？
+
+**English:**
+
+The wait time should really be 0, right? Why does the empirical DES give 0.9 seconds?
+
+**Response / 応答:**
+
+Identified that the 0.9s is a simulation artifact, not real. The empirical DES samples inter-arrival times i.i.d. (independent, identically distributed), destroying the sequential/autocorrelation structure of the schedule. Occasionally a sampled inter-arrival time is shorter than the dwell time, creating artificial queueing. In reality, MBTA schedules guarantee no train arrives during the previous train's dwell — so true Wq = 0. This is a key limitation of empirical-distribution DES: it reproduces the marginal distribution but not the time-series structure (autocorrelation). Should be noted in the report.
+
+---
+
+## Prompt #105
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+全然言ってることがわからないからもっと詳しく教えて。
+
+**English:**
+
+I don't understand at all. Please explain in more detail.
+
+**Response / 応答:**
+
+Provided step-by-step explanation with examples: (1) Real MBTA trains come every 5-6 min, dwell=60s, so wait is always 0. (2) DES takes the list of all inter-arrival times and randomly picks one for each simulated arrival — this destroys the order. (3) The data contains some very short intervals (e.g., 12s from bunched trains). When randomly sampled after a normal interval, these can cause the simulated train to arrive during the previous train's dwell, creating artificial 48s waits. (4) In reality, short intervals only follow other short intervals (bunching), and the schedule prevents a 12s gap from following a 540s gap. Summary: Real Wq=0s, DES Wq=0.9s (artifact from randomizing order), Poisson Wq=10.9s (fully random assumption).
+
+---
+
+## Prompt #106
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+DESってどういう手法だっけ？
+
+**English:**
+
+What is DES again as a methodology?
+
+**Response / 応答:**
+
+Explained DES (Discrete-Event Simulation): processes events one at a time in chronological order, jumping to next event rather than stepping through every second. Each event checks resource availability (platform), queues if busy. Showed step-by-step example with MBTA trains. Explained three arrival variants (Exponential, Empirical, Weibull/Log-normal) and their purposes. Noted SimPy as the Python library used. Connected back to the earlier discussion: Empirical DES shuffles the order of inter-arrival times, breaking schedule structure.
+
+---
+
 ## Prompt #92
 
 **Date / 日付:** 2026-04-13
