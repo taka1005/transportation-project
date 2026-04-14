@@ -86,11 +86,16 @@ def estimate_bb_service_rate(arrivals, departures, station_id, capacity):
     Service = dock occupancy. Use Little's Law: L = λ * W_service
     Average inventory (L) from reconstructed data, λ from arrivals.
     μ = 1 / W_service = λ / L
+    Excludes full-capacity periods for unbiased estimation.
     """
-    inv = pd.read_parquet(PROCESSED / f"bb_inventory_{station_id}.parquet")
+    import sys
+    sys.path.insert(0, "src")
+    from fullness_filter import filter_inventory_for_service_rate
 
-    # Average inventory (number of bikes docked)
-    avg_inventory = inv["inventory"].mean()
+    inv_clean = filter_inventory_for_service_rate(station_id)
+
+    # Average inventory (number of bikes docked), excluding full-capacity periods
+    avg_inventory = inv_clean["inventory"].mean()
 
     # Arrival rate: arrivals per second during operating hours
     arr = arrivals[arrivals["end_station_id"] == station_id].copy()

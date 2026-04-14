@@ -65,25 +65,25 @@ Timeline: 2026-04-08 → 2026-05-08
 ### 2.1 Summary Statistics
 
 - [x] **2.1.1** Compute mean, standard deviation, coefficient of variation (CV), and skewness of inter-arrival times for Bluebikes
-  - Kendall T: mean=11.4min, CV=1.69, skewness=6.6
-  - MIT Vassar St: mean=6.4min, CV=1.90, skewness=7.5
+  - Kendall T: N=9,090, mean=11.2min, CV=1.75, skewness=6.8
+  - MIT Vassar St: N=19,275, mean=6.3min, CV=1.90, skewness=7.7
   - Both stations CV > 1 (more variable than Poisson)
 - [x] **2.1.2** Compute the same statistics for MBTA
-  - Northbound: mean=6.5min, CV=0.71, skewness=3.3
-  - Southbound: mean=6.3min, CV=0.63, skewness=4.5
+  - Northbound: N=20,366, mean=6.5min, CV=0.71, skewness=3.3
+  - Southbound: N=20,880, mean=6.3min, CV=0.63, skewness=4.5
   - Both directions CV < 1 (more regular than Poisson, schedule-driven)
-  - Note: overnight gaps (last train → first train) excluded by computing inter-arrival times within operating days only
+  - Note: overnight gaps excluded (intraday IAT); Bluebikes full-capacity periods excluded
 - [x] **2.1.3** Compare CV to 1.0 (CV = 1 is the theoretical value for exponential inter-arrival times under a Poisson process)
   - Interpret CV < 1 (more regular than Poisson, e.g., schedule-driven) vs. CV > 1 (more variable than Poisson, e.g., bursty demand)
   - Discuss the magnitude of deviation: how close to 1 is "close enough" for practical purposes?
-  - Bluebikes: CV=1.69–1.90 (overdispersed, bursty demand driven by time-of-day non-stationarity)
+  - Bluebikes: CV=1.75–1.90 (overdispersed, bursty demand driven by time-of-day non-stationarity)
   - MBTA: CV=0.63–0.71 (underdispersed, schedule-driven regularity with operational noise)
   - All four systems reject Poisson; Bluebikes and MBTA deviate in opposite directions
   - > **Taka memo:** MIT Vassar St (residential) having higher CV than Kendall T (transit hub) is surprising. A station with steady all-day traffic may appear more Poisson-like over a full day. However, when segmented into 1-hour windows, the residential station may actually be closer to Poisson — to be tested in Step 2.1.4.
 - [x] **2.1.4** Segment CV analysis by time-of-day (peak vs. off-peak) and day-of-week for both systems
   - Assess whether Poisson holds better during certain periods (e.g., off-peak may be more Poisson-like)
-  - Kendall T: strong peak/off-peak difference (1.98 vs 1.34); off-peak and late night approach Poisson (CV≈1.0 at midnight)
-  - MIT Vassar St: smaller peak/off-peak difference (1.71 vs 1.56); CV > 1 at all hours
+  - Kendall T: strong peak/off-peak difference (2.00 vs 1.37); off-peak and late night approach Poisson (CV≈1.0 at midnight)
+  - MIT Vassar St: smaller peak/off-peak difference (1.71 vs 1.57); CV > 1 at all hours
   - MBTA: CV < 1 at all hours; weekends more regular than weekdays
   - Taka hypothesis (residential station more Poisson when segmented hourly) not supported — Kendall T approaches Poisson faster in off-peak
 
@@ -96,15 +96,15 @@ Timeline: 2026-04-08 → 2026-05-08
   - Exponential is the worst fit (highest AIC) for all four systems
 - [x] **2.2.3** Fit candidate non-Poisson distributions (e.g., log-normal, Weibull, gamma) and select best-fit
   - Document rationale for candidate distribution selection and cite relevant literature
-  - Bluebikes: Weibull best (c=0.71–0.73, shape < 1 indicates decreasing hazard rate / bursty arrivals)
+  - Bluebikes: Weibull best (c=0.714–0.716, shape < 1 indicates decreasing hazard rate / bursty arrivals)
   - MBTA: Log-normal best (schedule + multiplicative noise)
-  - AIC improvement over exponential: −2,144 to −17,833 across systems
+  - AIC improvement over exponential: −2,167 to −17,833 across systems
   - Generated: phase2_fitted_distributions.png
 - [x] **2.2.4** Perform goodness-of-fit tests (Kolmogorov-Smirnov, Anderson-Darling, chi-squared) to formally test the exponential (Poisson) hypothesis
   - All three tests reject exponential (Poisson) for all systems (p ≈ 0)
-  - All parametric distributions formally rejected due to large sample sizes (N=10k–20k)
+  - All parametric distributions formally rejected due to large sample sizes (N=9k–21k)
   - Relative comparison: Weibull (Bluebikes) and Log-normal (MBTA) have much smaller KS statistics than exponential
-  - Anderson-Darling: exponential statistic 470–2,734 vs critical value ≈ 2 (extreme rejection)
+  - Anderson-Darling: exponential statistic 480–2,734 vs critical value ≈ 2 (extreme rejection)
 - [x] **2.2.5** Explain in the report why both empirical and parametric non-Poisson distributions are used
   - Empirical DES: assumption-free, closest to reality, but dataset-specific and hard to generalize
   - Parametric best-fit DES: compact representation, interpretable parameters, generalizable to other contexts
@@ -129,7 +129,7 @@ Timeline: 2026-04-08 → 2026-05-08
   - MBTA: NOT Poisson — underdispersed (CV<1, IoD<1), schedule-driven regularity
   - Deviations are in opposite directions: Bluebikes too variable, MBTA too regular
 - [x] **2.4.2** Identify the best-fit alternative distribution for each system
-  - Bluebikes: Weibull (c=0.71–0.73), AIC improvement −2,144 to −5,055 over exponential
+  - Bluebikes: Weibull (c=0.714–0.716), AIC improvement −2,167 to −4,890 over exponential
   - MBTA: Log-normal (s=0.49–0.57), AIC improvement −12,878 to −17,833 over exponential
   - > **Checkpoint:** Review interim findings with user before proceeding to queueing analysis.
 
@@ -158,9 +158,9 @@ Timeline: 2026-04-08 → 2026-05-08
   - Bluebikes service rate estimated via Little's Law (avg inventory / arrival rate)
   - MBTA service rate from dwell time data
 - [x] **3.1.2** Compute predictions for both Bluebikes and MBTA
-  - Bluebikes M/M/1: UNSTABLE (ρ=11.8–17.8) — single-server model physically inappropriate
-  - Bluebikes M/M/c: stable (ρ_server=0.34–0.51), near-zero wait times — consistent with real-world observation
-  - MBTA M/M/1: stable (ρ=0.15–0.19), low wait times (10–19 sec)
+  - Bluebikes M/M/1: UNSTABLE (ρ=11.2–17.6) — single-server model physically inappropriate
+  - Bluebikes M/M/c: stable (ρ_server=0.33–0.49), near-zero wait times — consistent with real-world observation
+  - MBTA M/M/1: stable (ρ=0.15–0.20), low wait times (10.7–20.1 sec)
   - Key finding: Bluebikes analysis must use M/M/c (not M/M/1) as the Poisson baseline
 
 ### 3.2 Discrete-Event Simulation (SimPy)
@@ -172,8 +172,9 @@ Timeline: 2026-04-08 → 2026-05-08
 - [x] **3.2.5** Validate simulation (warm-up period, sufficient run length, multiple replications for confidence intervals)
   - 2,000 warmup arrivals, 20,000 total, 10 replications with 95% CI
   - Poisson DES matches analytical solutions (M/M/1 within 2%, M/M/c within 0.2% for W)
-  - Key results: Poisson underestimates Bluebikes Wq by 6–7x, overestimates MBTA Wq by 5–12x
+  - Key results: Poisson underestimates Bluebikes Wq by ~7x (1.6s vs 10.8s), overestimates MBTA Wq by 5–12x
   - Empirical and best-fit DES produce nearly identical results (Weibull/Log-normal are good approximations)
+  - All results use fullness-corrected data for Bluebikes
 
 ### 3.2a Fullness Correction and Model Revision (inserted retroactively)
 
@@ -214,16 +215,23 @@ Timeline: 2026-04-08 → 2026-05-08
   - Infinite queue: Poisson Wq=1.6s vs Empirical Wq=10.8s (6.6× underestimate)
   - Finite capacity: Poisson block=0.10% vs Empirical block=0.60% (6× underestimate)
   - Both models show Poisson underestimates congestion, but even empirical-arrival DES cannot reproduce observed 5.3% fullness — service process non-stationarity is the missing factor
-- [ ] **3.2a.7** Update all Bluebikes figures and tables with corrected results
+- [x] **3.2a.7** Update all Bluebikes figures and tables with corrected results
+  - Generated: phase3_wq_comparison.png, phase3_blocking_comparison.png, phase3_error_summary.png
 
 ### 3.3 Error Quantification
 
-- [ ] **3.3.1** Compare Poisson-based predictions vs. empirical-DES outcomes for each metric
+- [x] **3.3.1** Compare Poisson-based predictions vs. empirical-DES outcomes for each metric
   - Bluebikes: M/M/c and M/M/c/c vs DES
   - MBTA: M/M/1 vs DES
-- [ ] **3.3.2** Compare Poisson-based predictions vs. best-fit-DES outcomes for each metric
-- [ ] **3.3.3** Quantify relative and absolute error for each metric and each system
-- [ ] **3.3.4** Visualize the comparison (tables and/or plots)
+- [x] **3.3.2** Compare Poisson-based predictions vs. best-fit-DES outcomes for each metric
+  - Best-fit DES closely matches empirical DES for all systems
+- [x] **3.3.3** Quantify relative and absolute error for each metric and each system
+  - BB Kendall T Wq: Poisson underestimates by ~85% (1.6s vs 10.8s)
+  - BB Kendall T blocking: Erlang B 0.07% vs DES Empirical 0.60% vs observed 5.32%
+  - MBTA North Wq: Poisson overestimates by ~386% (20.5s vs 4.2s)
+  - MBTA South Wq: Poisson overestimates by ~1,069% (10.9s vs 0.9s)
+- [x] **3.3.4** Visualize the comparison (tables and/or plots)
+  - Generated: phase3_wq_comparison.png, phase3_blocking_comparison.png, phase3_error_summary.png
 
 ---
 

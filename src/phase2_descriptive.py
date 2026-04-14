@@ -72,6 +72,44 @@ def summary_stats(series, label):
             "skewness": skew, "median": median, "min": minimum, "max": maximum}
 
 
+def apply_fullness_exclusion(bb):
+    """
+    Exclude Bluebikes inter-arrival times affected by full-capacity periods.
+    Sets interarrival_sec to NaN for affected records.
+    """
+    import sys
+    sys.path.insert(0, "src")
+    from fullness_filter import get_full_capacity_periods
+
+    BB_STATIONS_IDS = ["M32004", "M32042"]
+    for sid in BB_STATIONS_IDS:
+        full_periods = get_full_capacity_periods(sid)
+        if not full_periods:
+            continue
+        fp_starts = np.array([s.timestamp() for s, _ in full_periods])
+        fp_ends = np.array([e.timestamp() for _, e in full_periods])
+
+        mask = bb["end_station_id"] == sid
+        idx = bb[mask].index
+        arr_times = bb.loc[idx, "arrival_time"].values.astype("datetime64[ns]").astype(np.int64) / 1e9
+
+        exclude = np.zeros(len(idx), dtype=bool)
+        for i in range(1, len(idx)):
+            prev_t = arr_times[i - 1]
+            curr_t = arr_times[i]
+            overlaps = (fp_starts < curr_t) & (fp_ends > prev_t)
+            if overlaps.any():
+                exclude[i] = True
+
+        exclude_idx = idx[exclude]
+        bb.loc[exclude_idx, "interarrival_sec"] = np.nan
+        n_excluded = exclude.sum()
+        station_name = {"M32004": "Kendall T", "M32042": "MIT Vassar St"}[sid]
+        print(f"  Fullness exclusion ({station_name}): {n_excluded} IATs removed")
+
+    return bb
+
+
 if __name__ == "__main__":
     # --- Bluebikes ---
     print("Loading Bluebikes arrivals...")
@@ -79,6 +117,7 @@ if __name__ == "__main__":
     bb["arrival_time"] = pd.to_datetime(bb["arrival_time"])
     bb = assign_operating_date(bb)
     bb = compute_intraday_interarrival(bb, group_cols=["end_station_id"])
+    bb = apply_fullness_exclusion(bb)
 
     results = []
     for station_id in ["M32004", "M32042"]:

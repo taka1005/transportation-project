@@ -40,12 +40,41 @@ def compute_intraday_interarrival(df, time_col="arrival_time", group_cols=None):
     return df
 
 
-def load_data():
+def load_data(exclude_fullness=False):
     # Bluebikes
     bb = pd.read_parquet(PROCESSED / "bb_arrivals.parquet")
     bb["arrival_time"] = pd.to_datetime(bb["arrival_time"])
     bb = assign_operating_date(bb)
     bb = compute_intraday_interarrival(bb, group_cols=["end_station_id"])
+
+    if exclude_fullness:
+        import sys
+        sys.path.insert(0, "src")
+        from fullness_filter import get_full_capacity_periods
+        import numpy as np_ff
+
+        for sid in BB_STATIONS.keys():
+            full_periods = get_full_capacity_periods(sid)
+            if not full_periods:
+                continue
+            fp_starts = np_ff.array([s.timestamp() for s, _ in full_periods])
+            fp_ends = np_ff.array([e.timestamp() for _, e in full_periods])
+
+            mask = bb["end_station_id"] == sid
+            idx = bb[mask].index
+            arr_times = bb.loc[idx, "arrival_time"].values.astype("datetime64[ns]").astype(np_ff.int64) / 1e9
+
+            exclude = np_ff.zeros(len(idx), dtype=bool)
+            for i in range(1, len(idx)):
+                prev_t = arr_times[i - 1]
+                curr_t = arr_times[i]
+                overlaps = (fp_starts < curr_t) & (fp_ends > prev_t)
+                if overlaps.any():
+                    exclude[i] = True
+
+            # Set excluded inter-arrival times to NaN
+            exclude_idx = idx[exclude]
+            bb.loc[exclude_idx, "interarrival_sec"] = np_ff.nan
 
     # MBTA
     mbta = pd.read_parquet(PROCESSED / "mbta_arrivals.parquet")
@@ -405,8 +434,8 @@ def goodness_of_fit_tests(bb, mbta, fit_results):
 
 
 if __name__ == "__main__":
-    print("Loading data...")
-    bb, mbta = load_data()
+    print("Loading data (with fullness exclusion)...")
+    bb, mbta = load_data(exclude_fullness=True)
 
     print("Plotting Step 2.2.1: Histograms and CDFs...")
     plot_histograms_and_cdfs(bb, mbta)

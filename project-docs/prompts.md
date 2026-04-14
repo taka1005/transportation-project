@@ -1527,6 +1527,78 @@ Audited all code for fullness flag usage. Found that `at_capacity` flag is gener
 
 ---
 
+## Prompt #96
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+これで、満車除外されていなかった問題に関して、Phase3以前の修正は全て完了したんだよね？ダブルチェックして。
+
+**English:**
+
+So all fixes related to the missing fullness exclusion for Phase 3 and earlier are now complete, right? Double check.
+
+**Response / 応答:**
+
+Ran comprehensive audit via Explore agent. Found 3 files still missing fullness exclusion: phase2_descriptive.py, phase3_queueing.py, phase3_simulation.py. The "revised" versions (phase2_rerun.py, phase3_revised.py) had it, but originals did not. Proposed (A) fix originals or (B) mark as deprecated.
+
+---
+
+## Prompt #97
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+A
+
+**English:**
+
+Option A (fix the original files).
+
+**Response / 応答:**
+
+Updated all 3 files: (1) phase2_descriptive.py — added apply_fullness_exclusion() call, (2) phase3_queueing.py — changed to filter_inventory_for_service_rate() for μ estimation, (3) phase3_simulation.py — added apply_fullness_exclusion() and filter_inventory_for_service_rate(). Verified all 3 produce corrected results matching phase2_rerun.py and phase3_revised.py outputs.
+
+---
+
+## Prompt #98
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+rerunとかは消す？そもそも、Phase2以降をやり直さないといけないのでは？research_plan.mdに書いてある内容は正しいの？
+
+**English:**
+
+Should we delete the rerun files? Don't we need to redo Phase 2 onwards? Are the values in research_plan.md correct?
+
+**Response / 応答:**
+
+Identified two issues: (1) phase2_rerun.py can be deleted (originals now fixed), phase3_revised.py has Erlang B not in originals, (2) research_plan.md has stale numbers from uncorrected data. Proposed: delete rerun, integrate Erlang B into phase3_simulation.py, re-run everything and update all numbers.
+
+---
+
+## Prompt #99
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+はい
+
+**English:**
+
+Yes (proceed).
+
+**Response / 応答:**
+
+Integrated Erlang B and finite-capacity DES from phase3_revised.py into phase3_simulation.py. Deleted phase2_rerun.py and phase3_revised.py. Re-ran phase2_descriptive.py and phase3_simulation.py with corrected data. Updated all stale numbers in research_plan.md: Phase 2 (CV 1.69→1.75 for Kendall T, Weibull c updated, AIC updated, KS/AD stats updated) and Phase 3 (ρ, Wq, blocking probabilities all updated to fullness-corrected values).
+
+---
+
 ## Prompt #92
 
 **Date / 日付:** 2026-04-13
@@ -1577,4 +1649,22 @@ OK (proceed with execution).
 
 **Response / 応答:**
 
-Executed Steps 3.2a.1–3.2a.6. Created fullness_filter.py, phase2_rerun.py, phase3_revised.py. Key results: (1) Fullness exclusion affects 11% of Kendall T data, minimal impact on MIT Vassar St, (2) Phase 2 stats change slightly (CV 1.69→1.75 for Kendall T), Weibull still best fit, (3) Erlang B predicts 0.07% blocking vs 5.32% observed — 75× gap reveals exponential service time assumption is also violated, (4) DES with empirical arrivals: Poisson underestimates Wq by 6.6× and blocking by 6×, but even empirical DES cannot reproduce observed fullness rate, indicating service process non-stationarity. Updated research_plan.md.
+Executed Steps 3.2a.1–3.2a.6. Created fullness_filter.py, phase2_rerun.py, phase3_revised.py. Then pushed (a39235f). Continued with Steps 3.2a.7 and 3.3.1–3.3.4: created visualize_phase3.py with three figures — Wq comparison bar chart, blocking probability comparison (log-scale), and error summary table. Key results: BB Kendall T Wq underestimated by 92%, MBTA South Wq overestimated by 1,089%. Blocking probability gap (0.07% predicted vs 5.32% observed) highlights service process non-stationarity. Updated research_plan.md.
+
+---
+
+## Prompt #95
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+fitted distributionとかは更新しなくていいの？全ての図表について更新すべきかどうかチェックして。
+
+**English:**
+
+Don't the fitted distribution plots need to be updated? Check whether all figures and tables should be updated or not.
+
+**Response / 応答:**
+
+Audited all 15 figures. Identified 5 that use Bluebikes inter-arrival data without fullness exclusion: bb_interarrival_hist.png (Phase 1), phase2_histograms.png, phase2_cdfs.png, phase2_histograms_log.png, phase2_fitted_distributions.png. Updated visualize_phase2.py with `exclude_fullness=True` option in load_data(). Regenerated all 4 Phase 2 figures with corrected data. Phase 1 figure retained as exploratory snapshot. Results unchanged in conclusion (Weibull best fit, Poisson rejected), with minor numerical updates for Kendall T (N=10,234→9,090).

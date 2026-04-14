@@ -1,6 +1,7 @@
 """
 Phase 3: Discrete-Event Simulation (SimPy)
-Steps 3.2.1–3.2.5: Build and run DES with empirical and best-fit arrival distributions
+Steps 3.2.1–3.2.5, 3.2a: DES with empirical and best-fit arrival distributions,
+including M/M/c/c (Erlang B) finite-capacity model for Bluebikes.
 """
 
 import simpy
@@ -189,6 +190,120 @@ def print_results(label, results, analytical=None):
     print(f"    Customers served: {results['n_served']:,}")
 
 
+def erlang_b(c, a):
+    """
+    Compute Erlang B blocking probability for M/M/c/c (loss system).
+    a = offered load = λ/μ (total, not per server)
+    c = number of servers
+    """
+    b = 1.0  # B(0, a) = 1
+    for i in range(1, c + 1):
+        b = (a * b) / (i + a * b)
+    return b
+
+
+def run_finite_simulation(n_servers, mean_service_time, arrival_gen, n_arrivals,
+                          warmup_arrivals=500, rng=None):
+    """
+    Run M/M/c/c simulation: finite capacity, no queue, arrivals rejected when full.
+    """
+    if rng is None:
+        rng = np.random.default_rng(SEED)
+
+    env = simpy.Environment()
+    server = simpy.Resource(env, capacity=n_servers)
+
+    served_times = []
+    n_served_post_warmup = [0]
+    n_rejected_post_warmup = [0]
+
+    def customer(env, server, arrival_id):
+        if server.count < server.capacity:
+            req = server.request()
+            yield req
+            service_time = rng.exponential(mean_service_time)
+            yield env.timeout(service_time)
+            server.release(req)
+            if arrival_id >= warmup_arrivals:
+                served_times.append(service_time)
+                n_served_post_warmup[0] += 1
+        else:
+            if arrival_id >= warmup_arrivals:
+                n_rejected_post_warmup[0] += 1
+
+    def arrival_process(env, server, arrival_gen):
+        for i in range(n_arrivals):
+            iat = next(arrival_gen)
+            yield env.timeout(iat)
+            env.process(customer(env, server, i))
+
+    env.process(arrival_process(env, server, arrival_gen))
+    env.run()
+
+    total_post = n_served_post_warmup[0] + n_rejected_post_warmup[0]
+    blocking_prob = n_rejected_post_warmup[0] / total_post if total_post > 0 else 0
+
+    return {
+        "blocking_prob": blocking_prob,
+        "n_served": n_served_post_warmup[0],
+        "n_rejected": n_rejected_post_warmup[0],
+    }
+
+
+def run_finite_replications(n_servers, mean_service_time, arrival_gen_factory,
+                            n_arrivals, warmup_arrivals, n_reps=10, base_seed=SEED):
+    """Run multiple replications of finite-capacity DES."""
+    results = []
+    for rep in range(n_reps):
+        seed = base_seed + rep
+        rng = np.random.default_rng(seed)
+        gen = arrival_gen_factory(rng)
+        r = run_finite_simulation(n_servers, mean_service_time, gen, n_arrivals,
+                                  warmup_arrivals, rng)
+        results.append(r)
+
+    df = pd.DataFrame(results)
+    bp = df["blocking_prob"].values
+    mean_bp = np.mean(bp)
+    se_bp = np.std(bp, ddof=1) / np.sqrt(len(bp))
+
+    return {
+        "blocking_prob": {"mean": mean_bp, "ci_lo": mean_bp - 1.96*se_bp, "ci_hi": mean_bp + 1.96*se_bp},
+        "n_served": int(df["n_served"].mean()),
+        "n_rejected": int(df["n_rejected"].mean()),
+    }
+
+
+def apply_fullness_exclusion(bb):
+    """Exclude Bluebikes inter-arrival times affected by full-capacity periods."""
+    import sys
+    sys.path.insert(0, "src")
+    from fullness_filter import get_full_capacity_periods
+
+    for sid in BB_STATIONS.keys():
+        full_periods = get_full_capacity_periods(sid)
+        if not full_periods:
+            continue
+        fp_starts = np.array([s.timestamp() for s, _ in full_periods])
+        fp_ends = np.array([e.timestamp() for _, e in full_periods])
+
+        mask = bb["end_station_id"] == sid
+        idx = bb[mask].index
+        arr_times = bb.loc[idx, "arrival_time"].values.astype("datetime64[ns]").astype(np.int64) / 1e9
+
+        exclude = np.zeros(len(idx), dtype=bool)
+        for i in range(1, len(idx)):
+            prev_t = arr_times[i - 1]
+            curr_t = arr_times[i]
+            overlaps = (fp_starts < curr_t) & (fp_ends > prev_t)
+            if overlaps.any():
+                exclude[i] = True
+
+        exclude_idx = idx[exclude]
+        bb.loc[exclude_idx, "interarrival_sec"] = np.nan
+    return bb
+
+
 if __name__ == "__main__":
     # --- Load and prepare data ---
     print("Loading data...")
@@ -196,6 +311,7 @@ if __name__ == "__main__":
     bb["arrival_time"] = pd.to_datetime(bb["arrival_time"])
     bb = assign_operating_date(bb, "arrival_time")
     bb = compute_intraday_interarrival(bb, group_cols=["end_station_id"])
+    bb = apply_fullness_exclusion(bb)
 
     mbta = pd.read_parquet(PROCESSED / "mbta_arrivals.parquet")
     mbta["arrival_time"] = pd.to_datetime(mbta["arrival_time"])
@@ -231,9 +347,12 @@ if __name__ == "__main__":
         mean_iat = iat_data.mean()
         lam = 1 / mean_iat
 
-        # Service rate from Little's Law
-        inv = pd.read_parquet(PROCESSED / f"bb_inventory_{sid}.parquet")
-        avg_inv = inv["inventory"].mean()
+        # Service rate from Little's Law (excluding full-capacity periods)
+        import sys
+        sys.path.insert(0, "src")
+        from fullness_filter import filter_inventory_for_service_rate
+        inv_clean = filter_inventory_for_service_rate(sid)
+        avg_inv = inv_clean["inventory"].mean()
         mean_service = avg_inv / lam  # avg dock occupancy time
         mu = 1 / mean_service
 
@@ -281,6 +400,30 @@ if __name__ == "__main__":
             N_ARRIVALS, WARMUP, N_REPS
         )
         print_results("Weibull arrivals (best-fit)", wb_results)
+
+        # --- M/M/c/c (Erlang B) and finite-capacity DES ---
+        from fullness_filter import get_observed_fullness_rate
+        offered_load = lam / mu
+        pb_erlang = erlang_b(c, offered_load)
+        obs_fullness = get_observed_fullness_rate(sid)
+
+        print(f"\n  --- M/M/c/c (Erlang B) ---")
+        print(f"  Offered load (a = λ/μ): {offered_load:.4f}")
+        print(f"  Predicted blocking prob: {pb_erlang*100:.4f}%")
+        print(f"  Observed fullness rate:  {obs_fullness*100:.4f}%")
+
+        print(f"\n  --- Finite-capacity DES (rejection model) ---")
+        for arr_label, gen_factory in [
+            ("Exponential", lambda rng: exponential_arrivals(rng, mean_iat)),
+            ("Empirical", lambda rng: empirical_arrivals(rng, iat_data)),
+            ("Weibull", lambda rng: weibull_arrivals(rng, wb_c, wb_scale)),
+        ]:
+            fin_results = run_finite_replications(c, mean_service, gen_factory,
+                                                  N_ARRIVALS, WARMUP, N_REPS)
+            bp = fin_results["blocking_prob"]
+            print(f"    {arr_label:<14} Block={bp['mean']*100:.4f}% "
+                  f"[{bp['ci_lo']*100:.4f},{bp['ci_hi']*100:.4f}]  "
+                  f"served={fin_results['n_served']:,}  rejected={fin_results['n_rejected']:,}")
 
         elapsed = timer.time() - t0
         print(f"\n  Elapsed: {elapsed:.1f}s")
