@@ -18,8 +18,12 @@ def assign_operating_date(df, time_col="arrival_time", start_hour=5):
     and start_hour belong to the previous operating day.
     """
     t = df[time_col]
-    # Shift by start_hour so that 5am becomes midnight of the operating date
-    df["operating_date"] = (t - pd.Timedelta(hours=start_hour)).dt.date
+    # Remove timezone for consistent arithmetic if present
+    if hasattr(t.dt, 'tz') and t.dt.tz is not None:
+        t_naive = t.dt.tz_localize(None)
+    else:
+        t_naive = t
+    df["operating_date"] = (t_naive - pd.Timedelta(hours=start_hour)).dt.date
     return df
 
 
@@ -242,3 +246,177 @@ if __name__ == "__main__":
         wd_cv = (wd["cv"] * wd["n"]).sum() / wd["n"].sum() if len(wd) > 0 else np.nan
         we_cv = (we["cv"] * we["n"]).sum() / we["n"].sum() if len(we) > 0 else np.nan
         print(f"  {sys_name:<25} {wd_cv:>12.3f} {we_cv:>12.3f}")
+
+    # =================================================================
+    # Section 2.3: Arrival Count Analysis
+    # =================================================================
+    print(f"\n\n{'='*70}")
+    print("  Section 2.3: Arrival Count Analysis")
+    print(f"{'='*70}")
+
+    def arrival_count_analysis(df, group_col, label_map, time_col="arrival_time"):
+        """
+        Steps 2.3.1–2.3.3: Count arrivals in time windows, compute mean vs variance,
+        and Index of Dispersion.
+        """
+        windows = [15, 30, 60]  # minutes
+        all_rows = []
+
+        for gval in sorted(df[group_col].dropna().unique()):
+            glabel = label_map.get(gval, str(gval))
+            gdf = df[df[group_col] == gval].copy()
+
+            # Make time column timezone-naive for consistent binning
+            t = gdf[time_col]
+            if hasattr(t.dt, 'tz') and t.dt.tz is not None:
+                gdf["_time_naive"] = t.dt.tz_localize(None)
+            else:
+                gdf["_time_naive"] = t
+
+            for w in windows:
+                # Bin arrivals into time windows
+                gdf["time_bin"] = gdf["_time_naive"].dt.floor(f"{w}min")
+
+                # Include zero-count bins within operating date range
+                full_counts = []
+                for od in gdf["operating_date"].unique():
+                    day_data = gdf[gdf["operating_date"] == od]
+                    if len(day_data) == 0:
+                        continue
+                    # Operating hours: 5am to 1am next day
+                    day_start = pd.Timestamp(od) + pd.Timedelta(hours=5)
+                    day_end = pd.Timestamp(od) + pd.Timedelta(hours=25)
+                    full_idx = pd.date_range(day_start, day_end, freq=f"{w}min", inclusive="left")
+                    day_counts = day_data.groupby("time_bin").size().reindex(full_idx, fill_value=0)
+                    full_counts.append(day_counts)
+
+                if len(full_counts) == 0:
+                    continue
+                counts_series = pd.concat(full_counts)
+
+                mean_c = counts_series.mean()
+                var_c = counts_series.var()
+                iod = var_c / mean_c if mean_c > 0 else np.nan  # Index of Dispersion
+
+                all_rows.append({
+                    "system": glabel, "window_min": w,
+                    "n_windows": len(counts_series),
+                    "mean": mean_c, "variance": var_c, "iod": iod,
+                })
+
+        return pd.DataFrame(all_rows)
+
+    # Bluebikes
+    bb_station_map = {"M32004": "BB Kendall T", "M32042": "BB MIT Vassar St"}
+    bb_counts = arrival_count_analysis(bb, "end_station_id", bb_station_map)
+
+    # MBTA
+    mbta_dir_map = {0: "MBTA Southbound", 1: "MBTA Northbound"}
+    mbta_counts = arrival_count_analysis(mbta_clean, "direction", mbta_dir_map)
+
+    count_results = pd.concat([bb_counts, mbta_counts], ignore_index=True)
+
+    # Print results
+    print(f"\n  Step 2.3.1–2.3.3: Arrival Counts by Time Window")
+    print(f"  (IoD = Index of Dispersion = Var/Mean; Poisson → IoD = 1.0)")
+    print(f"\n  {'System':<22} {'Window':>8} {'N bins':>8} {'Mean':>8} {'Var':>10} {'IoD':>8} {'Assessment'}")
+    print(f"  {'-'*22} {'-'*8} {'-'*8} {'-'*8} {'-'*10} {'-'*8} {'-'*20}")
+
+    for _, row in count_results.iterrows():
+        if row["iod"] > 1.1:
+            assessment = "Overdispersed"
+        elif row["iod"] < 0.9:
+            assessment = "Underdispersed"
+        else:
+            assessment = "≈ Poisson"
+        print(f"  {row['system']:<22} {row['window_min']:>5}min {int(row['n_windows']):>8} "
+              f"{row['mean']:>8.2f} {row['variance']:>10.2f} {row['iod']:>8.3f} {assessment}")
+
+    # --- Step 2.3.4: Segment by time-of-day and day-of-week ---
+    print(f"\n\n  Step 2.3.4: IoD by Peak/Off-Peak (60-min window)")
+
+    def iod_by_period(df, group_col, label_map, time_col="arrival_time", window_min=60):
+        """Compute IoD for peak and off-peak periods."""
+        peak_hours = {7, 8, 16, 17, 18}
+        rows = []
+
+        for gval in sorted(df[group_col].dropna().unique()):
+            glabel = label_map.get(gval, str(gval))
+            gdf = df[df[group_col] == gval].copy()
+            t = gdf[time_col]
+            if hasattr(t.dt, 'tz') and t.dt.tz is not None:
+                gdf["_time_naive"] = t.dt.tz_localize(None)
+            else:
+                gdf["_time_naive"] = t
+            gdf["time_bin"] = gdf["_time_naive"].dt.floor(f"{window_min}min")
+            gdf["hour"] = gdf["_time_naive"].dt.hour
+
+            for period_name, hour_mask in [("Peak", True), ("Off-Peak", False)]:
+                if period_name == "Peak":
+                    pdf = gdf[gdf["hour"].isin(peak_hours)]
+                else:
+                    pdf = gdf[~gdf["hour"].isin(peak_hours)]
+
+                if len(pdf) == 0:
+                    continue
+
+                counts = pdf.groupby("time_bin").size()
+                mean_c = counts.mean()
+                var_c = counts.var()
+                iod = var_c / mean_c if mean_c > 0 else np.nan
+
+                rows.append({
+                    "system": glabel, "period": period_name,
+                    "n_windows": len(counts), "mean": mean_c,
+                    "variance": var_c, "iod": iod,
+                })
+
+        return pd.DataFrame(rows)
+
+    bb_period = iod_by_period(bb, "end_station_id", bb_station_map)
+    mbta_period = iod_by_period(mbta_clean, "direction", mbta_dir_map)
+    period_results = pd.concat([bb_period, mbta_period], ignore_index=True)
+
+    print(f"\n  {'System':<22} {'Period':>10} {'Mean':>8} {'Var':>10} {'IoD':>8}")
+    print(f"  {'-'*22} {'-'*10} {'-'*8} {'-'*10} {'-'*8}")
+    for _, row in period_results.iterrows():
+        print(f"  {row['system']:<22} {row['period']:>10} {row['mean']:>8.2f} "
+              f"{row['variance']:>10.2f} {row['iod']:>8.3f}")
+
+    # Weekday vs weekend
+    print(f"\n\n  Step 2.3.4: IoD by Weekday/Weekend (60-min window)")
+
+    def iod_by_daytype(df, group_col, label_map, time_col="arrival_time", window_min=60):
+        rows = []
+        for gval in sorted(df[group_col].dropna().unique()):
+            glabel = label_map.get(gval, str(gval))
+            gdf = df[df[group_col] == gval].copy()
+            t = gdf[time_col]
+            if hasattr(t.dt, 'tz') and t.dt.tz is not None:
+                gdf["_time_naive"] = t.dt.tz_localize(None)
+            else:
+                gdf["_time_naive"] = t
+            gdf["time_bin"] = gdf["_time_naive"].dt.floor(f"{window_min}min")
+            gdf["dow"] = gdf["_time_naive"].dt.dayofweek
+
+            for dtype, mask_fn in [("Weekday", lambda d: d < 5), ("Weekend", lambda d: d >= 5)]:
+                pdf = gdf[mask_fn(gdf["dow"])]
+                if len(pdf) == 0:
+                    continue
+                counts = pdf.groupby("time_bin").size()
+                mean_c = counts.mean()
+                var_c = counts.var()
+                iod = var_c / mean_c if mean_c > 0 else np.nan
+                rows.append({"system": glabel, "daytype": dtype, "mean": mean_c,
+                             "variance": var_c, "iod": iod})
+        return pd.DataFrame(rows)
+
+    bb_daytype = iod_by_daytype(bb, "end_station_id", bb_station_map)
+    mbta_daytype = iod_by_daytype(mbta_clean, "direction", mbta_dir_map)
+    daytype_results = pd.concat([bb_daytype, mbta_daytype], ignore_index=True)
+
+    print(f"\n  {'System':<22} {'Day Type':>10} {'Mean':>8} {'Var':>10} {'IoD':>8}")
+    print(f"  {'-'*22} {'-'*10} {'-'*8} {'-'*10} {'-'*8}")
+    for _, row in daytype_results.iterrows():
+        print(f"  {row['system']:<22} {row['daytype']:>10} {row['mean']:>8.2f} "
+              f"{row['variance']:>10.2f} {row['iod']:>8.3f}")

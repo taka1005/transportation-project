@@ -1182,3 +1182,237 @@ Please proceed.
 **Response / 応答:**
 
 Completed Step 2.1.4: CV analysis segmented by time-of-day (hourly) and day-of-week. Key findings: Kendall T shows strong peak/off-peak CV difference (1.98 vs 1.34), approaching Poisson at midnight (CV=1.01). MIT Vassar St has smaller variation (1.71 vs 1.56), CV>1 at all hours. MBTA consistently CV<1 across all hours. Taka's hypothesis (residential station more Poisson when hourly) not supported — Kendall T approaches Poisson faster in off-peak. Weekends show lower CV for all systems. Updated research_plan.md.
+
+---
+
+## Prompt #73
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+いったんpushして
+
+**English:**
+
+Push for now.
+
+**Response / 応答:**
+
+Committed Phase 2.1 work (prompts.md, research_plan.md, src/phase2_descriptive.py) and pushed to GitHub (585f106).
+
+---
+
+## Prompt #74
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+次のステップに進んで
+
+**English:**
+
+Proceed to the next step.
+
+**Response / 応答:**
+
+Completed Step 2.2.1: Created 3 visualization figures (histograms, CDFs, log-scale histograms) comparing empirical inter-arrival distributions against exponential (Poisson) reference. Bluebikes shows heavy-tailed overdispersion; MBTA shows light-tailed underdispersion. Updated research_plan.md.
+
+---
+
+## Prompt #75
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+バースト到着って何？
+
+**English:**
+
+What does "bursty arrivals" mean?
+
+**Response / 応答:**
+
+Explained: bursty arrivals = arrivals that cluster in time, with periods of concentrated activity alternating with quiet periods. Example: Kendall T has 1,336 arrivals at 8am (avg 5.2min apart) vs 84 at 11pm (avg 48.9min apart). This pattern produces CV > 1. The term "bursty" is common in transportation engineering and network theory.
+
+---
+
+## Prompt #76
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+バースト到着はどういうメカニズムで発生する？
+
+**English:**
+
+What mechanism causes bursty arrivals?
+
+**Response / 応答:**
+
+Explained three mechanisms: (1) commute patterns — synchronized arrivals at Kendall T driven by MBTA transfers, (2) class/event schedules at MIT Vassar St, (3) MBTA arrival correlation creating pulse-like bike returns. These violate Poisson assumptions of independence (correlated arrivals from train) and stationarity (time-varying λ). This connects to the research's core question: quantifying the M/M/1 error when these mechanisms make Poisson inappropriate.
+
+---
+
+## Prompt #77
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+お願いします
+
+**English:**
+
+Please proceed.
+
+**Response / 応答:**
+
+Completed Steps 2.2.2 (exponential fitting) and 2.2.3 (non-Poisson distribution fitting) together. Fitted exponential, log-normal, Weibull, and gamma distributions to all four systems using MLE. Results: Bluebikes best fit by Weibull (c<1, bursty), MBTA best fit by log-normal (schedule + noise). Exponential ranked last for all systems with AIC differences of −2,144 to −17,833. Generated fitted distribution overlay plot. Updated research_plan.md.
+
+---
+
+## Prompt #78
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+お願いします
+
+**English:**
+
+Please proceed (to Step 2.2.4).
+
+**Response / 応答:**
+
+Completed Step 2.2.4: Goodness-of-fit tests (KS, Anderson-Darling, chi-squared). All tests reject exponential (Poisson) for all systems. All parametric distributions formally rejected due to large sample sizes, but relative comparison confirms Weibull (Bluebikes) and Log-normal (MBTA) are far superior to exponential. Updated research_plan.md.
+
+---
+
+## Prompt #79
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+お願いします
+
+**English:**
+
+Please proceed (to Step 2.2.5).
+
+**Response / 応答:**
+
+Completed Step 2.2.5: Documented rationale for using both empirical and parametric distributions in the simulation comparison. Three approaches: (1) exponential as Poisson baseline, (2) empirical DES for assumption-free ground truth, (3) parametric best-fit for generalizable insights. Also documented candidate distribution selection rationale (log-normal for multiplicative noise, Weibull for flexible hazard rate, gamma as exponential generalization). Updated research_plan.md.
+
+---
+
+## Prompt #80
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+お願いします
+
+**English:**
+
+Please proceed (to Section 2.3).
+
+**Response / 応答:**
+
+Completed Steps 2.3.1–2.3.4: Arrival count analysis at 15/30/60-min windows with Index of Dispersion. Fixed timezone issue causing MBTA counts to be zero. Results: Bluebikes IoD=2.2–8.0 (overdispersed, increases with window size due to non-stationarity), MBTA IoD=0.4–0.6 (underdispersed, approaches 1.0 with larger windows). Peak/off-peak and weekday/weekend segmentation confirms opposite dispersion behavior. Updated research_plan.md.
+
+---
+
+## Prompt #81
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+Index of Dispersionとはなんですか
+
+**English:**
+
+What is the Index of Dispersion?
+
+**Response / 応答:**
+
+Explained: IoD = Var(count) / Mean(count). For Poisson, mean = variance so IoD = 1.0. IoD > 1 = overdispersed (more variable than Poisson), IoD < 1 = underdispersed (more regular). Gave concrete examples: BB MIT Vassar St IoD=8.0 means count variability is 8x what Poisson predicts; MBTA South IoD=0.62 means schedule keeps counts consistent. CV measures inter-arrival time variability while IoD measures count variability — complementary perspectives on the same question.
+
+---
+
+## Prompt #82
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+2.3.4はやった？
+
+**English:**
+
+Did you complete 2.3.4?
+
+**Response / 応答:**
+
+Confirmed 2.3.4 was already completed. Showed peak/off-peak and weekday/weekend IoD tables. Already marked complete in research_plan.md.
+
+---
+
+## Prompt #83
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+お願いします。
+
+**English:**
+
+Please proceed (to Section 2.4).
+
+**Response / 応答:**
+
+Completed Steps 2.4.1–2.4.2: Phase 2 interim findings. Both systems reject Poisson but in opposite directions — Bluebikes overdispersed (CV>1, IoD>>1, bursty), MBTA underdispersed (CV<1, IoD<1, schedule-driven). Best-fit: Weibull for Bluebikes, Log-normal for MBTA. Implication for Phase 3: M/M/1 likely underestimates Bluebikes wait times and overestimates MBTA wait times. Updated research_plan.md. Checkpoint: awaiting user review before Phase 3.
+
+---
+
+## Prompt #84
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+1. 今の所ないですが、最後のレビューでもう一度お願いすることがあるかもしれません。
+
+**English:**
+
+1. No questions for now, but I may ask for another review at the final stage.
+
+**Response / 応答:**
+
+Acknowledged — Phase 2 findings provisionally approved, may be revisited at final review. Moved to Phase 3 pre-requisite: Decision D5 (service time definition). Presented options: Bluebikes (A) dock occupancy time vs (B) ride time; MBTA (C) dwell time vs (D) headway. Recommended (A) dock occupancy and (C) dwell time. Awaiting user decision.
+
+---
+
+## Prompt #85
+
+**Date / 日付:** 2026-04-13
+
+**Japanese / 日本語:**
+
+その提案で良いです。
+
+**English:**
+
+That proposal works.
+
+**Response / 応答:**
+
+Decision D5 resolved: Bluebikes = dock occupancy time, MBTA = dwell time. Updated research_plan.md (decision table and Step 3.0.2).

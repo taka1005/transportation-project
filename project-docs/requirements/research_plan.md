@@ -89,24 +89,48 @@ Timeline: 2026-04-08 → 2026-05-08
 
 ### 2.2 Distribution Fitting and Comparison
 
-- [ ] **2.2.1** Plot empirical inter-arrival time distributions (histograms, CDFs) for both systems
-- [ ] **2.2.2** Fit exponential distribution to observed inter-arrival times
-- [ ] **2.2.3** Fit candidate non-Poisson distributions (e.g., log-normal, Weibull, gamma) and select best-fit
+- [x] **2.2.1** Plot empirical inter-arrival time distributions (histograms, CDFs) for both systems
+  - Generated: phase2_histograms.png, phase2_cdfs.png, phase2_histograms_log.png
+  - Bluebikes: heavy-tailed, overdispersed vs exponential; MBTA: light-tailed, underdispersed vs exponential
+- [x] **2.2.2** Fit exponential distribution to observed inter-arrival times
+  - Exponential is the worst fit (highest AIC) for all four systems
+- [x] **2.2.3** Fit candidate non-Poisson distributions (e.g., log-normal, Weibull, gamma) and select best-fit
   - Document rationale for candidate distribution selection and cite relevant literature
-- [ ] **2.2.4** Perform goodness-of-fit tests (Kolmogorov-Smirnov, Anderson-Darling, chi-squared) to formally test the exponential (Poisson) hypothesis
-- [ ] **2.2.5** Explain in the report why both empirical and parametric non-Poisson distributions are used (empirical captures real-world behavior without assumptions; parametric alternatives test whether a known family fits better than exponential)
+  - Bluebikes: Weibull best (c=0.71–0.73, shape < 1 indicates decreasing hazard rate / bursty arrivals)
+  - MBTA: Log-normal best (schedule + multiplicative noise)
+  - AIC improvement over exponential: −2,144 to −17,833 across systems
+  - Generated: phase2_fitted_distributions.png
+- [x] **2.2.4** Perform goodness-of-fit tests (Kolmogorov-Smirnov, Anderson-Darling, chi-squared) to formally test the exponential (Poisson) hypothesis
+  - All three tests reject exponential (Poisson) for all systems (p ≈ 0)
+  - All parametric distributions formally rejected due to large sample sizes (N=10k–20k)
+  - Relative comparison: Weibull (Bluebikes) and Log-normal (MBTA) have much smaller KS statistics than exponential
+  - Anderson-Darling: exponential statistic 470–2,734 vs critical value ≈ 2 (extreme rejection)
+- [x] **2.2.5** Explain in the report why both empirical and parametric non-Poisson distributions are used
+  - Empirical DES: assumption-free, closest to reality, but dataset-specific and hard to generalize
+  - Parametric best-fit DES: compact representation, interpretable parameters, generalizable to other contexts
+  - Both compared against M/M/1 (exponential) baseline to quantify the "cost of the Poisson assumption"
+  - Candidate distributions chosen for theoretical grounding: log-normal (multiplicative noise, common in travel times), Weibull (flexible hazard rate), gamma (natural generalization of exponential)
 
 ### 2.3 Arrival Count Analysis
 
-- [ ] **2.3.1** Count arrivals in multiple time windows (15-min, 30-min, 1-hour) to examine scale dependence
-- [ ] **2.3.2** Compare mean vs. variance of arrival counts per window (equal mean and variance is a hallmark of a Poisson distribution)
-- [ ] **2.3.3** Compute the Index of Dispersion (variance/mean ratio) across time windows
-- [ ] **2.3.4** Segment analysis by time-of-day and day-of-week to check for non-stationarity
+- [x] **2.3.1** Count arrivals in multiple time windows (15-min, 30-min, 1-hour) to examine scale dependence
+- [x] **2.3.2** Compare mean vs. variance of arrival counts per window (equal mean and variance is a hallmark of a Poisson distribution)
+- [x] **2.3.3** Compute the Index of Dispersion (variance/mean ratio) across time windows
+  - Bluebikes IoD=2.2–8.0 (overdispersed), increases with window size (non-stationarity effect)
+  - MBTA IoD=0.4–0.6 (underdispersed), approaches 1.0 with larger windows
+- [x] **2.3.4** Segment analysis by time-of-day and day-of-week to check for non-stationarity
+  - Bluebikes: peak IoD > off-peak IoD; MBTA: peak IoD < off-peak IoD (opposite behavior)
+  - MBTA weekends very regular (IoD≈0.31)
 
 ### 2.4 Interim Findings
 
-- [ ] **2.4.1** Summarize whether each system's arrivals appear Poisson, and characterize deviations
-- [ ] **2.4.2** Identify the best-fit alternative distribution for each system
+- [x] **2.4.1** Summarize whether each system's arrivals appear Poisson, and characterize deviations
+  - Bluebikes: NOT Poisson — overdispersed (CV>1, IoD>>1), bursty arrivals driven by time-of-day non-stationarity
+  - MBTA: NOT Poisson — underdispersed (CV<1, IoD<1), schedule-driven regularity
+  - Deviations are in opposite directions: Bluebikes too variable, MBTA too regular
+- [x] **2.4.2** Identify the best-fit alternative distribution for each system
+  - Bluebikes: Weibull (c=0.71–0.73), AIC improvement −2,144 to −5,055 over exponential
+  - MBTA: Log-normal (s=0.49–0.57), AIC improvement −12,878 to −17,833 over exponential
   - > **Checkpoint:** Review interim findings with user before proceeding to queueing analysis.
 
 ---
@@ -119,9 +143,9 @@ Timeline: 2026-04-08 → 2026-05-08
   - Document why M/M/1 was selected (simplest memoryless queueing model; serves as a baseline to measure the cost of the Poisson assumption)
   - Briefly compare with alternatives (M/G/1, G/G/1) and cite relevant literature
 - [ ] **3.0.2** Define service time assumptions for each system
-  - Bluebikes: dwell time direction (TBD — to be finalized based on Phase 1–2 findings)
-  - MBTA: to be defined
-  - > **Decision needed (deferred):** Service time definitions will be finalized after descriptive analysis. Will revisit before simulation.
+  - Bluebikes: dock occupancy time (time a bike occupies a dock slot from arrival until next departure)
+  - MBTA: dwell time (time a train is stopped at the platform)
+  - > **Decision D5 resolved:** Bluebikes = dock occupancy, MBTA = dwell time
 - [ ] **3.0.3** Document model assumptions and parameters
 
 ### 3.1 M/M/1 Analytical Baseline
@@ -200,7 +224,7 @@ Timeline: 2026-04-08 → 2026-05-08
 | D2 | MBTA line selection | **Resolved** | Red Line |
 | D3 | Bluebikes station selection | **Resolved** | 2 stations: Kendall/MIT area + MIT Vassar St (Westgate) |
 | D4 | Outlier / operating hours handling | **Resolved** | Operating hours only; flag and exclude disruptions |
-| D5 | Service time definition for M/M/1 | **Deferred** | Bluebikes: dwell time direction. Finalize after data exploration |
+| D5 | Service time definition for M/M/1 | **Resolved** | Bluebikes: dock occupancy time (arrival → next departure of that dock slot). MBTA: dwell time (station stop duration) |
 | D6 | Time window granularity | **Resolved** | Inter-arrival time analysis (continuous, no window) as primary; arrival count analysis at 15/30/60-min windows as supplementary |
 | D7 | Simulation framework | **Resolved** | SimPy (Python) |
 | D8 | Presentation format | **Resolved** | Slide presentation (15 min + Q&A) |
