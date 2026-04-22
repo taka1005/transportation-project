@@ -1,0 +1,143 @@
+% Main report body. Target: <= 5 pages excluding references.
+% Trimmed draft after user feedback on abstract length.
+
+\begin{abstract}
+\noindent We test how two Boston mobility systems depart from Poisson arrival assumptions and quantify the resulting error in queueing predictions. Using four months of data from Bluebikes at Kendall/MIT and MIT Vassar~St (user-driven, finite-capacity) and the MBTA Red Line at Kendall/MIT (schedule-driven), we reject exponential inter-arrival times for every system ($p \approx 0$ under Kolmogorov--Smirnov, Anderson--Darling, and $\chi^2$) but in opposite directions: Bluebikes is overdispersed ($\mathrm{CV} = 1.75$--$1.90$, best fit Weibull) and MBTA is underdispersed ($\mathrm{CV} = 0.63$--$0.71$, best fit log-normal). Analytical Poisson queueing underestimates Bluebikes wait by seven-fold and Erlang~B blocking at Kendall/MIT by 75-fold, while overestimating MBTA wait by 5--12$\times$. The 75$\times$ blocking gap persists even when the simulation uses empirical arrivals, isolating service-process non-stationarity as a separate error source that arrival-process correction alone cannot address.
+\end{abstract}
+
+% ===== 1. Introduction =====
+\section{Introduction}\label{sec:intro}
+
+Queueing theory in transportation is built on the Poisson arrival assumption. Closed-form results for the M/M/$c$ and M/M/$c/c$ models \cite{kleinrock1975,erlang1917} give planners tractable estimates of wait time and blocking probability, and these feed decisions about platform sizing, dock counts, and service frequency. Real urban mobility arrivals are shaped by timetables, time-of-day demand, and disruptions, so the assumption is approximate. The practical question is not whether arrivals are Poisson --- they almost never are --- but how much queueing predictions suffer when the assumption fails, and in which direction the decisions err.
+
+We study two Boston systems whose arrival processes are structurally opposite. Bluebikes is a user-driven bike-share with finite-capacity docks; the MBTA Red Line at Kendall/MIT runs a published timetable on an effectively uncapacitated platform. We ask: (1)~how far do the observed arrivals deviate from Poisson; (2)~how accurately do Poisson-based models predict wait and blocking; and (3)~under what conditions is Poisson a defensible engineering approximation?
+
+Our contributions are: quantitative Poisson-deviation measurements for both systems; a side-by-side comparison of analytical Poisson queueing against discrete-event simulation driven by the empirical and best-fit arrival distributions; identification of a 75$\times$ Erlang~B blocking gap at Kendall/MIT that arrival-process correction alone cannot close, isolating service-process non-stationarity as a distinct error source; and a decision-threshold framework that evaluates Poisson's error by \emph{direction} and by \emph{magnitude relative to the decision} it feeds, and argues that ``conservative'' is not automatically ``safe'' when over-provisioning is capital-intensive.
+
+% ===== 2. Data =====
+\section{Data}\label{sec:data}
+
+\paragraph{Bluebikes.} Public trip data, September--December 2025, at M32004 Kendall/MIT (23 docks, transit hub) and M32042 MIT Vassar~St (53 docks, campus). An arrival is a trip-end timestamp. After operating-hours restriction, disruption-day exclusion, and fullness exclusion (below), $N = 9{,}090$ (Kendall/MIT) and $19{,}275$ (MIT Vassar).
+
+\paragraph{MBTA Red Line.} LAMP performance data \cite{mbta_lamp} for Kendall/MIT (\texttt{place-knncl}) in the same window, Northbound ($N = 20{,}366$) and Southbound ($N = 20{,}880$). An arrival is a train-at-platform event. Overnight gaps are excluded.
+
+\paragraph{Fullness exclusion.} Observed Bluebikes arrivals are censored when a station is at capacity. We reconstruct station inventory by look-ahead correction and flag intervals at maximum capacity; IATs spanning any flagged interval are excluded from $\lambda$, $\mu$, and distribution fitting. Kendall/MIT is full 5.32\% of operating time and MIT Vassar~St 0.42\%; we use these as the validation target for Erlang~B blocking (\S\ref{sec:results-erlangb}). Algorithm in Appendix~\ref{app:fullness}.
+
+\paragraph{Reproducibility.} Code, derived data, and figures at \url{https://github.com/taka1005/transportation-project} (MIT license).
+
+% ===== 3. Methods =====
+\section{Methods}\label{sec:methods}
+
+\paragraph{Arrival-process characterization.} For each system we compute the mean, standard deviation, coefficient of variation ($\mathrm{CV} = \sigma/\mu$), and skewness of the inter-arrival time, and the index of dispersion ($\mathrm{IoD} = \mathrm{Var}[N]/\mathbb{E}[N]$) of arrival counts in 15-, 30-, and 60-minute windows. $\mathrm{CV} = \mathrm{IoD} = 1$ are the Poisson values. We fit exponential, log-normal, Weibull, and gamma by maximum likelihood and rank them by AIC. Fits are tested with Kolmogorov--Smirnov (KS), Anderson--Darling (AD), and Pearson $\chi^2$ statistics.
+
+\paragraph{Queueing models.} Bluebikes: M/M/$c$ (infinite queue) with $c$ the dock count,
+\begin{equation}
+W_q = \frac{C(c, a)}{c\mu - \lambda}, \quad a = \lambda/\mu,\ \rho = a/c,
+\label{eq:mmc}
+\end{equation}
+where $C(c,a)$ is the Erlang~C probability of queueing, and M/M/$c/c$ giving the Erlang~B blocking $B(c,a) = a\,B(c-1,a) / (c + a\,B(c-1,a))$ with $B(0,a) = 1$. MBTA: M/M/1 with service = dwell time. Bluebikes $\mu$ is estimated via Little's Law \cite{little1961} from the average non-full dock occupancy. Derivations in Appendix~\ref{app:derivations}.
+
+\paragraph{Discrete-event simulation.} We implement each system in SimPy \cite{simpy} with three arrival generators: Poisson ($\mathrm{Exp}(1/\lambda)$), empirical i.i.d.\ bootstrap from the observed IATs, and best-fit sampling from the MLE Weibull (Bluebikes) or log-normal (MBTA). Each configuration uses 20,000 arrivals with a 2,000-arrival warmup and 10 replications (95\% CI via Student's~$t$).
+
+% ===== 4. Results =====
+\section{Results}\label{sec:results}
+
+\subsection{Arrivals reject Poisson in opposite directions}\label{sec:results-arrival}
+
+Every system rejects exponential inter-arrivals at $p \approx 0$ under KS, AD, and $\chi^2$ (Appendix~\ref{app:gof}). Table~\ref{tab:summary} summarises the direction: Bluebikes is overdispersed ($\mathrm{CV}$ 1.75--1.90, IoD 2--8); MBTA is underdispersed ($\mathrm{CV}$ 0.63--0.71, IoD 0.4--0.6). The best parametric fit is Weibull for Bluebikes (shape $c \approx 0.72$, monotone-decreasing hazard) and log-normal for MBTA (shape $s \approx 0.5$), with AIC improvements of $2{,}167$ to $17{,}833$ over exponential. MBTA in fact departs from exponential \emph{farther} in KS distance (0.27--0.29) than Bluebikes (0.13--0.14): regularity is as extreme a Poisson violation as burstiness.
+
+\begin{table}[h]
+\centering
+\caption{Inter-arrival-time summary statistics. $\mathrm{CV} < 1$: underdispersion; $\mathrm{CV} > 1$: overdispersion.}
+\label{tab:summary}
+\footnotesize
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+System & $N$ & Mean IAT (s) & $\mathrm{CV}$ & Skew & IoD\,(30\,min) \\
+\midrule
+BB Kendall/MIT   & 9{,}090  & 672 & 1.75 & 6.8 & 3.2 \\
+BB MIT Vassar    & 19{,}275 & 378 & 1.90 & 7.7 & 4.7 \\
+MBTA Northbound  & 20{,}366 & 390 & 0.71 & 3.3 & 0.58 \\
+MBTA Southbound  & 20{,}880 & 378 & 0.63 & 4.5 & 0.52 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+% \includegraphics[width=\linewidth]{fig1_arrival.pdf}
+\framebox[\linewidth]{\rule{0pt}{3.5em}\textit{[Fig.~1: (a) CDFs with fitted overlays; (b) CV by hour-of-day]}}
+\caption{(a) Empirical CDFs of IAT with fitted exponential, Weibull, and log-normal overlays for BB Kendall/MIT and MBTA Northbound. (b) CV by hour-of-day with a reference line at $\mathrm{CV} = 1$ (Poisson). Bluebikes approaches $\mathrm{CV} \approx 1$ only near midnight; MBTA stays below~1 throughout service.}
+\label{fig:arrival}
+\end{figure}
+
+Within-day segmentation (Fig.~\ref{fig:arrival}b; Appendix~\ref{app:hour}) attributes the Bluebikes CV to non-stationarity: Kendall/MIT falls to $\mathrm{CV} \approx 1.0$ at midnight and peaks near 2.0; MBTA stays below~1 at every hour. A single-window Poisson hypothesis is thus rejected \emph{more} strongly at peak hours, not less.
+
+\subsection{Queueing predictions diverge in magnitude and direction}\label{sec:results-queueing}
+
+Table~\ref{tab:queueing} compares analytical Poisson predictions to DES under the three arrival generators. Poisson-DES matches analytical values to within 2\% (simulation cross-check). The empirical-DES column is the observational benchmark.
+
+\begin{table}[h]
+\centering
+\caption{Average queueing delay $W_q$ (seconds). 95\% CIs on DES values are within $\pm$10\% of the point estimate.}
+\label{tab:queueing}
+\footnotesize
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+System & Analytical & Poisson DES & Empirical DES & Best-fit DES \\
+\midrule
+BB Kendall/MIT   & 1.6  & 1.6  & 10.8 & 10.5 \\
+BB MIT Vassar    & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ \\
+MBTA Northbound  & 20.5 & 20.5 & 4.2  & 4.6 \\
+MBTA Southbound  & 10.9 & 10.9 & 0.9  & 1.1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+% \includegraphics[width=\linewidth]{fig2_wq.pdf}
+\framebox[\linewidth]{\rule{0pt}{3.5em}\textit{[Fig.~2: $W_q$ grouped bar chart, log $y$-axis]}}
+\caption{$W_q$ across systems (log $y$-axis). Bluebikes Kendall/MIT is the only case where Poisson underpredicts; all three MBTA columns overpredict. Best-fit-DES tracks empirical-DES to within a second.}
+\label{fig:wq}
+\end{figure}
+
+At Kendall/MIT Poisson M/M/$c$ predicts $W_q = 1.6$~s against empirical $10.8$~s --- a seven-fold underestimate. For MBTA the sign flips: 20.5~s vs 4.2~s Northbound (5$\times$ over), 10.9~s vs 0.9~s Southbound (12$\times$ over). Best-fit-DES tracks empirical-DES to within a second everywhere, so a Weibull or log-normal fit retains enough of the arrival-process information to reproduce the queueing outcome. MIT Vassar~St is a null case: 53 docks drive $W_q \approx 0$ under every model, and the arrival distribution is irrelevant.
+
+\subsection{The Erlang B blocking gap isolates service non-stationarity}\label{sec:results-erlangb}
+
+At Kendall/MIT the Erlang~B prediction for blocking is $0.07\%$ against an observed full-capacity rate of $5.32\%$: a $75\times$ gap. Finite-capacity DES with \emph{empirical} IATs gives $0.60\%$, closing only about a tenth of the gap. Arrival correction alone therefore cannot explain the observed blocking; the residual is attributable to service-process non-stationarity (dock occupancy durations swell during rush-hour departures and collapse midday). A time-varying $\mu$ interacting with a time-varying $\lambda$ cannot be captured by an M/M/$c/c$ model or by empirical-arrivals-with-exponential-service DES. The MBTA has no analogue at $\rho = 0.15$--$0.20$.
+
+% ===== 5. Discussion =====
+\section{Discussion}\label{sec:discussion}
+
+Poisson's error has two orthogonal axes: \emph{direction} (over- vs.\ under-estimation) and \emph{magnitude relative to the decision threshold} the prediction feeds. ``Conservative'' is not synonymous with ``safe'' in transportation, because user-side and operator-side costs are not symmetric.
+
+\paragraph{User-side risk: under-provisioning.} Bluebikes Kendall/MIT: Poisson underestimates $W_q$ by seven-fold and blocking by 75-fold. A planner sizing docks or rebalancing cadence to Poisson targets would miss service failures by an order of magnitude; users find full stations and abandon trips. Bursty, overdispersed arrivals (CV 1.75--1.90) are exactly where the tail events that drive blocking are averaged away.
+
+\paragraph{Operator-side risk: over-provisioning.} MBTA at $\rho = 0.15$--$0.20$: Poisson overestimates $W_q$ by 5--12$\times$. A 20-second Poisson estimate used to motivate a frequency increase, a fleet addition, or a platform extension commits capital the real demand does not require. Transportation over-provisioning is measured in billions of dollars and is not reversible.
+
+\paragraph{Harmless regime.} The predicted and observed values must both lie below the decision threshold. Bluebikes MIT Vassar~St (53 docks push $W_q$ to zero) and MBTA train-side wait at $\rho \approx 0.2$ (20~s and 4~s are both negligible for decisions framed in minutes) are the examples. Harmlessness is a property of the decision, not the model.
+
+\paragraph{Error direction is predictable from structure.} User-driven, unscheduled systems produce overdispersed arrivals and are under-predicted by Poisson; timetabled systems produce underdispersed arrivals and are over-predicted. Evaluate direction first, then magnitude against the specific decision.
+
+% ===== 6. Limitations =====
+\section{Limitations}\label{sec:limitations}
+
+\paragraph{Arrival censoring at full Bluebikes docks.} Observed arrivals at a full station are zero by construction, so our $\lambda$ estimate is a lower bound. Mellou and Jaillet~\cite{mellou2019} give a canonical recovery method; we do not apply it because substituting estimated arrivals would confound a real Poisson deviation with an estimator residual.
+
+\paragraph{DES destroys inter-arrival autocorrelation.} Empirical-DES samples IATs i.i.d., preserving the marginal distribution but not the sequential structure imposed by the timetable. This is why MBTA Southbound empirical-DES reports $W_q = 0.9$~s rather than essentially zero.
+
+\paragraph{Scope.} Two Bluebikes stations, one MBTA station, four months. The structural argument should generalise; specific magnitudes should not.
+
+\paragraph{Service-process non-stationarity unmodelled.} The residual $75\times$ blocking gap is attributable to time-varying service that we diagnose but do not fit.
+
+% ===== 7. Future Work =====
+\section{Future Work}\label{sec:future}
+
+Re-running \S\ref{sec:results-arrival} and \S\ref{sec:results-erlangb} on Bluebikes arrivals reconstructed with the Mellou--Jaillet estimator~\cite{mellou2019} would separate censoring-induced from real non-Poissonness and quantify how much of the $75\times$ blocking gap is attributable to arrivals vs.\ service. An autocorrelation-preserving arrival generator (time-series bootstrap or Markov-modulated Poisson) should drive MBTA empirical-DES $W_q$ toward zero. Fitting an hour-of-day-indexed service distribution for Bluebikes and recomputing Erlang~B with time-varying $\mu$ would directly address the service non-stationarity finding.
+
+% ===== 8. Conclusion =====
+\section{Conclusion}\label{sec:conclusion}
+
+Poisson is good enough only when its error stays below the decision threshold that matters to the planner. For the schedule-driven MBTA Red Line it overestimates wait by 5--12$\times$ and would justify unnecessary infrastructure; for user-driven, finite-capacity Bluebikes it underestimates wait by seven-fold and blocking by 75-fold, hiding service failures. The $75\times$ blocking gap persists under empirical arrivals, isolating service-process non-stationarity as an error source that arrival-process correction alone cannot repair. Evaluating Poisson by the \emph{direction} of its error and by its \emph{size relative to the decision it feeds} is a more disciplined test than asking whether the arrivals are Poisson at all.

@@ -45,9 +45,12 @@ Timeline: 2026-04-08 → 2026-05-08
   - Flag time periods where station is likely at full capacity (arrivals are censored)
   - Exclusion of full-capacity periods will be applied in Phase 2 analysis
   - Document censoring as a known limitation in the report
-- [ ] **1.3.6** *(Alex)* Literature review on dock fullness adjustment methods for bike-share systems
-  - If methods exist and are feasible within the project timeframe: implement
-  - Otherwise: document as a limitation and include in Future Work section of the report
+- [x] **1.3.6** *(Alex)* Literature review on dock fullness adjustment methods for bike-share systems
+  - Reviewed Mellou & Jaillet (2019), "Dynamic Resource Redistribution and Demand Estimation: An Application to Bike Sharing Systems" (MIT working paper)
+  - Method: AVG + TREND convex combination estimator (eq. 4, §3.2.3) for lost demand; shift model with distance-based reallocation (§3.3)
+  - Validated on Capital Bikeshare DC data (May–Sep 2017); optimal λ*=75.56% via hold-out MSE minimization
+  - **Decision:** Do NOT implement. Document as Limitations + cite in Future Work.
+  - Rationale: (1) scope mismatch — paper targets rebalancing, we target arrival-process characterization; (2) injecting estimated "true" arrivals would confound whether Poisson deviation is a real property or estimator artifact; (3) current full-capacity exclusion barely moves results (CV/best-fit robust); (4) implementation cost exceeds remaining timeline budget
 
 ### 1.4 Exploratory Data Visualization
 
@@ -260,10 +263,35 @@ Timeline: 2026-04-08 → 2026-05-08
 
 ### 4.2 Final Report
 
-- [ ] **4.2.1** Draft report structure (problem statement, formulation, hypotheses, methods, results, conclusions)
-  - > **Note for Limitations section:** Bluebikes arrival data is censored when docks are full — observed arrivals underestimate true demand. Methods for estimating unconstrained (latent) demand exist in the literature (e.g., censored regression, EM-based approaches) but are beyond this study's scope. The report should acknowledge this limitation and cite relevant work on latent demand estimation for bike-share systems.
-- [ ] **4.2.2** Write main report (max 5 pages excluding references)
-- [ ] **4.2.3** Prepare appendix with supplementary figures, tables, simulation details (max 10 pages)
+- [x] **4.2.1** Draft report structure (problem statement, formulation, hypotheses, methods, results, conclusions)
+  - Outline at `project-docs/report/outline.md`; structure approved 2026-04-21
+  - > **Note for Limitations section:** Bluebikes arrival data is censored when docks are full — observed arrivals underestimate true demand. Mellou & Jaillet (2019) provide a canonical AVG+TREND estimator for lost incoming demand at full stations; Kendall T's 5.32% full-capacity rate is the primary candidate for such correction in our data. Beyond this study's scope (see §1.3.6 decision); acknowledged in Limitations and deferred to Future Work.
+  - > **Note for Future Work section:** Re-run Poisson/M/M/c/c tests on arrivals reconstructed via Mellou & Jaillet's AVG+TREND estimator. The 75× Erlang B blocking-probability gap (predicted 0.07% vs observed 5.32%) at Kendall T is a natural candidate: does censoring correction close the gap, or does it confirm the gap is driven by service-process non-stationarity?
+- [x] **4.2.2** Write main report (max 5 pages excluding references)
+  - First prose draft complete; trimmed to 5 pages exactly on 2026-04-22
+  - Source: `project-docs/report/report.tex` + `main.tex`; compiled `report.pdf` at 13 pages total (main 5 + references 1 + appendix 7)
+  - LaTeX setup: `\documentclass[11pt]{article}`, 1-inch margins, 1.15 line spacing, natbib numeric citations, IEEEtran bibliography, titlesec-tightened section spacing
+- [x] **4.2.3** Prepare appendix with supplementary figures, tables, simulation details (max 10 pages)
+  - Source: `project-docs/report/appendix.tex`
+  - A. Methodology details (fullness algorithm with exclusion counts, Little's Law μ estimate, SimPy resource model, arrival generators)
+  - B. Four data tables with real numbers: B.1 goodness-of-fit (KS/AD/χ²/AIC for 4 distributions × 4 systems), B.2 CV by hour-of-day, B.3 CV by day-of-week + IoD peak/off-peak, B.4 queueing outcomes with 95% CI and blocking
+  - C. Seven supplementary figures (existing PNGs copied into `report/figures/`)
+  - D. Derivations (M/M/c Wq via Erlang C, Erlang B recursion, Little's Law μ for Bluebikes)
+- [ ] **4.2.2a** Resolve open review points from first-draft checkpoint (2026-04-22)
+  - **A. Fact-checks (high priority)**
+    - A1. Verify Appendix B.1 KS/AD/χ²/AIC values (transcribed from `visualize_phase2.py` output) — sample 1–2 cells
+    - A2. Verify §4.3 narrative on service-process non-stationarity: does dock occupancy actually swell during rush-hour *departures* and collapse midday? Or is the direction reversed?
+    - A3. Verify A.2 service-time estimates (Kendall/MIT 7,549 s ≈ 2.1 h, MIT Vassar 6,699 s ≈ 1.86 h) are plausible for dock occupancy
+  - **B. Argument**
+    - B1. §5.4 "Error direction is predictable from structure" — is the generalisation an overreach given N=2 systems?
+    - B2. §6 Mellou–Jaillet paragraph — one-sentence citation only; too compressed, or appropriately scoped?
+  - **C. Structure / readability**
+    - C1. `\paragraph` layout in §3 Methods, §5 Discussion, §6 Limitations — readable enough, or revert to subsections?
+    - C2. §4.1 → §4.2 → §4.3 flow — does the key finding land?
+    - C3. Appendix C figure placement — default [h], may scatter; consider grouping on single pages
+  - **D. Outstanding content**
+    - D1. Main-text Fig 1 and Fig 2 are still placeholder frameboxes; real figures to be generated in Task #4
+    - D2. References currently 8 entries — add O'Mahony 2015 and other supporting citations as needed in Task #7
 - [ ] **4.2.4** Add references
   - > **Checkpoint:** Review draft report with user before finalization.
 - [ ] **4.2.5** Finalize report for submission by 5/8 11:59pm ET
@@ -307,3 +335,4 @@ Timeline: 2026-04-08 → 2026-05-08
 | D9 | MBTA Red Line station | **Resolved** | Kendall/MIT |
 | D10 | Bluebikes queueing model | **Resolved** | M/M/c (infinite queue, theoretical) + M/M/c/c (Erlang B, loss/rejection model). M/M/1 unstable for BB |
 | D11 | Bluebikes fullness data handling | **Resolved** | Exclude from λ/μ estimation and distribution fitting; use observed fullness rate to validate Erlang B blocking probability |
+| D12 | Dock fullness correction method (BB) | **Resolved** | Mellou & Jaillet (2019) identified as canonical method. Not implemented (scope/timeline/confounding); documented in Limitations and Future Work |

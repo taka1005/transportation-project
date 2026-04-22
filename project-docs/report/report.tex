@@ -1,0 +1,57 @@
+\documentclass[11pt]{article}
+
+% ===== Geometry and typography =====
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage{setspace}
+\setstretch{1.15}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ===== Math =====
+\usepackage{amsmath,amssymb,amsthm}
+
+% ===== Figures and tables =====
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\usepackage{subcaption}
+
+% ===== Tighter section spacing =====
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{1.6ex plus 0.4ex minus 0.2ex}{0.8ex plus 0.2ex}
+\titlespacing*{\paragraph}{0pt}{0.8ex}{0.8em}
+
+% ===== References (numeric, IEEE-like) =====
+\usepackage[numbers,sort&compress]{natbib}
+
+% ===== Links =====
+\usepackage[hidelinks]{hyperref}
+
+% ===== Title =====
+\title{\vspace{-2em}\textbf{Is Poisson Good Enough?}\\
+\large Evaluating Queueing Models for Urban Mobility Systems}
+\author{Alexander Lim Yu Sheng, Takayuki Tahara\\
+\small MIT 1.200, Spring 2026}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-2em}
+
+% ===== Main body =====
+\input{main}
+
+% ===== References =====
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+% ===== Appendix =====
+\clearpage
+\appendix
+\input{appendix}
+
+\end{document}
