@@ -245,16 +245,16 @@ Timeline: 2026-04-08 → 2026-05-08
 
 **Modification steps:**
 
-- [ ] **3.2b.1** Rewrite `reconstruct_inventory()` in `data_pipeline.py` so `at_full` is set only on natural $C_s-1 \to C_s$ transitions; `at_capacity = at_full` (drop the `| (inventory >= capacity)` clause).
-- [ ] **3.2b.2** Rewrite `get_full_capacity_periods()` in `fullness_filter.py` to generate candidate intervals and retract any interrupted by an intervening trip-end.
-- [ ] **3.2b.3** Regenerate `data/processed/bb_inventory_*.parquet`; record new observed fullness rate for each station.
-- [ ] **3.2b.4** Re-run `phase2_descriptive.py`; record updated $N$, CV, skewness, GoF, AIC for both BB stations.
-- [ ] **3.2b.5** Re-run `phase3_queueing.py` and `phase3_simulation.py`; record updated $\lambda$, $\mu$, M/M/c $W_q$, Erlang B predicted blocking, and DES outputs with 95% CI.
-- [ ] **3.2b.6** Regenerate all Phase 2/3 visualizations; copy new PNGs into `project-docs/report/figures/`.
-- [ ] **3.2b.7** Rewrite Appendix A.1 to reflect the revised algorithm (remove Mellou citation from A.1 — keep it only in §6/§7; drop the "< 1 minute merge" sentence that was inconsistent with the implementation; state the initial condition $\lfloor C_s/2 \rfloor$ honestly; describe clamp as bookkeeping and full flag as a state-transition with retract semantics).
-- [ ] **3.2b.8** Update numerical values throughout main.tex (§2 fullness rates, §4.2 queueing table, §4.3 Erlang B gap, Table 1 $N$) to match the re-run outputs.
-- [ ] **3.2b.9** Add a new paragraph "Inventory reconstruction uncertainty" to §6 Limitations, reframing the observed fullness rate as a conservative lower bound and the Erlang B gap as "at least this large."
-- [ ] **3.2b.10** Recompile LaTeX and verify main body stays within 5 pages; adjust prose if §6 addition causes overflow.
+- [x] **3.2b.1** Rewrote `reconstruct_inventory()` in `data_pipeline.py`: `at_full` fires only on natural $C_s-1 \to C_s$ trip-end increments (and `at_empty` symmetric); clamp remains as bookkeeping for unlogged rebalancing but does not set the flag. Dropped the `| (inventory >= capacity)` clause on `at_capacity`.
+- [x] **3.2b.2** Rewrote `get_full_capacity_periods()` in `fullness_filter.py`: each natural entry is a candidate, committed only if the next station event is a trip-start with no intervening trip-end. Added helper `mark_in_full_periods()`; updated `get_observed_fullness_rate()` to a time-weighted fraction and `filter_inventory_for_service_rate()` to mask events inside committed spans.
+- [x] **3.2b.3** Regenerated `data/processed/bb_inventory_*.parquet`. Observed fullness (time-weighted): Kendall/MIT **3.73%** (was 5.32%), MIT Vassar St **2.88%** (was 0.42%; the Vassar jump reflects the move from event-count to time-weighted, not a worsening of the station).
+- [x] **3.2b.4** Re-ran `phase2_descriptive.py`. $N$_Kendall 9,090 → **9,566**; $N$_Vassar 19,275 → **19,300**. CV essentially unchanged (Kendall 1.75 → 1.753; Vassar 1.90 → 1.896). Weibull remains best-fit for BB; log-normal remains best-fit for MBTA. MBTA rows unchanged.
+- [x] **3.2b.5** Re-ran `phase3_queueing.py` and `phase3_simulation.py`. Kendall M/M/c analytical $W_q$ 1.6 → **0.8 s**; empirical-DES $W_q$ 10.8 → **9.4 s**; Erlang B blocking 0.07% → **0.068%**; empirical-DES finite-capacity block 0.60% → **0.54%**. Headline Erlang B gap: 75× → **55×** at Kendall; Vassar now shows a non-trivial Erlang B ≈ 0 vs observed 2.88% gap that the old algorithm had masked. MBTA values essentially unchanged.
+- [x] **3.2b.6** Regenerated all Phase 2/3 PNGs; copied into `project-docs/report/figures/`. Caught and fixed pre-revision hardcoded values in `visualize_phase3.py` (`plot_wq_comparison`, `plot_blocking_comparison`, `plot_error_summary`) so Fig 1 (main) and Table 2 stay synchronised.
+- [x] **3.2b.7** Rewrote Appendix A.1 as four paragraphs (inventory reconstruction / full-capacity windows / exclusion rule / robustness). Removed the Mellou citation from A.1 (kept only in §6 Limitations and §7 Future Work). Stated the initial condition $\lfloor C_s/2 \rfloor$ honestly; described clamp as bookkeeping and the full flag as a state-transition with retract-on-intervening-trip-end semantics; dropped the "< 1 minute merge" sentence that was inconsistent with the implementation.
+- [x] **3.2b.8** Updated numerical values throughout main.tex — Abstract ($55\times$ replaces $75\times$; wait underestimate reframed as "roughly an order of magnitude"), Contributions ($55\times$), §2 Data ($N$ and fullness rates), §4.2 Table 2, §4.3 narrative, §5 User-side risk, §6 Service non-stationarity, §7 Future Work, §8 Conclusion. Appendix A.2 service times (7,367 s Kendall; 6,670 s Vassar); Appendix Table B.4 $W_q$ and blocking values; Appendix Fig C.6 caption.
+- [x] **3.2b.9** Added "Inventory reconstruction uncertainty" paragraph to §6 Limitations: $I_s$ carries a rebalancing bias between clamps; the retract rule biases toward omitting short full spans, so observed fullness and the $55\times$ gap are conservative lower bounds.
+- [x] **3.2b.10** Recompiled LaTeX; main body stayed at 5 pages after tightening §4.2 / §5 / §6 / §8 prose. Final PDF is 15 pages total (main 5 + references 1 + appendix 9). Commits: 829ad75 (core revision), 588e1c9 (visualize_phase3 fix), 82eef07 (Wq infinite-queue clarification).
 
 ### 3.3 Error Quantification
 
@@ -316,7 +316,7 @@ Timeline: 2026-04-08 → 2026-05-08
   - **A. Fact-checks (high priority)**
     - A1. Verify Appendix B.1 KS/AD/χ²/AIC values (transcribed from `visualize_phase2.py` output) — sample 1–2 cells
     - A2. Verify §4.3 narrative on service-process non-stationarity: does dock occupancy actually swell during rush-hour *departures* and collapse midday? Or is the direction reversed?
-    - A3. Verify A.2 service-time estimates (Kendall/MIT 7,549 s ≈ 2.1 h, MIT Vassar 6,699 s ≈ 1.86 h) are plausible for dock occupancy
+    - [x] A3. Verify A.2 service-time estimates are plausible for dock occupancy. Revised values (post-§3.2b): Kendall/MIT 7,367 s ≈ 2.05 h, MIT Vassar 6,670 s ≈ 1.85 h.
   - **B. Argument**
     - B1. §5.4 "Error direction is predictable from structure" — is the generalisation an overreach given N=2 systems?
     - B2. §6 Mellou–Jaillet paragraph — one-sentence citation only; too compressed, or appropriately scoped?
@@ -325,9 +325,11 @@ Timeline: 2026-04-08 → 2026-05-08
     - C2. §4.1 → §4.2 → §4.3 flow — does the key finding land?
     - C3. Appendix C figure placement — default [h], may scatter; consider grouping on single pages
   - **D. Outstanding content**
-    - D1. Main-text Fig 1 and Fig 2 are still placeholder frameboxes; real figures to be generated in Task #4
+    - [x] D1. Main-text Fig 1 and Fig 2 placeholder frameboxes resolved (2026-04-24): inserted `phase3_wq_comparison.png` as Fig 1 in §4.2 (main); moved CDF content to Appendix C as `\label{fig:cdfs}` (per option B). Main body still 5 pages; total 15.
     - D2. References currently 8 entries — add O'Mahony 2015 and other supporting citations as needed in Task #7
-    - D3. Appendix A.1 algorithm description defective — Mellou citation misleading, "< 1 minute merge" not in code, initial condition misstated, per-clamp at_full inflates fullness rate, no retract-on-intervening-trip-end logic. Full revision tracked in §3.2b.
+    - [x] D3. Appendix A.1 algorithm description defects resolved (2026-04-24) via §3.2b: Mellou citation removed from A.1; "< 1 minute merge" sentence removed; initial condition $\lfloor C_s/2 \rfloor$ stated honestly; state-transition full flag with retract-on-intervening-trip-end semantics implemented and documented.
+    - [x] D4. `visualize_phase3.py` had pre-revision hardcoded values causing Figure 1 vs Table 2 inconsistency (caught 2026-04-24). Fixed by updating the three plot functions with post-§3.2b numbers; Fig 1 and Table 2 now consistent. Commit 588e1c9.
+    - [x] D5. Bluebikes $W_q$ clarification (caught 2026-04-24): readers could misread the 9.4 s empirical-DES $W_q$ as a physically observed wait, but real Bluebikes rejects rather than queues. Added infinite-queue idealisation notes to §3 Methods, §4.2 narrative, main Table 2 caption, and Appendix Table B.4 caption. Commit 82eef07.
 - [ ] **4.2.4** Add references
   - > **Checkpoint:** Review draft report with user before finalization.
 - [ ] **4.2.5** Finalize report for submission by 5/8 11:59pm ET
@@ -373,3 +375,5 @@ Timeline: 2026-04-08 → 2026-05-08
 | D11 | Bluebikes fullness data handling | **Resolved** | Exclude from λ/μ estimation and distribution fitting; use observed fullness rate to validate Erlang B blocking probability |
 | D12 | Dock fullness correction method (BB) | **Resolved** | Mellou & Jaillet (2019) identified as canonical method. Not implemented (scope/timeline/confounding); documented in Limitations and Future Work |
 | D13 | Fullness-flag definition (BB) | **Resolved** | State-transition based: full flag set only on natural $C-1 \to C$ trip-end increment; candidate interval retracted if any trip-end intervenes before next trip-start. Chosen over per-clamp flagging (over-counts) and non-retracting state (ignores physical evidence of non-fullness). Motivates §3.2b revision. |
+| D14 | Main-text figure selection | **Resolved** | Option B: Fig 1 = `phase3_wq_comparison.png` in §4.2 (kept in main); Fig 1 (old — CDFs) moved to Appendix C as `fig:cdfs`. Keeps main body at 5 pages while preserving the core queueing-error visual. |
+| D15 | Bluebikes $W_q$ reporting caveat | **Resolved** | $W_q$ values for Bluebikes are under an infinite-queue idealisation and do not correspond to a physically observed wait (real system rejects). Reported for common-abstraction comparison with MBTA; observable metric for BB is blocking (§4.3). Note added to §3 Methods, §4.2 narrative, Table 2 caption, and Appendix Table B.4 caption (option C). |
