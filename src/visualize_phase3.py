@@ -22,13 +22,14 @@ def plot_wq_comparison():
     """
     Step 3.3.4: Visualize Wq comparison across models and arrival processes.
     """
-    # Data from simulation results
+    # Data from Phase 3 simulation output (see phase3_simulation.py logs).
+    # Keep values synchronised with main.tex Table 2 and appendix Table B.4.
     systems = {
         "BB Kendall T\n(M/M/c, c=23)": {
-            "Analytical\n(Poisson)": 0.90,
-            "DES\nExponential": 1.63,
-            "DES\nEmpirical": 10.81,
-            "DES\nWeibull": 11.28,
+            "Analytical\n(Poisson)": 0.82,
+            "DES\nExponential": 1.42,
+            "DES\nEmpirical": 9.35,
+            "DES\nWeibull": 10.56,
         },
         "MBTA North\n(M/M/1)": {
             "Analytical\n(Poisson)": 20.05,
@@ -90,7 +91,7 @@ def plot_blocking_comparison():
         "DES\nWeibull",
         "Observed\nFullness Rate",
     ]
-    kendall = [0.0721, 0.0994, 0.6011, 0.5044, 5.3218]
+    kendall = [0.068, 0.098, 0.543, 0.462, 3.735]
 
     x = np.arange(len(categories))
     bars = ax.bar(x, kendall, color=["#d62728", "#ff7f0e", "#2ca02c", "#1f77b4", "#7f7f7f"],
@@ -108,8 +109,8 @@ def plot_blocking_comparison():
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() * 1.2,
                 f"{val:.2f}%", ha="center", va="bottom", fontsize=10, fontweight="bold")
 
-    ax.axhline(y=5.3218, color="#7f7f7f", linestyle="--", alpha=0.5, linewidth=1)
-    ax.text(4.4, 6.5, "Observed: 5.32%", fontsize=9, color="#7f7f7f")
+    ax.axhline(y=3.735, color="#7f7f7f", linestyle="--", alpha=0.5, linewidth=1)
+    ax.text(4.4, 4.5, "Observed: 3.73%", fontsize=9, color="#7f7f7f")
 
     fig.tight_layout()
     fig.savefig(FIGURES / "phase3_blocking_comparison.png", dpi=150, bbox_inches="tight")
@@ -126,14 +127,14 @@ def plot_error_summary():
 
     headers = ["System", "Model", "Metric", "Poisson\nPrediction", "Empirical\nDES", "Relative\nError", "Direction"]
     rows = [
-        ["BB Kendall T", "M/M/c", "Wq (sec)", "0.9", "10.8", "−92%", "Underestimates"],
-        ["BB Kendall T", "M/M/c", "W (min)", "125.8", "126.2", "−0.3%", "≈ Correct"],
-        ["BB Kendall T", "M/M/c/c", "Block %", "0.07%", "0.60%", "−88%", "Underestimates"],
-        ["BB Kendall T", "M/M/c/c", "vs Observed", "0.07%", "5.32%*", "−99%", "Underestimates"],
-        ["BB MIT Vassar", "M/M/c", "Wq (sec)", "≈0", "≈0", "N/A", "Both ≈ 0"],
-        ["MBTA North", "M/M/1", "Wq (sec)", "20.1", "4.2", "+378%", "Overestimates"],
+        ["BB Kendall T", "M/M/c", "Wq (sec)", "0.8", "9.4", "−91%", "Underestimates"],
+        ["BB Kendall T", "M/M/c", "W (min)", "122.8", "123.0", "−0.2%", "≈ Correct"],
+        ["BB Kendall T", "M/M/c/c", "Block %", "0.07%", "0.54%", "−87%", "Underestimates"],
+        ["BB Kendall T", "M/M/c/c", "vs Observed", "0.07%", "3.73%*", "−98%", "Underestimates"],
+        ["BB MIT Vassar", "M/M/c/c", "vs Observed", "≈0%", "2.88%*", "−100%", "Underestimates"],
+        ["MBTA North", "M/M/1", "Wq (sec)", "20.1", "4.2", "+376%", "Overestimates"],
         ["MBTA North", "M/M/1", "W (sec)", "98.8", "83.0", "+19%", "Overestimates"],
-        ["MBTA South", "M/M/1", "Wq (sec)", "10.7", "0.9", "+1,089%", "Overestimates"],
+        ["MBTA South", "M/M/1", "Wq (sec)", "10.7", "0.9", "+1,050%", "Overestimates"],
         ["MBTA South", "M/M/1", "W (sec)", "69.5", "59.8", "+16%", "Overestimates"],
     ]
 
