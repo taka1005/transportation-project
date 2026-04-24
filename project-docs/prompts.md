@@ -2559,3 +2559,148 @@ Executed the full revision pipeline in nine tracked tasks:
 7. Added the new §6 "Inventory reconstruction uncertainty" paragraph framing the observed fullness rate and 55× gap as conservative lower bounds.
 8. Recompiled LaTeX. Main body stayed within 5 pages after tightening the §6 new paragraph and the §8 Conclusion closing sentence; final PDF is 14 pages total (main 5 + references 1 + appendix 8).
 9. Logged Prompts #137–#148 in this entry.
+
+
+---
+
+## Prompt #149
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+本文に図が入っていないみたいだけどこの後やるんだっけ？図を入れたら５ページに収まらなさそうだよね。
+
+**English:**
+
+The main text doesn't seem to include figures yet — is that still coming? Once figures are inserted, won't it overflow 5 pages?
+
+**Response / 応答:**
+
+Confirmed Fig 1/Fig 2 are still frameboxes (per §4.2.2a D1). Budgeted space: Fig 1 (phase2_cdfs, aspect 1.41) ~3.9" and Fig 2 (phase3_wq_comparison, aspect 2.68) ~2.4" at \linewidth — together ~5.5" more than the current frameboxes. Offered four options: (A) both in main with aggressive prose cuts, (B) Fig 2 in main / Fig 1 to Appendix C, (C) both to Appendix, (D) compact subfigures. Recommended **B** as the realistic balance.
+
+---
+
+## Prompt #150
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+Bで。appendixもmainも画像を含めてくれる？画像を含めた状態でレビューしたいので。
+
+**English:**
+
+Option B. Include images in both the appendix and the main text — I want to review with the images embedded.
+
+**Response / 応答:**
+
+Replaced Fig 2 framebox in main.tex with `\includegraphics{phase3_wq_comparison.png}`; removed Fig 1 framebox and replaced the narrative mention with a cross-reference to the new Appendix figure. Added `phase2_cdfs.png` as a new figure in Appendix C (`\label{fig:cdfs}`). Updated the Appendix C figure block-structure sentence to include the new CDF figure. Recompiled: main body still 5 pages (Figure 2 naturally floated to top of p4 after Table 2 on p3); references on p6; appendix 9 pages; total 15.
+
+---
+
+## Prompt #151
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+pushして
+
+**English:**
+
+Push.
+
+**Response / 応答:**
+
+Staged 15 files (src/data_pipeline.py, src/fullness_filter.py, main.tex, appendix.tex, report.pdf, 4× phase2 figures in two mirrors, prompts.md, research_plan.md). Excluded per prior patterns: data/processed/*.parquet, .Rhistory, SSRN PDF. Committed as "Phase 4.2: Revise fullness-flag algorithm, insert main figure, refine A.1" (commit 829ad75, +501/-96). Pushed to origin/main: 0c4431e..829ad75.
+
+---
+
+## Prompt #152
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+BBのDES EmpiricalでWqが10秒とありますが、これはどういう意味ですか？バイクを駐車するための行列はデータに表れていないはずですよね。
+
+**English:**
+
+Table 2 shows Bluebikes DES empirical $W_q$ around 10 seconds — what does that mean physically? Real dock queues shouldn't appear in the data.
+
+**Response / 応答:**
+
+Confirmed the user's physical intuition: real Bluebikes has no dock queue (users redirect on rejection), and none is recorded in the data. The $W_q \approx 9.4$ s is a simulation quantity under the infinite-queue idealisation used by both the analytical M/M/c baseline and the DES. It exists to enable an apples-to-apples arrival-process comparison (Poisson vs empirical) under the same queueing abstraction. The physically meaningful Bluebikes metric is blocking (§4.3). Flagged that the current paper only signals "infinite queue" in §3 Methods and lacks an explicit "not a real wait" notice — proposed four documentation options A–D.
+
+---
+
+## Prompt #153
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+そもそもFigure1とTable2で値がずれてない？
+
+**English:**
+
+Hang on — aren't the values in Figure 1 and Table 2 inconsistent with each other?
+
+**Response / 応答:**
+
+User caught a serious bug. `visualize_phase3.py` had pre-revision hardcoded values in three plot functions (`plot_wq_comparison`, `plot_blocking_comparison`, `plot_error_summary`), so rerunning the script after the fullness-flag revision produced figures with stale numbers (Kendall Wq 10.8 s, Erlang B 0.07% vs observed 5.32%) while Table 2 already carried the revised numbers (9.4 s, 0.068% vs 3.73%). Updated all hardcoded values in visualize_phase3.py (Kendall Wq tuple 0.82/1.42/9.35/10.56; Kendall blocking list [0.068, 0.098, 0.543, 0.462, 3.735] plus the annotation line; error_summary Wq/blocking rows and a new Vassar 2.88% row). Regenerated all three Phase 3 PNGs, copied into both `outputs/figures/` and `project-docs/report/figures/`, recompiled LaTeX (15 pages), committed 588e1c9 "Fix Phase 3 figure hardcoded values to match revised Table 2", pushed to origin/main.
+
+---
+
+## Prompt #154
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+BBの待ち時間の続きだけど、実データには待ち時間は記録されないはずなのに、どうしてWq=9.3になるの
+
+**English:**
+
+Back to Bluebikes wait time — the real data contains no wait time, so how does DES produce $W_q = 9.3$?
+
+**Response / 応答:**
+
+Walked through the DES mechanics in detail: (1) inputs are empirical IATs (in data), mean service time from Little's Law (7,367 s for Kendall), and c=23 — no wait time is read from the data; (2) the simulator adds the infinite-queue assumption and generates a synthetic FIFO wait whenever all 23 virtual docks are busy; (3) burstiness in the empirical IATs (CV=1.75, skew=6.9) creates transient overloads that inflate the simulated wait relative to the Poisson baseline; (4) Allen–Cunneen approximation predicts ~1.7 s from CV² alone, but the heavy tail produces the extra jump to ~9.4 s. Reiterated that the 9.4 s is a theoretical queueing-pressure metric, not a real wait, and that the real-world projection of the same pressure is the 0.54% empirical-DES finite-capacity block rate. Reopened the A/B/C/D documentation options.
+
+---
+
+## Prompt #155
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+C
+
+**English:**
+
+C (narrative note in §4.2 plus footnote in Table 2 caption).
+
+**Response / 応答:**
+
+Applied the clarification across three locations: (1) §3 Methods changed "M/M/c (infinite queue)" to "M/M/c (infinite-queue idealisation; real stations reject rather than queue)"; (2) §4.2 narrative added a sentence noting Bluebikes $W_q$ is an infinite-queue idealisation and that blocking is the observable metric; (3) Table 2 caption and Appendix Table B.4 caption expanded with the same clarification. To keep main body at 5 pages, tightened the §4.2 narrative, §5 User-side risk paragraph (removed duplicated "order of magnitude"), §6 Inventory reconstruction uncertainty (single sentence now), and §8 Conclusion. Recompiled; 15 pages total (main 5 + references 1 + appendix 9). Committed 82eef07 "Clarify Bluebikes Wq is infinite-queue idealisation, not observed wait", pushed to origin/main.
+
+---
+
+## Prompt #156
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+プロンプトを記録してpushして
+
+**English:**
+
+Log the prompts and push.
+
+**Response / 応答:**
+
+Appended Prompts #149–#156 to `project-docs/prompts.md` in the bilingual format with response summaries. Committed the single-file change and pushed to origin/main.
