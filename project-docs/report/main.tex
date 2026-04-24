@@ -30,7 +30,7 @@ Our contributions are: quantitative Poisson-deviation measurements for both syst
 
 \paragraph{Arrival-process characterization.} For each system we compute the mean, standard deviation, coefficient of variation ($\mathrm{CV} = \sigma/\mu$), and skewness of the inter-arrival time, and the index of dispersion ($\mathrm{IoD} = \mathrm{Var}[N]/\mathbb{E}[N]$) of arrival counts in 15-, 30-, and 60-minute windows. $\mathrm{CV} = \mathrm{IoD} = 1$ are the Poisson values. We fit exponential, log-normal, Weibull, and gamma by maximum likelihood and rank them by AIC. Fits are tested with Kolmogorov--Smirnov (KS), Anderson--Darling (AD), and Pearson $\chi^2$ statistics.
 
-\paragraph{Queueing models.} Bluebikes: M/M/$c$ (infinite queue) with $c$ the dock count,
+\paragraph{Queueing models.} Bluebikes: M/M/$c$ (infinite-queue idealisation; real stations reject rather than queue) with $c$ the dock count,
 \begin{equation}
 W_q = \frac{C(c, a)}{c\mu - \lambda}, \quad a = \lambda/\mu,\ \rho = a/c,
 \label{eq:mmc}
@@ -67,11 +67,11 @@ Within-day segmentation (Appendix~\ref{app:hour}, Table~\ref{tab:cv-hour}; empir
 
 \subsection{Queueing predictions diverge in magnitude and direction}\label{sec:results-queueing}
 
-Table~\ref{tab:queueing} compares analytical Poisson predictions to DES under the three arrival generators. Poisson-DES matches analytical values to within 2\% (simulation cross-check). The empirical-DES column is the observational benchmark.
+Table~\ref{tab:queueing} compares analytical Poisson predictions to DES under the three arrival generators; Poisson-DES cross-checks the analytical value and empirical-DES is the benchmark. Bluebikes $W_q$ is an infinite-queue idealisation (caption); the observable Bluebikes metric is blocking (\S\ref{sec:results-erlangb}).
 
 \begin{table}[h]
 \centering
-\caption{Average queueing delay $W_q$ (seconds). 95\% CIs on DES values are within $\pm$10\% of the point estimate.}
+\caption{Average queueing delay $W_q$ (seconds). Bluebikes values are under an infinite-queue idealisation (real stations reject rather than queue), reported for common-abstraction comparison with MBTA. 95\% CIs on DES values within $\pm$10\%.}
 \label{tab:queueing}
 \footnotesize
 \begin{tabular}{@{}lrrrr@{}}
@@ -104,7 +104,7 @@ At Kendall/MIT the Erlang~B prediction for blocking is $0.068\%$ against an obse
 
 Poisson's error has two orthogonal axes: \emph{direction} (over- vs.\ under-estimation) and \emph{magnitude relative to the decision threshold} the prediction feeds. ``Conservative'' is not synonymous with ``safe'' in transportation, because user-side and operator-side costs are not symmetric.
 
-\paragraph{User-side risk: under-provisioning.} Bluebikes Kendall/MIT: Poisson underestimates $W_q$ by roughly an order of magnitude and blocking by 55-fold. A planner sizing docks or rebalancing cadence to Poisson targets would miss service failures by an order of magnitude; users find full stations and abandon trips. Bursty, overdispersed arrivals (CV 1.75--1.90) are exactly where the tail events that drive blocking are averaged away.
+\paragraph{User-side risk: under-provisioning.} Bluebikes Kendall/MIT: Poisson underestimates blocking by 55-fold. A planner sizing docks or rebalancing cadence to Poisson targets would miss service failures by an order of magnitude; users find full stations and abandon trips. Bursty arrivals (CV 1.75--1.90) are where the tail events that drive blocking are averaged away.
 
 \paragraph{Operator-side risk: over-provisioning.} MBTA at $\rho = 0.15$--$0.20$: Poisson overestimates $W_q$ by 5--12$\times$. A 20-second Poisson estimate used to motivate a frequency increase, a fleet addition, or a platform extension commits capital the real demand does not require. Transportation over-provisioning is measured in billions of dollars and is not reversible.
 
@@ -123,7 +123,7 @@ Poisson's error has two orthogonal axes: \emph{direction} (over- vs.\ under-esti
 
 \paragraph{Service-process non-stationarity unmodelled.} The residual $55\times$ blocking gap is attributable to time-varying service that we diagnose but do not fit.
 
-\paragraph{Inventory reconstruction uncertainty.} $I_s$ is reconstructed forward from trip events with a $\lfloor C_s/2\rfloor$ initial guess, and carries an additive bias bounded by untracked rebalancing between consecutive clamps. Our retract-on-intervening-trip-end rule (Appendix~\ref{app:fullness}) prevents false-positive full flags at the cost of omitting short genuinely-full spans; observed fullness and the $55\times$ gap are thus conservative lower bounds.
+\paragraph{Inventory reconstruction uncertainty.} $I_s$ is reconstructed forward from trip events and carries a bounded rebalancing bias between clamps; our retract rule (Appendix~\ref{app:fullness}) biases toward omitting short full spans, so observed fullness and the $55\times$ gap are conservative lower bounds.
 
 % ===== 7. Future Work =====
 \section{Future Work}\label{sec:future}
@@ -133,4 +133,4 @@ Re-running \S\ref{sec:results-arrival} and \S\ref{sec:results-erlangb} on Bluebi
 % ===== 8. Conclusion =====
 \section{Conclusion}\label{sec:conclusion}
 
-Poisson is good enough only when its error stays below the planner's decision threshold. MBTA overestimates wait by 5--12$\times$, justifying unnecessary infrastructure; Bluebikes Kendall/MIT underestimates wait by an order of magnitude and blocking by $55\times$, hiding service failures. The $55\times$ gap persists under empirical arrivals, isolating service-process non-stationarity as an error arrival correction cannot repair. Evaluate Poisson by error \emph{direction} and \emph{size relative to the decision}, not by whether arrivals are Poisson.
+Poisson is good enough only when its error stays below the planner's decision threshold. MBTA overestimates wait by 5--12$\times$ (wasteful infrastructure); Bluebikes Kendall/MIT underestimates blocking by $55\times$ (hidden service failures). The gap persists under empirical arrivals, isolating service-process non-stationarity as an error arrival correction cannot repair. Evaluate Poisson by error \emph{direction} and \emph{size relative to the decision}.
