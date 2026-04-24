@@ -6,7 +6,13 @@
 
 \subsection{Bluebikes fullness-exclusion algorithm}\label{app:fullness}
 
-Let $I_s(t) \in \{0, 1, \dots, C_s\}$ denote the reconstructed inventory at station $s$ at time $t$, where $C_s$ is the station capacity ($C_{\text{Kendall}} = 23$, $C_{\text{Vassar}} = 53$). We flag an interval $[t_1, t_2]$ as \emph{full} if $I_s(\tau) = C_s$ for every $\tau \in [t_1, t_2]$. Overlapping or near-adjacent full intervals (separated by less than one minute) are merged into a single exclusion window, by analogy with the \emph{artificial outage endings} merge of Mellou and Jaillet~\cite{mellou2019}. An inter-arrival time $(a_i, a_{i+1})$ is excluded from arrival-rate estimation, distribution fitting, and empirical-DES sampling if it overlaps any exclusion window; the adjacent non-censored arrivals are retained. For Kendall/MIT, 1,145 arrivals ($11.0\%$ of the uncorrected sample) are excluded, reducing $N$ from 10,235 to 9,090. For MIT Vassar~St, 176 arrivals ($0.9\%$) are excluded. Station inventories are reconstructed by look-ahead correction: each departure decrements $I_s$ and each trip-end at $s$ increments it, with the initial condition calibrated from the first observed full or empty boundary within the month.
+\paragraph{Inventory reconstruction.} Let $I_s(t) \in \{0, 1, \dots, C_s\}$ denote the reconstructed inventory at station $s$ at time $t$, where $C_s$ is the station capacity ($C_{\text{Kendall}} = 23$, $C_{\text{Vassar}} = 53$). We process the chronological event stream of trip-ends at $s$ ($+1$) and trip-starts from $s$ ($-1$) in a single forward pass, starting from $I_s = \lfloor C_s/2 \rfloor$ as an initial guess (real-time station status such as GBFS was not available for the study window). Operator rebalancing (truck pickups and drop-offs) is not recorded in the public dataset, so we infer it by clamping: whenever the running count would exceed $C_s$, we attribute the excess to a prior rebalancing pickup and set $I_s = C_s$; whenever it would fall below zero, we attribute it to a prior drop-off and set $I_s = 0$. A clamp is a bookkeeping correction for unlogged rebalancing; it is not itself evidence of a full/empty state.
+
+\paragraph{Full-capacity windows.} We treat ``full'' as a \emph{state} rather than a per-event property. A candidate window opens at a trip-end that brings $I_s$ from $C_s - 1$ to $C_s$ via natural increment (not clamp). The window is committed to the exclusion set only if the next event at $s$ is a trip-start (departure), which then closes the window. If the next event is instead another trip-end, the successful trip-end is physical evidence that a slot was available at that instant, so the candidate window is \emph{retracted entirely}: we lack evidence that the station was continuously full across the interval, and we do not retain any partial subinterval. This rule is the reason the observed fullness rate in \S\ref{sec:data} should be read as a conservative lower bound; see also \S\ref{sec:limitations}.
+
+\paragraph{Exclusion rule.} An inter-arrival time $(a_i, a_{i+1})$ is excluded from $\lambda$, $\mu$, and distribution fitting if the interval $[a_i, a_{i+1}]$ overlaps any committed full window; the non-censored arrivals $a_i$ and $a_{i+1}$ are themselves retained for use in adjacent IATs. Committed windows do not overlap by construction (a window ends at a trip-start that lowers $I_s$ to $C_s-1$, so any subsequent natural entry requires a later trip-end). For Kendall/MIT, $668$ IATs ($6.5\%$ of the uncorrected sample) are excluded, giving $N = 9{,}566$. For MIT Vassar~St, $148$ IATs ($0.8\%$) are excluded, giving $N = 19{,}300$.
+
+\paragraph{Robustness.} The forward pass is anchored at every clamp: after the first clamp event, $I_s$ is pinned to a boundary regardless of the initial guess, so the effect of $\lfloor C_s/2 \rfloor$ decays within the first clamp (typically within the first days of operation). Because the full flag is defined by a natural $C_s-1 \to C_s$ transition under the retract-on-intervening-trip-end rule, clamp-driven drift corrections do not inflate the fullness rate. The residual uncertainty in $I_s$ between two clamp events (a constant additive bias bounded by the untracked rebalancing volume) is discussed as a limitation in \S\ref{sec:limitations}.
 
 \subsection{Service-rate estimation via Little's Law}\label{app:service-rate}
 
@@ -14,7 +20,7 @@ For Bluebikes we treat each dock slot as a server and define the service time as
 \begin{equation}
 \mu = \frac{\lambda \, \bar{W}_{\text{slot}}}{L_{\text{non-full}}} \cdot \frac{1}{c},
 \end{equation}
-where $L_{\text{non-full}}$ is the mean number of occupied docks during non-full periods, $c$ is the dock count, and $\bar{W}_{\text{slot}}$ is the resulting per-slot average service time. After fullness correction the estimated mean service times are 7,549~s at Kendall/MIT (dropped from 8,083~s) and 6,699~s at MIT Vassar~St (dropped from 6,886~s), yielding per-server utilisations of $\rho = 0.49$ and $\rho = 0.33$ respectively. For MBTA the service time is the observed platform dwell time; $\rho$ ranges from $0.15$ to $0.20$.
+where $L_{\text{non-full}}$ is the mean number of occupied docks during non-full periods, $c$ is the dock count, and $\bar{W}_{\text{slot}}$ is the resulting per-slot average service time. After fullness correction the estimated mean service times are $7{,}367$~s at Kendall/MIT and $6{,}670$~s at MIT Vassar~St, yielding per-server utilisations of $\rho = 0.48$ and $\rho = 0.33$ respectively. For MBTA the service time is the observed platform dwell time; $\rho$ ranges from $0.15$ to $0.20$.
 
 \subsection{Discrete-event simulation}\label{app:des}
 
@@ -126,7 +132,7 @@ MBTA South     & 0.70 & 0.70 & 0.63 & 0.64 & 0.59 & 0.53 & 0.57 & 0.65 & 0.55 & 
 
 \subsection{Queueing outcomes with confidence intervals}\label{app:queueing-full}
 
-Table~\ref{tab:queueing-full} extends the main-text Table~2 with 95\% confidence intervals over 10 replications and the blocking probabilities for Bluebikes. Confidence intervals on $W_q$ are narrow ($\pm 3\%$--$10\%$ of the point estimate) except for MIT Vassar~St, where all values are effectively zero. The Erlang~B prediction at Kendall/MIT ($0.07\%$) is dwarfed by both the empirical-DES finite-capacity result ($0.60\%$) and the observed full-capacity rate ($5.32\%$).
+Table~\ref{tab:queueing-full} extends the main-text Table~2 with 95\% confidence intervals over 10 replications and the blocking probabilities for Bluebikes. Confidence intervals on $W_q$ are narrow ($\pm 3\%$--$10\%$ of the point estimate) except at MIT Vassar~St, where all values are effectively zero, and at Kendall/MIT where the Poisson-DES CI is wider because the $\rho_{\text{server}} \approx 0.48$ regime produces only occasional queue events per replication. The Erlang~B prediction at Kendall/MIT ($0.068\%$) is dwarfed by both the empirical-DES finite-capacity result ($0.54\%$) and the observed full-capacity rate ($3.73\%$). MIT Vassar~St mirrors the gap qualitatively (Erlang~B and empirical-DES both $\approx 0$, observed $2.88\%$).
 
 \begin{table}[h]
 \centering
@@ -138,10 +144,10 @@ Table~\ref{tab:queueing-full} extends the main-text Table~2 with 95\% confidence
 & \multicolumn{4}{c|}{$W_q$ (s)} & \multicolumn{3}{c}{$P_{\text{block}}$ (\%)} \\
 System & Analytical & Poisson DES & Empirical DES & Best-fit DES & Erlang B & Emp.\ DES & Observed \\
 \midrule
-BB Kendall/MIT   & 1.6  & $1.6 \pm 0.1$ & $10.8 \pm 0.9$ & $10.5 \pm 0.8$ & 0.07 & 0.60 & 5.32 \\
-BB MIT Vassar    & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ & 0.42 \\
-MBTA Northbound  & 20.5 & $20.5 \pm 1.1$ & $4.2 \pm 0.4$  & $4.6 \pm 0.4$  & --- & --- & --- \\
-MBTA Southbound  & 10.9 & $10.9 \pm 0.7$ & $0.9 \pm 0.1$  & $1.1 \pm 0.1$  & --- & --- & --- \\
+BB Kendall/MIT   & 0.8  & $1.4 \pm 0.5$ & $9.4 \pm 1.7$  & $10.6 \pm 3.6$ & 0.068 & 0.54 & 3.73 \\
+BB MIT Vassar    & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ & 2.88 \\
+MBTA Northbound  & 20.1 & $20.5 \pm 0.5$ & $4.2 \pm 0.1$  & $4.3 \pm 0.2$  & --- & --- & --- \\
+MBTA Southbound  & 10.7 & $10.9 \pm 0.2$ & $0.9 \pm 0.1$  & $1.0 \pm 0.1$  & --- & --- & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -149,7 +155,7 @@ MBTA Southbound  & 10.9 & $10.9 \pm 0.7$ & $0.9 \pm 0.1$  & $1.1 \pm 0.1$  & ---
 % ===== C. Supplementary figures =====
 \section{Supplementary figures}\label{app:figures}
 
-Figures~\ref{fig:bb-daily}--\ref{fig:error-summary} provide the full set of diagnostics summarised in the main text. The block structure is: phase-1 exploratory (\ref{fig:bb-daily}--\ref{fig:mbta-headway}), phase-2 distribution fits (\ref{fig:iat-hist}--\ref{fig:fitted}), phase-3 queueing comparisons (\ref{fig:blocking}--\ref{fig:error-summary}).
+Figures~\ref{fig:bb-daily}--\ref{fig:error-summary} provide the full set of diagnostics summarised in the main text. The block structure is: phase-1 exploratory (\ref{fig:bb-daily}--\ref{fig:mbta-headway}), phase-2 distribution fits (\ref{fig:iat-hist}--\ref{fig:cdfs}), phase-3 queueing comparisons (\ref{fig:blocking}--\ref{fig:error-summary}).
 
 \begin{figure}[h]
 \centering
@@ -192,8 +198,15 @@ Figures~\ref{fig:bb-daily}--\ref{fig:error-summary} provide the full set of diag
 
 \begin{figure}[h]
 \centering
+\includegraphics[width=\linewidth]{phase2_cdfs.png}
+\caption{Empirical IAT CDFs with fitted exponential, Weibull, log-normal, and gamma overlays, for all four systems. Exponential (Poisson baseline) is visibly the worst fit in every panel.}
+\label{fig:cdfs}
+\end{figure}
+
+\begin{figure}[h]
+\centering
 \includegraphics[width=0.75\linewidth]{phase3_blocking_comparison.png}
-\caption{Blocking probability: Erlang B analytical vs.\ DES (Poisson) vs.\ DES (empirical) vs.\ observed full-capacity rate. Log $y$-axis. The 75$\times$ gap at Kendall/MIT is the visual centre.}
+\caption{Blocking probability: Erlang B analytical vs.\ DES (Poisson) vs.\ DES (empirical) vs.\ observed full-capacity rate. Log $y$-axis. The $55\times$ gap at Kendall/MIT is the visual centre; MIT Vassar~St shows a qualitatively parallel gap from effectively zero predicted blocking to $2.88\%$ observed.}
 \label{fig:blocking}
 \end{figure}
 

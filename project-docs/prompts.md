@@ -2244,3 +2244,318 @@ Please add the review points into the appropriate place in research_plan.md.
 **Response / 応答:**
 
 Marked Phase 4.2.1, 4.2.2, 4.2.3 as completed with references to the concrete artifacts (outline.md, report.tex / main.tex, appendix.tex). Added a new item 4.2.2a "Resolve open review points from first-draft checkpoint (2026-04-22)" containing the four categories of review points: (A) fact-checks — Appendix B.1 numerical transcription verification, §4.3 service-non-stationarity direction, A.2 service-time plausibility; (B) argument — §5.4 generalisation overreach check, §6 Mellou–Jaillet compression check; (C) structure/readability — \paragraph layout, results-section flow, appendix figure placement; (D) outstanding content — Fig 1/2 placeholders still need real figures (Task #4), references.bib needs expansion (Task #7).
+
+---
+
+## Prompt #132
+
+**Date / 日付:** 2026-04-22
+
+**Japanese / 日本語:**
+
+gitにpushして
+
+**English:**
+
+Push to git.
+
+**Response / 応答:**
+
+Staged Phase 4.2 artifacts: project-docs/plans/phase4_2_report_writing_plan.md (new), project-docs/prompts.md (modified), project-docs/requirements/research_plan.md (modified), project-docs/report/ entire directory (new: report.tex, main.tex, appendix.tex, references.bib, outline.md, report.pdf, figures/*.png × 15, .gitignore). Explicitly excluded from staging: data/processed/*.parquet (prior session decision), project-docs/.Rhistory, project-docs/references/SSRN-id3336416.pdf (prior pattern — large copyrighted paper kept local). Removed stray texput.log from project root. Committed as "Phase 4.2: First-draft 5-page report + full appendix" (commit 0c4431e, 25 files, +1378/-7). Pushed to origin/main: 9279ad5..0c4431e.
+
+---
+
+## Prompt #133
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+prompts.mdとresearch_plan.mdを読んでコンテキストを把握してください。
+
+**English:**
+
+Please read prompts.md and research_plan.md to understand the current context.
+
+**Response / 応答:**
+
+Reviewed both files (prompts.md through #132 on 2026-04-22; research_plan.md current). Summarised project status: Phases 1–3 and 4.1 complete; Phase 4.2 first-draft committed at 0c4431e (5-page main + 7-page appendix + 1-page references = 13-page PDF); remaining work Phase 4.2.2a review points (fact-checks, argument, structure, outstanding Fig 1/2 + references), Phase 4.3 reproducibility, Phase 4.4 presentation; deadline 2026-05-08. Re-confirmed workflow rules (plan-first, bilingual prompt log, approval per step).
+
+---
+
+## Prompt #134
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+[Contributions 4点の英文を引用] この部分が何を言っているかわからない。。。解説して
+
+**English:**
+
+[Quoted the four Contribution bullets from the Introduction.] I don't understand what this part is saying. Please explain.
+
+**Response / 応答:**
+
+Walked through each of the four Contributions bullets in plain Japanese with concrete examples: (#1) quantified Poisson deviation with CV/AIC numbers in both directions; (#2) three-way comparison of analytical M/M/c vs empirical-DES vs best-fit-DES to locate Poisson error numerically; (#3) the 75× Erlang B blocking gap persists even after arrival-process correction, isolating service-process non-stationarity as a separate error source; (#4) decision-threshold framework — evaluate Poisson error by direction (under- vs over-estimate) AND by magnitude relative to the decision threshold, arguing that "conservative = over-estimate" is not automatically "safe" when over-provisioning is capital-intensive (e.g., MBTA platform construction costing billions).
+
+---
+
+## Prompt #135
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+MIT Vassar St (53 docks, campus)とあるが、campusの中ではあるんだけど、周辺は寮ばかりなので、少し性質が違うと思います。誤解のないようにしてほしい。
+
+**English:**
+
+main.tex describes MIT Vassar St as "(53 docks, campus)" but although the station is within MIT's campus, the surroundings are mostly dormitories, which gives it a different character. Please avoid the misleading descriptor.
+
+**Response / 応答:**
+
+Located the single occurrence on main.tex:20 ("campus") — research_plan.md:85 already uses "residential" for this station. Offered three replacement descriptors: (1) `residential`, (2) `campus dormitory area`, (3) `MIT dorms / residential`, with tradeoffs (simplicity vs. geographic clarity). Awaited user choice.
+
+---
+
+## Prompt #136
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+2
+
+**English:**
+
+2 (approved option 2: "campus dormitory area").
+
+**Response / 応答:**
+
+Updated main.tex:20 to `(53 docks, campus dormitory area)`. Recompiled LaTeX toolchain (pdflatex → bibtex → pdflatex × 2); PDF still 13 pages total with main body ending at page 5 (Abstract+Intro → Data+Methods → Results → Discussion → Limitations+Future+Conclusion+start of References). Logged Prompts #133–#136 in prompts.md.
+
+---
+
+## Prompt #137
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+我々の貢献は以下の通りである。両システムにおけるポアソン偏差の定量的測定... [Contributions 4 点の和訳引用] この部分が何を言っているかわからない。。。解説して
+
+**English:**
+
+[Japanese translation of the four Contributions bullets quoted]. I don't understand what this part is saying. Please explain.
+
+**Response / 応答:**
+
+Explained each of the four contributions in plain Japanese with concrete examples: (#1) quantitative Poisson-deviation measurements with CV/AIC numbers in both overdispersed/underdispersed directions; (#2) three-way side-by-side comparison of analytical M/M/c vs empirical-DES vs best-fit-DES; (#3) the 75× Erlang B blocking gap persists under empirical-arrival DES, isolating service-process non-stationarity as a distinct error source; (#4) decision-threshold framework — evaluate Poisson error by direction AND magnitude relative to the decision threshold, arguing "conservative = over-estimate" is not automatically "safe" when over-provisioning is capital-intensive (e.g., MBTA platform construction costing billions of dollars).
+
+---
+
+## Prompt #138
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+MIT Vassar St (53 docks, campus)とあるが、campusの中ではあるんだけど、周辺は寮ばかりなので、少し性質が違うと思います。誤解のないようにしてほしい。
+
+**English:**
+
+main.tex describes MIT Vassar St as "(53 docks, campus)" but although the station is within MIT's campus, the surroundings are mostly dormitories, which gives it a different character. Please avoid the misleading descriptor.
+
+**Response / 応答:**
+
+Located the single occurrence on main.tex:20 and offered three replacement descriptors: (1) `residential`, (2) `campus dormitory area`, (3) `MIT dorms / residential`. Awaited user choice.
+
+---
+
+## Prompt #139
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+2
+
+**English:**
+
+2 (approved option 2: "campus dormitory area").
+
+**Response / 応答:**
+
+Updated main.tex:20 and recompiled. [This was Prompt #136 in prior log — numbering reset for session tracking.]
+
+---
+
+## Prompt #140
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+appendix A.1について、なぜMellouの文献を参照しているのですか？在庫数の補正の話（リバランス後の在庫補正）の説明が非常にわかりにくい。
+
+**English:**
+
+Why does Appendix A.1 cite Mellou & Jaillet? The inventory reconstruction description (rebalancing correction) is very unclear.
+
+**Response / 応答:**
+
+Diagnosed two defects in A.1: (1) Mellou citation is misleading — our §1.3.6 decision was explicitly NOT to apply Mellou's method, the cited "artificial outage endings" merge is about empty stations not full ones, the "< 1 minute merge" claim is absent from the actual code (which only merges overlapping intervals), and citing Mellou here confuses readers about whether the paper used their method; (2) inventory reconstruction prose misstates the initial condition ("calibrated from the first observed full or empty boundary" is not what the code does — the code starts from `capacity // 2`), fails to explain the clamp-based rebalancing inference, and leaves "look-ahead correction" as a named-but-unexplained concept. Proposed full A.1 rewrite.
+
+---
+
+## Prompt #141
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+満車であると誤って判断してしまう状況の回避策についてはどこでふれているのですか
+
+**English:**
+
+Where does the paper address mitigation of false-positive full-state classifications?
+
+**Response / 応答:**
+
+Honestly reported: nowhere in the current report. Identified two sources of potential false positives — (1) initial guess $\lfloor C/2\rfloor$ bias propagating until first clamp, (2) cumulative-count drift from unlogged rebalancing. Proposed three options: (A) add Limitations paragraph acknowledging uncertainty (minimal cost), (B) run initial-condition sensitivity analysis (stronger defence with reanalysis risk), (C) add robustness argument that clamp anchors the estimate (defensible middle ground). Recommended A+C combination.
+
+---
+
+## Prompt #142
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+truefullflagの説明は？fullフラグを立てて、自転車が入ってきたらそれはリバランスなどの影響で実際には満車ではないので、在庫を訂正する（フルではないと判断する）ロジックが入っているはずですよね？
+
+**English:**
+
+What about a "true full flag"? Once a full flag is set and another bike comes in, that arrival is physical evidence of non-fullness (rebalancing removed bikes) — shouldn't there be logic to correct the inventory and un-flag the full state?
+
+**Response / 応答:**
+
+Confirmed the user's intuition is correct and that the logic is absent from the current code: the original `data_pipeline.py` sets `at_full[i] = True` on every clamp event, including repeated trip-ends during an already-at-capacity state, which is self-contradictory (the successful trip-end proves a slot was available). The `at_capacity` flag therefore over-counts fullness. Identified the downstream implication: the observed fullness rate (5.32% at Kendall) and by extension the 75× Erlang B gap are likely inflated. Proposed a state-transition based full flag (natural $C-1 \to C$ entry only) plus a retract rule (cancel the candidate interval if an intervening trip-end breaks it before the next trip-start). Outlined Option P (fix) vs Option Q (document as limitation only); recommended P.
+
+---
+
+## Prompt #143
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+わかりました。もちろん誤りは訂正すべきですが、その場合、AppendixA.1はどのように記述されるか教えて。
+
+**English:**
+
+Understood. Of course the error should be fixed — show me how the revised Appendix A.1 would read.
+
+**Response / 応答:**
+
+Drafted LaTeX for a full A.1 replacement with four paragraphs: (1) inventory reconstruction (initial $\lfloor C/2 \rfloor$, clamp as bookkeeping), (2) state-transition full flag, (3) exclusion rule, (4) robustness. Also sketched a §6 Limitations addition "Inventory reconstruction uncertainty" reframing observed fullness as a conservative lower bound. Noted that exclusion counts and Erlang B gap magnitude will change and need re-running before committing.
+
+---
+
+## Prompt #144
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+修正Appendixはtexじゃなくて日本語で教えて。
+
+**English:**
+
+Show me the revised Appendix in Japanese prose (not LaTeX source).
+
+**Response / 応答:**
+
+Provided a Japanese-language draft of the full A.1 (4 subsections: inventory reconstruction, full-state flag, exclusion rule, robustness) plus the §6 Limitations paragraph. Summarised the delta from the current version in a comparison table.
+
+---
+
+## Prompt #145
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+既に満車状態とみなされている区間内で追加の trip-end が発生して上限 clamp が発動した場合... [retract ロジック未記述の指摘] 直前の満車フラグは修正されるの？実際は満車ではなかったんだよね？
+
+**English:**
+
+If an additional trip-end fires within an already-"full" candidate interval, isn't the prior full flag retroactively wrong? The station was not actually full.
+
+**Response / 応答:**
+
+Agreed the prior proposal was still insufficient. Refined the algorithm: a candidate full interval is committed ONLY if the next event after the natural $C-1 \to C$ entry is a trip-start (no intervening trip-end allowed). If a trip-end intervenes, the entire candidate interval is retracted (no partial interval retained), because the exact moment the rebalancing truck arrived cannot be identified within the interval. Acknowledged this will shrink the observed fullness rate further.
+
+---
+
+## Prompt #146
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+appendex a.1の全体改定案を改めて日本語で教えて
+
+**English:**
+
+Show the full revised A.1 in Japanese again, incorporating the retract-on-intervening-trip-end rule.
+
+**Response / 応答:**
+
+Re-issued the full Japanese A.1 with the stricter retract-on-intervening-trip-end rule integrated into the "Full-capacity windows" subsection. Summarised the linked downstream changes (§6 Limitations paragraph, code rewrite, re-run, figure regeneration) and the expected direction of change for each affected number (fullness rate down, excluded IATs down, N up, Erlang B gap shrinks).
+
+---
+
+## Prompt #147
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+本編 §6 Limitations に「在庫再構成の不確実性」パラグラフを追加　これどういうこと
+
+**English:**
+
+What is the "add an Inventory reconstruction uncertainty paragraph to §6 Limitations" item?
+
+**Response / 応答:**
+
+Explained the existing four-paragraph structure of §6 (arrival censoring, DES autocorrelation, scope, service non-stationarity) and the gap this fifth paragraph fills: the reconstructed fullness flag has residual uncertainty (initial-condition bias up to first clamp, inter-clamp drift bounded by untracked rebalancing). Gave both Japanese and English draft text framing the observed fullness rate as a conservative lower bound and the Erlang B gap as "at least this large."
+
+---
+
+## Prompt #148
+
+**Date / 日付:** 2026-04-24
+
+**Japanese / 日本語:**
+
+OK。とりあえず修正を進めてください。research_planにもしっかり記録しておいてください。
+
+**English:**
+
+OK. Please proceed with the fix. Record it properly in research_plan.md as well.
+
+**Response / 応答:**
+
+Executed the full revision pipeline in nine tracked tasks:
+1. Updated research_plan.md with a new §3.2b "Fullness-flag State-Transition Revision" section (10 modification steps), a new D3 item in §4.2.2a review points, and a new D13 decision in the decisions table.
+2. Rewrote `reconstruct_inventory()` in `data_pipeline.py`: `at_full[i]` now fires only on natural $C_s-1 \to C_s$ trip-end transitions; `at_empty[i]` symmetric; clamp retained as bookkeeping for unlogged rebalancing but does not set the flag.
+3. Rewrote `get_full_capacity_periods()` in `fullness_filter.py`: each natural entry becomes a candidate, committed only if the next station event is a trip-start with no intervening trip-end. Added helper `mark_in_full_periods()`. Updated `get_observed_fullness_rate()` to compute a time-based fraction over committed periods and `filter_inventory_for_service_rate()` to mask events inside committed spans.
+4. Re-ran the full pipeline. Key new numbers: Kendall observed fullness rate 5.32% → **3.73%**; Vassar 0.42% → **2.88%** (the Vassar increase is because the new metric is time-weighted, not event-weighted); Kendall Erlang B gap 75× → **55×**; N_Kendall 9,090 → 9,566; N_Vassar 19,275 → 19,300; Kendall Poisson M/M/c $W_q$ 1.6 → 0.8 s, empirical $W_q$ 10.8 → 9.4 s. Vassar now shows a non-trivial blocking gap (Erlang B $\approx$ 0 vs observed 2.88%) that the original algorithm masked — strengthening the service non-stationarity finding.
+5. Regenerated all Phase 2/3 figures and copied into `project-docs/report/figures/`.
+6. Updated all numbers in main.tex (Abstract, Contributions, §2 Data, §4 Results, §5 Discussion, §6 Limitations, §7 Future Work, §8 Conclusion, Tables 1 and 2). Rewrote Appendix A.1 completely with the four-paragraph structure (inventory reconstruction / full-capacity windows / exclusion rule / robustness) and removed the Mellou citation from A.1. Updated Appendix A.2 service-time numbers and Appendix Table B.4 with new $W_q$ and blocking values.
+7. Added the new §6 "Inventory reconstruction uncertainty" paragraph framing the observed fullness rate and 55× gap as conservative lower bounds.
+8. Recompiled LaTeX. Main body stayed within 5 pages after tightening the §6 new paragraph and the §8 Conclusion closing sentence; final PDF is 14 pages total (main 5 + references 1 + appendix 8).
+9. Logged Prompts #137–#148 in this entry.

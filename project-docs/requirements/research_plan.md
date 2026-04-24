@@ -221,6 +221,41 @@ Timeline: 2026-04-08 → 2026-05-08
 - [x] **3.2a.7** Update all Bluebikes figures and tables with corrected results
   - Generated: phase3_wq_comparison.png, phase3_blocking_comparison.png, phase3_error_summary.png
 
+### 3.2b Fullness-flag State-Transition Revision (inserted 2026-04-24)
+
+> **Background:** Review of Appendix A.1 (2026-04-24) surfaced two defects in the original fullness-detection algorithm in `data_pipeline.py` + `fullness_filter.py`:
+> 1. **Over-counting via clamp:** `at_full[i] = True` fired every time the running count exceeded $C_s$, including repeat trip-ends during an already-at-capacity state. Each such event is physical evidence that a slot was available at that instant (otherwise the trip-end would have been rejected), so flagging it as "full" is self-contradictory and inflates the observed fullness rate.
+> 2. **Missing retract logic:** A candidate full interval $[T_1, T_2]$ that is interrupted by an intervening trip-end was nevertheless retained in the original algorithm (its end was defined by the next trip-start). The intervening trip-end proves non-fullness at that instant, so the interval cannot be claimed as continuously full without additional information.
+
+**Revised definitions:**
+
+- **Full flag (per event):** set only at a trip-end that causes the natural increment $I_s: C_s - 1 \to C_s$. clamp events (overflow corrections) remain in the code as bookkeeping for drift but do not set the flag.
+- **Full interval (per segment):** $[T_1, T_2]$ is declared full iff (a) $T_1$ is a natural C-1→C entry, (b) $T_2$ is the next event at station $s$, (c) $T_2$ is a trip-start, AND (d) no trip-end appears in $(T_1, T_2)$. If (d) fails, the entire candidate interval is retracted; no partial interval is retained.
+
+**Expected downstream effects:**
+
+| Metric | Direction of change |
+|---|---|
+| Observed fullness rate (Kendall/MIT) | Lower (likely substantially below 5.32%) |
+| Excluded IAT count | Lower (fewer intervals rejected) |
+| $N$ after fullness exclusion | Higher (more IATs retained) |
+| $\lambda$, $\mu$ estimates | Small change (depends on shift in excluded set) |
+| Erlang B blocking prediction | Small change (λ, μ both slightly shift) |
+| "75× gap" headline | **Likely shrinks** (observed numerator decreases) |
+
+**Modification steps:**
+
+- [ ] **3.2b.1** Rewrite `reconstruct_inventory()` in `data_pipeline.py` so `at_full` is set only on natural $C_s-1 \to C_s$ transitions; `at_capacity = at_full` (drop the `| (inventory >= capacity)` clause).
+- [ ] **3.2b.2** Rewrite `get_full_capacity_periods()` in `fullness_filter.py` to generate candidate intervals and retract any interrupted by an intervening trip-end.
+- [ ] **3.2b.3** Regenerate `data/processed/bb_inventory_*.parquet`; record new observed fullness rate for each station.
+- [ ] **3.2b.4** Re-run `phase2_descriptive.py`; record updated $N$, CV, skewness, GoF, AIC for both BB stations.
+- [ ] **3.2b.5** Re-run `phase3_queueing.py` and `phase3_simulation.py`; record updated $\lambda$, $\mu$, M/M/c $W_q$, Erlang B predicted blocking, and DES outputs with 95% CI.
+- [ ] **3.2b.6** Regenerate all Phase 2/3 visualizations; copy new PNGs into `project-docs/report/figures/`.
+- [ ] **3.2b.7** Rewrite Appendix A.1 to reflect the revised algorithm (remove Mellou citation from A.1 — keep it only in §6/§7; drop the "< 1 minute merge" sentence that was inconsistent with the implementation; state the initial condition $\lfloor C_s/2 \rfloor$ honestly; describe clamp as bookkeeping and full flag as a state-transition with retract semantics).
+- [ ] **3.2b.8** Update numerical values throughout main.tex (§2 fullness rates, §4.2 queueing table, §4.3 Erlang B gap, Table 1 $N$) to match the re-run outputs.
+- [ ] **3.2b.9** Add a new paragraph "Inventory reconstruction uncertainty" to §6 Limitations, reframing the observed fullness rate as a conservative lower bound and the Erlang B gap as "at least this large."
+- [ ] **3.2b.10** Recompile LaTeX and verify main body stays within 5 pages; adjust prose if §6 addition causes overflow.
+
 ### 3.3 Error Quantification
 
 - [x] **3.3.1** Compare Poisson-based predictions vs. empirical-DES outcomes for each metric
@@ -292,6 +327,7 @@ Timeline: 2026-04-08 → 2026-05-08
   - **D. Outstanding content**
     - D1. Main-text Fig 1 and Fig 2 are still placeholder frameboxes; real figures to be generated in Task #4
     - D2. References currently 8 entries — add O'Mahony 2015 and other supporting citations as needed in Task #7
+    - D3. Appendix A.1 algorithm description defective — Mellou citation misleading, "< 1 minute merge" not in code, initial condition misstated, per-clamp at_full inflates fullness rate, no retract-on-intervening-trip-end logic. Full revision tracked in §3.2b.
 - [ ] **4.2.4** Add references
   - > **Checkpoint:** Review draft report with user before finalization.
 - [ ] **4.2.5** Finalize report for submission by 5/8 11:59pm ET
@@ -336,3 +372,4 @@ Timeline: 2026-04-08 → 2026-05-08
 | D10 | Bluebikes queueing model | **Resolved** | M/M/c (infinite queue, theoretical) + M/M/c/c (Erlang B, loss/rejection model). M/M/1 unstable for BB |
 | D11 | Bluebikes fullness data handling | **Resolved** | Exclude from λ/μ estimation and distribution fitting; use observed fullness rate to validate Erlang B blocking probability |
 | D12 | Dock fullness correction method (BB) | **Resolved** | Mellou & Jaillet (2019) identified as canonical method. Not implemented (scope/timeline/confounding); documented in Limitations and Future Work |
+| D13 | Fullness-flag definition (BB) | **Resolved** | State-transition based: full flag set only on natural $C-1 \to C$ trip-end increment; candidate interval retracted if any trip-end intervenes before next trip-start. Chosen over per-clamp flagging (over-counts) and non-retracting state (ignores physical evidence of non-fullness). Motivates §3.2b revision. |

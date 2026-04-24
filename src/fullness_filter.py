@@ -17,37 +17,56 @@ BB_STATIONS = {
 
 def get_full_capacity_periods(station_id):
     """
-    Build merged full-capacity time windows from inventory data.
-    Returns list of (start, end) tuples representing continuous full periods.
+    Build committed full-capacity time windows from inventory data.
+
+    An entry event (at_capacity=True: a natural C-1 → C trip-end transition,
+    per the revised data_pipeline semantics) starts a candidate window. The
+    candidate is committed ONLY if the next station event is a trip-start
+    (departure), which confirms the station remained full long enough for a
+    bike to be withdrawn. If the next event is another trip-end — which
+    implies a rebalancing pickup between the two arrivals and therefore a
+    moment of non-fullness — the candidate interval is retracted entirely
+    (no partial span retained), because we lack evidence that the station
+    was continuously at capacity across the interval.
+
+    Committed windows do not overlap by construction: a committed window
+    ends at a trip-start that lowers I_s to C-1, and the next natural entry
+    (C-1 → C) requires a subsequent trip-end whose time is strictly later.
+
+    Returns list of (start, end) tuples.
     """
     inv = pd.read_parquet(PROCESSED / f"bb_inventory_{station_id}.parquet")
     inv["time"] = pd.to_datetime(inv["time"])
+    inv = inv.sort_values("time").reset_index(drop=True)
 
-    # Each at_capacity=True arrival marks the start of a full period.
-    # The period ends at the next departure event.
-    full_events = inv[inv["at_capacity"]].copy()
+    entry_rows = inv.index[inv["at_capacity"]].tolist()
 
     periods = []
-    for _, row in full_events.iterrows():
-        start = row["time"]
-        next_dep = inv[(inv["time"] > start) & (inv["event"] == "departure")]
-        if len(next_dep) > 0:
-            end = next_dep.iloc[0]["time"]
-            periods.append((start, end))
+    for idx in entry_rows:
+        if idx + 1 >= len(inv):
+            continue  # no subsequent event — cannot confirm the window
+        next_event = inv.iloc[idx + 1]
+        if next_event["event"] == "departure":
+            periods.append((inv.loc[idx, "time"], next_event["time"]))
+        # else: next event is another trip-end → retract candidate
 
-    if not periods:
-        return []
+    return periods
 
-    # Merge overlapping periods
-    periods.sort(key=lambda x: x[0])
-    merged = [periods[0]]
-    for start, end in periods[1:]:
-        if start <= merged[-1][1]:
-            merged[-1] = (merged[-1][0], max(merged[-1][1], end))
-        else:
-            merged.append((start, end))
 
-    return merged
+def mark_in_full_periods(inv, full_periods):
+    """
+    Boolean mask over an inventory DataFrame marking events whose timestamp
+    falls within any committed full-capacity period (inclusive of endpoints).
+    """
+    if not full_periods:
+        return np.zeros(len(inv), dtype=bool)
+    times = inv["time"].values.astype("datetime64[ns]")
+    in_full = np.zeros(len(inv), dtype=bool)
+    for start, end in full_periods:
+        start_ns = np.datetime64(pd.Timestamp(start))
+        end_ns = np.datetime64(pd.Timestamp(end))
+        in_full |= (times >= start_ns) & (times <= end_ns)
+    return in_full
 
 
 def is_during_full_period(timestamp, full_periods):
@@ -105,20 +124,32 @@ def filter_bb_arrivals(bb, station_id, full_periods):
 
 def get_observed_fullness_rate(station_id):
     """
-    Compute observed fullness rate from inventory data.
-    Returns fraction of time at capacity (for Erlang B validation).
+    Observed fullness rate: fraction of total observation time the station
+    spent inside a committed full-capacity period. This is the quantity to
+    compare against the Erlang B blocking prediction.
     """
     inv = pd.read_parquet(PROCESSED / f"bb_inventory_{station_id}.parquet")
-    return inv["at_capacity"].mean()
+    inv["time"] = pd.to_datetime(inv["time"])
+    periods = get_full_capacity_periods(station_id)
+    if not periods:
+        return 0.0
+    total_full = sum((e - s).total_seconds() for s, e in periods)
+    obs_span = (inv["time"].iloc[-1] - inv["time"].iloc[0]).total_seconds()
+    if obs_span <= 0:
+        return 0.0
+    return total_full / obs_span
 
 
 def filter_inventory_for_service_rate(station_id):
     """
-    Return inventory data excluding full-capacity periods,
-    for unbiased service rate estimation.
+    Inventory data excluding events inside any committed full-capacity
+    period, for unbiased service-rate (mu) estimation via Little's Law.
     """
     inv = pd.read_parquet(PROCESSED / f"bb_inventory_{station_id}.parquet")
-    return inv[~inv["at_capacity"]].copy()
+    inv["time"] = pd.to_datetime(inv["time"])
+    periods = get_full_capacity_periods(station_id)
+    in_full = mark_in_full_periods(inv, periods)
+    return inv[~in_full].copy()
 
 
 if __name__ == "__main__":

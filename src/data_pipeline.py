@@ -105,17 +105,26 @@ def filter_operating_hours(df, time_col="arrival_time", start_hour=5, end_hour=2
 
 def reconstruct_inventory(arrivals, departures, station_id, capacity):
     """
-    Reconstruct dock inventory using look-ahead correction
-    (adapted from Analytics Edge Group 7 methodology).
+    Reconstruct dock inventory by forward event-stream replay with
+    bookkeeping clamps for unlogged operator rebalancing, and flag
+    full/empty as *state transitions* (not per-clamp).
 
-    Logic:
-    1. Build event stream of arrivals (+1) and departures (-1).
-    2. Compute naive cumulative inventory, normalized so min = 0.
-    3. Forward pass: clamp inventory to [0, capacity].
-    4. Look-ahead correction: if a departure occurs when inventory = 0,
-       retrospectively add +1 to earlier inventory (a rebalancing must
-       have occurred). Similarly, if an arrival occurs when inventory =
-       capacity, retrospectively subtract 1.
+    Inventory step:
+    1. Build event stream of arrivals (+1) and departures (-1), sorted by time.
+    2. Start from capacity // 2 (no GBFS ground truth available).
+    3. Apply deltas in order; if the running count would exceed [0, capacity],
+       clamp to the boundary. The clamp is a bookkeeping correction for
+       unlogged truck pickups/drop-offs and is *not* evidence of a full/empty
+       state on its own.
+
+    State flags (used downstream for full-capacity exclusion):
+    - `at_capacity[i] = True` only when this event is a *trip-end* (arrival)
+      that raises inventory from capacity-1 to capacity via natural
+      increment (no clamp). A clamp event is not flagged, because the
+      successful trip-end is physical evidence that a slot was available
+      at that instant — flagging it as "full" would be self-contradictory.
+    - `at_empty[i] = True` symmetrically: only a trip-start (departure)
+      that lowers inventory from 1 to 0 via natural decrement.
     """
     arr = arrivals[arrivals["end_station_id"] == station_id][["arrival_time"]].copy()
     arr["event"] = "arrival"
@@ -129,40 +138,47 @@ def reconstruct_inventory(arrivals, departures, station_id, capacity):
 
     events = pd.concat([arr, dep]).sort_values("time").reset_index(drop=True)
 
-    # --- Look-ahead corrected inventory reconstruction ---
     n = len(events)
     inventory = np.zeros(n, dtype=int)
     at_full = np.zeros(n, dtype=bool)
     at_empty = np.zeros(n, dtype=bool)
 
-    # Start at half capacity (reasonable assumption without ground truth)
     current = capacity // 2
 
     for i in range(n):
         delta = events.loc[i, "delta"]
         event = events.loc[i, "event"]
 
-        current += delta
+        proposed = current + delta
+        clamped = False
 
-        # Look-ahead correction: departure from empty station
-        if current < 0:
-            # A rebalancing must have added bikes before this departure.
-            # Correct: set current to 0 (the departure just emptied it).
-            current = 0
-            at_empty[i] = True
+        if proposed < 0:
+            proposed = 0
+            clamped = True  # bookkeeping correction for an unlogged pickup
 
-        # Look-ahead correction: arrival to full station
-        if current > capacity:
-            # A rebalancing must have removed bikes before this arrival.
-            # Correct: set current to capacity (the arrival just filled it).
-            current = capacity
-            at_full[i] = True
+        if proposed > capacity:
+            proposed = capacity
+            clamped = True  # bookkeeping correction for an unlogged drop-off
 
+        # Natural-transition flags: set only when the physical state actually
+        # reaches the boundary via a non-clamped delta.
+        if not clamped:
+            if event == "arrival" and current == capacity - 1 and proposed == capacity:
+                at_full[i] = True
+            if event == "departure" and current == 1 and proposed == 0:
+                at_empty[i] = True
+
+        current = proposed
         inventory[i] = current
 
     events["inventory"] = inventory
-    events["at_capacity"] = at_full | (inventory >= capacity)
-    events["at_empty"] = at_empty | (inventory <= 0)
+    # `at_capacity` is now strictly the natural-transition flag. The previous
+    # union with `inventory >= capacity` has been dropped because a persistent
+    # at-capacity stretch is represented by the entry transition plus the
+    # absence of an exit transition, not by every event that happens to be
+    # at the boundary.
+    events["at_capacity"] = at_full
+    events["at_empty"] = at_empty
     events.attrs["capacity"] = capacity
 
     return events
@@ -202,13 +218,13 @@ if __name__ == "__main__":
     print("Computing Bluebikes inter-arrival times...")
     bb_arrivals = compute_interarrival_times(bb_arrivals, group_col="end_station_id")
 
-    print("Reconstructing inventory for fullness detection (look-ahead correction)...")
+    print("Reconstructing inventory (forward event replay with bookkeeping clamps, state-transition flags)...")
     for sid, info in BB_STATIONS.items():
         inv = reconstruct_inventory(bb_arrivals, bb_departures, sid, capacity=info["capacity"])
-        pct_full = inv["at_capacity"].mean() * 100
-        pct_empty = inv["at_empty"].mean() * 100
+        n_full_entries = int(inv["at_capacity"].sum())
+        n_empty_entries = int(inv["at_empty"].sum())
         print(f"  {info['name']} ({sid}): capacity={info['capacity']}, "
-              f"at capacity {pct_full:.1f}%, at empty {pct_empty:.1f}%")
+              f"full-entry events {n_full_entries}, empty-entry events {n_empty_entries}")
         inv.to_parquet(PROCESSED / f"bb_inventory_{sid}.parquet", index=False)
 
     bb_arrivals.to_parquet(PROCESSED / "bb_arrivals.parquet", index=False)
