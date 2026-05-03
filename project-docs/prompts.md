@@ -2884,3 +2884,57 @@ Push.
 **Response / 応答:**
 
 Appended Prompts #163–#166 to `project-docs/prompts.md`. Staged `main.tex`, the recompiled `report.pdf`, and `prompts.md`. Committed and pushed to origin/main.
+
+---
+
+## Prompt #167
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+MBTAは、待ち行列理論でプラットフォームの数を決めているわけではないから、レポートの中でMBTAが待ち行列理論を意思決定に使うと危険みたいな書き方はやめた方がいいのでは？
+
+**English:**
+
+MBTA does not actually use queueing theory to size the number of platforms, so the report's framing — that MBTA's queueing-theory-based decisions are dangerous — should probably be toned down.
+
+**Response / 応答:**
+
+Agreed the framing was a strawman. Real MBTA decisions: platform length is inherited capital (Kendall opened 1912), service frequency is set from demand forecasts and operating/fleet/budget constraints, and per-train $W_q$ at one station is not a binding input. Identified five problematic locations in main.tex (Introduction "platform sizing" claim, Contributions "conservative is not safe" framing, §5 "Operator-side risk: over-provisioning" paragraph with "fleet addition / platform extension / billions of dollars" rhetoric, §8 Conclusion "wasteful infrastructure", and the redundant "Harmless regime" paragraph that conflicts with §5). Proposed Option A (soft revision) preserving the over-prediction *finding* but reframing MBTA as off-the-decision-path rather than as a danger. Recommended Option A.
+
+---
+
+## Prompt #168
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+Yes
+
+**English:**
+
+Yes (proceed with Option A).
+
+**Response / 応答:**
+
+Implemented the five edits in main.tex: (1) §1 Intro narrowed the decision-path claim to bike-share dock-counts/rebalancing plus consultancy-style transit user-experience studies, dropping "platform sizing"; (2) Contributions rewrote the asymmetry as "user-side blocking under-prediction is binding, MBTA wait over-prediction is large in relative terms but does not feed any operational decision"; (3) §5 Discussion replaced "Operator-side risk: over-provisioning" with "Off the decision path: MBTA wait" — argues platform length is inherited capital, frequency is set from demand/operations, crowding (not queueing wait) is the customer metric, 20 s vs 4 s both below minute-scale decision resolution; folded the "Harmless regime" paragraph into the same paragraph by extending the same logic to MIT Vassar~St; (4) §5 reframed Poisson's error as having three orthogonal axes (direction, magnitude, decision path) rather than two; (5) §8 Conclusion replaced "wasteful infrastructure" with "per-train $W_q$ is not how transit is planned, so the same magnitude is harmless." First compile pushed main body to 6 pages; tightened the §5 Off-path paragraph and the Conclusion (removed redundant "20s vs 4s" and "real-world plan" duplicates) to bring it back to 5. Re-ran bibtex + pdflatex twice; main 5 / refs 1 / appendix 9 / total 15 pages, citations resolved.
+
+---
+
+## Prompt #169
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+pushして
+
+**English:**
+
+Push.
+
+**Response / 応答:**
+
+Appended Prompts #167–#169 to prompts.md. Staged main.tex, the recompiled report.pdf, and prompts.md. Committed and pushed to origin/main.
