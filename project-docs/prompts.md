@@ -2812,3 +2812,75 @@ Log the prompts and push.
 **Response / 応答:**
 
 Appended Prompts #157–#162 to `project-docs/prompts.md` in the bilingual format. Staged `prompts.md` together with the deletions of `outputs/figures/bb_interarrival_hist.png`, `project-docs/report/figures/bb_interarrival_hist.png`, and the edit to `src/visualize_exploratory.py`. Committed and pushed to origin/main.
+
+---
+
+## Prompt #163
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+bluebikeの待ち行列理論だけど、これを活かせばブロック率も算定できるんだろうか。
+
+**English:**
+
+For Bluebikes queueing theory — can we leverage it to also compute the blocking rate?
+
+**Response / 応答:**
+
+Pointed out that this is already done in the report: the M/M/$c/c$ Erlang B loss model gives a closed-form blocking probability $B(c, \rho) = (\rho^c/c!) / \sum_{k=0}^{c} (\rho^k/k!)$, implemented in `src/phase3_queueing.py` and reported in §4.3 + Appendix Table B.4. Results: Kendall predicts 0.068% vs observed 3.73% (55× gap); Vassar predicts ≈0% vs observed 2.88%. Explained why the prediction undershoots — Poisson arrivals violated (CV=1.75), exponential service violated, and stationarity violated by hour-of-day variation in $\lambda$ and $\mu$. Empirical-arrival finite-capacity DES still only gets to 0.54% at Kendall, isolating service-process non-stationarity as the residual driver. Listed possible extensions (time-of-day Erlang B, Hayward/Brockmeyer corrections for overdispersed arrivals, G/G/c/c simulation) but recommended deferring to Future Work given the May 8 deadline.
+
+---
+
+## Prompt #164
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+reportのtable2で、mbtaの北行きと南行きで値が全然違うのはなぜ
+
+**English:**
+
+In Table 2 of the report, why are the MBTA Northbound and Southbound values so different?
+
+**Response / 応答:**
+
+Verified against the parquet: IATs are essentially identical between directions (mean 472 vs 473 s, CV~0.6–0.7), but **dwell time is asymmetric** — Northbound mean 82 s vs Southbound 61 s. Plugged into M/M/1: $W_q = \rho \bar{S} / (1-\rho)$ gives ~17 s vs ~9 s analytically (Table 2 reports 20.1 vs 10.7 with the disruption-filtered subset), a ~2× factor that traces entirely to dwell, not arrivals. Identified the physical cause as Kendall/MIT's morning-peak boarding asymmetry — the Northbound (inbound to Boston) platform handles heavier passenger flows from the Cambridge employment cluster. Also noted that the empirical-DES Northbound vs Southbound gap (4.2 vs 0.9 s) is amplified further because the i.i.d.-bootstrap loses timetable autocorrelation, and the higher-$\rho$ Northbound suffers more from that loss. Offered to add a one-sentence note to §4.2.
+
+---
+
+## Prompt #165
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+書いてください
+
+**English:**
+
+Please write it.
+
+**Response / 応答:**
+
+Inserted one sentence into §4.2 (`main.tex:96`) immediately after the "20.1 vs 4.2 / 10.7 vs 0.9" comparison: *"The Northbound--Southbound spread is driven by dwell-time asymmetry at Kendall/MIT (mean dwell 82~s vs 61~s, reflecting heavier morning-peak boardings on the inbound platform), not by arrival-process differences."* Recompiled LaTeX; main body still 5 pages, total 15 pages (no float reflow). Cleaned aux files. Left the change uncommitted for review.
+
+---
+
+## Prompt #166
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+pushして
+
+**English:**
+
+Push.
+
+**Response / 応答:**
+
+Appended Prompts #163–#166 to `project-docs/prompts.md`. Staged `main.tex`, the recompiled `report.pdf`, and `prompts.md`. Committed and pushed to origin/main.
