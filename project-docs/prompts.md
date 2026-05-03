@@ -3136,3 +3136,21 @@ Push. And actually — make sure to log the prompts properly, will you?
 **Response / 応答:**
 
 Acknowledged the slip: I had been logging prompts only when explicitly told to push, rather than appending each turn as the project rule (memory: feedback_prompt_logging) requires. Going forward, append a fresh prompt entry after each substantive user turn rather than batching them at push time. Appended #177–#180 in this commit with full Japanese + English text and response summaries (including the multi-step compression iteration that went beyond the originally planned four cuts), staged main.tex / report.pdf / prompts.md, committed and pushed to origin/main.
+
+---
+
+## Prompt #181
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+research_planも最新に更新して
+
+**English:**
+
+Update research_plan to the latest state too.
+
+**Response / 応答:**
+
+Updated `project-docs/requirements/research_plan.md` with the cumulative state since the last update (commit `1e5a563`, 2026-04-24): (1) Fixed the §4.2.2 page-count metadata from 13 → 15 to match the post-§3.2b PDF; (2) Marked §4.2.2a A2 (service-process non-stationarity direction verification) as superseded by the D18 softening; (3) Marked §4.2.2a B1 ("Error direction is predictable from structure" overreach concern) as resolved by the §5 paragraph merge; (4) Added a new §4.2c "Editorial revisions: framing and metric-split emphasis (2026-05-01 → 2026-05-03)" with seven tracked steps covering the dwell-asymmetry note, MBTA reframing, Vassar sentence removal, Limitation 1 rewrite, non-stationarity softening, metric-split surfacing, and stale-figure cleanup, plus a before/after comparison table; (5) Added four new decisions to the Summary table — D16 (MBTA over-prediction framing), D17 (latent demand vs censoring), D18 (residual blocking gap source), D19 (metric-split surfacing). All commits cross-referenced in the plan entries (`94cbd64`, `83adf71`, `b3d1c30`, `4abf79f`, `1b184f7`, `822939e`).
