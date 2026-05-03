@@ -2704,3 +2704,111 @@ Log the prompts and push.
 **Response / 応答:**
 
 Appended Prompts #149–#156 to `project-docs/prompts.md` in the bilingual format with response summaries. Committed the single-file change and pushed to origin/main.
+
+---
+
+## Prompt #157
+
+**Date / 日付:** 2026-05-01
+
+**Japanese / 日本語:**
+
+prompts.mdとresearch_plan.mdを読んでこれまでの流れを思い出してください。
+
+**English:**
+
+Read prompts.md and research_plan.md to recall the project flow so far.
+
+**Response / 応答:**
+
+Read both files (prompts.md #1–#156, research_plan.md through the §3.2b revision and the D14/D15 resolutions). Summarised in Japanese: project goal (Poisson goodness-of-fit for BB and MBTA), Phases 1–3 complete, the §3.2b state-transition fullness-flag revision (Kendall fullness 5.32%→3.73%, Erlang B gap 75×→55×, $W_q$ 10.8→9.4 s), the Figure 1 / Table 2 hardcoded-value bug fix, the BB $W_q$ infinite-queue clarification, and the remaining Phase 4 tasks (§4.2.2a A1/A2/B1/B2/C, §4.2.4 references, §4.2.5 finalize, §4.3 reproducibility, §4.4 presentation). Asked what to start next.
+
+---
+
+## Prompt #158
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+bb_interarrival_hist.png と phase2_histograms.png を比較して。Bluebikes の inter-arrival 分布の図が値が違う。bb_interarrival_hist.png の方をレポートで使った？
+
+**English:**
+
+Compare bb_interarrival_hist.png with phase2_histograms.png. The graphs for Bluebikes inter-arrival time distributions have different values. Did we use the graphs in bb_interarrival_hist.png for the report?
+
+**Response / 応答:**
+
+Confirmed: the report uses only `phase2_histograms.png` (referenced from `appendix.tex:185` as a subfigure). `bb_interarrival_hist.png` has zero LaTeX references — it is a Phase 1 exploratory snapshot from `visualize_exploratory.py` dated Apr 10, generated before the fullness-exclusion patch (logged in Prompt #1796 of the original audit) and before the §3.2b state-transition revision. The two figures show different N, different CV (1.96 vs 1.753 for Kendall), different x-axis units (seconds vs minutes), and different exponential overlays. The Apr-10 snapshot is stale and disconnected from current report numbers; offered to delete it.
+
+---
+
+## Prompt #159
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+削除してください。
+
+**English:**
+
+Delete it.
+
+**Response / 応答:**
+
+Confirmed both copies were git-tracked, then deleted `outputs/figures/bb_interarrival_hist.png` and `project-docs/report/figures/bb_interarrival_hist.png`. Verified absence. Flagged that the generator (`plot_bb_interarrival_hist` in `src/visualize_exploratory.py` L93–116 plus the call at L216) would regenerate stale output if rerun, and asked whether to remove the code as well.
+
+---
+
+## Prompt #160
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+古いグラフと新しいグラフでy軸が10倍値が違いますが、インベントリの補正だけでここまで違うものでしょうか。新しいy軸の値は正確？
+
+**English:**
+
+The y-axis values differ by ~10× between the old and new graphs. Can the inventory (fullness) correction alone cause that magnitude of difference? Are the new y-axis values correct?
+
+**Response / 応答:**
+
+Diagnosed three causes for the y-axis scale change, ranked by contribution: (1) **x-axis unit change seconds→minutes** in `visualize_phase2.py:111` (`iat_min = iat / 60`) — by the density transformation rule this multiplies all density values by ×60, the dominant factor; (2) **99th-percentile clip range collapse** — fullness exclusion removes the artificially long IATs that span across full-capacity periods (where no arrivals are recorded), so Kendall's 99th percentile drops from ~22,500 s ≈ 375 min to ~80 min, concentrating the same probability mass into a narrower x-range and lifting the peak by an additional ~1.5–2×; (3) **bin count 80→60**, minor effect. Cross-checked against the theoretical exponential peak: 1/mean = 1/11 min = 0.091 per min for Kendall, 1/6.3 = 0.16 per min for Vassar — the observed peaks (0.16, 0.26) are above the exponential reference, consistent with the over-dispersed (CV=1.75–1.90) burst behaviour reported in Table 1. Concluded the new y-axis is mathematically correct and consistent with all downstream report numbers.
+
+---
+
+## Prompt #161
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+コードは更新しておいて。
+
+**English:**
+
+Update the code as well (remove the orphaned generator).
+
+**Response / 応答:**
+
+Removed `plot_bb_interarrival_hist` (former L93–116) and its `main` call (former L216) from `src/visualize_exploratory.py`. Verified zero remaining references to the function or output filename in that file. The script can no longer regenerate the stale figure on rerun.
+
+---
+
+## Prompt #162
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+プロンプト記録してpushしておいて
+
+**English:**
+
+Log the prompts and push.
+
+**Response / 応答:**
+
+Appended Prompts #157–#162 to `project-docs/prompts.md` in the bilingual format. Staged `prompts.md` together with the deletions of `outputs/figures/bb_interarrival_hist.png`, `project-docs/report/figures/bb_interarrival_hist.png`, and the edit to `src/visualize_exploratory.py`. Committed and pushed to origin/main.

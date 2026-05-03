@@ -90,32 +90,6 @@ def plot_bb_daily_arrivals(bb):
     print(f"  Saved: {FIGURES / 'bb_daily_arrivals.png'}")
 
 
-def plot_bb_interarrival_hist(bb):
-    """Histogram of Bluebikes inter-arrival times."""
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-    for i, (sid, info) in enumerate(BB_STATIONS.items()):
-        subset = bb[(bb["end_station_id"] == sid) & (bb["interarrival_sec"].notna())]
-        iat = subset["interarrival_sec"]
-        # Clip to reasonable range for visualization
-        iat_clipped = iat[iat.between(0, iat.quantile(0.99))]
-        mean_iat = iat_clipped.mean()
-        axes[i].hist(iat_clipped, bins=80, density=True, color="steelblue", alpha=0.7,
-                     edgecolor="white", linewidth=0.3)
-        # Overlay exponential fit
-        x = np.linspace(0, iat_clipped.max(), 300)
-        lam = 1.0 / mean_iat
-        axes[i].plot(x, lam * np.exp(-lam * x), "r-", linewidth=2,
-                     label=f"Exp(λ={lam:.4f})")
-        axes[i].set_title(f"{info['name']} ({sid})\nMean={mean_iat:.0f}s, CV={iat_clipped.std()/mean_iat:.2f}")
-        axes[i].set_xlabel("Inter-arrival Time (seconds)")
-        axes[i].set_ylabel("Density")
-        axes[i].legend()
-    fig.suptitle("Bluebikes: Inter-arrival Time Distribution", fontweight="bold")
-    fig.tight_layout()
-    fig.savefig(FIGURES / "bb_interarrival_hist.png", dpi=150)
-    print(f"  Saved: {FIGURES / 'bb_interarrival_hist.png'}")
-
-
 def plot_mbta_headway_by_hour(mbta):
     """MBTA headway by hour of day."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -213,7 +187,6 @@ if __name__ == "__main__":
     plot_bb_arrivals_by_hour(bb)
     plot_bb_arrivals_by_dow(bb)
     plot_bb_daily_arrivals(bb)
-    plot_bb_interarrival_hist(bb)
     for sid, info in BB_STATIONS.items():
         plot_bb_inventory(sid, info)
 
