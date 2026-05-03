@@ -2974,3 +2974,93 @@ Push.
 **Response / 応答:**
 
 Appended Prompts #170-#171 to prompts.md. Staged main.tex, recompiled report.pdf, and prompts.md. Committed and pushed to origin/main.
+
+---
+
+## Prompt #172
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+§6 Limitation 1 "Arrival censoring at full Bluebikes docks" は、§2 と Appendix A.1 で満員区間のIATを除外している事実と整合していない。除外しているなら「観測は下限」の根拠は弱い。残る censoring は「満員予期による divert」のような demand suppression であって、満員区間そのものではない。Limitation のタイトルと文章を、除外の事実を踏まえた残余 risk に narrow して書き直すべきでは？どう思う？
+
+**English:**
+
+§6 Limitation 1 "Arrival censoring at full Bluebikes docks" is inconsistent with §2/Appendix A.1, which already exclude full-period IATs. With exclusion in place, the "observed is a lower bound" framing is weak. The residual censoring is demand suppression (anticipatory diversion / abandonment when expecting a full station), not the full periods themselves. Should the title and body be narrowed to the residual after-exclusion risk?
+
+**Response / 應答:**
+
+Agreed and proposed a rewrite. Old framing (zero arrivals during full periods → λ is a lower bound) double-counts what exclusion already handles. New framing focuses on latent demand from divert/abandon behaviour, with Mellou–Jaillet's lost-demand estimator now correctly positioned as targeting that residual rather than as a "recovery method" for the excluded periods. Title changed from "Arrival censoring at full Bluebikes docks" to "Latent demand suppression at Bluebikes." Verified consistency with §2/A.1 wording and with the §6 "Inventory reconstruction uncertainty" paragraph (different uncertainty axis, no overlap).
+
+---
+
+## Prompt #173
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+yes
+
+**English:**
+
+Yes (apply the rewrite).
+
+**Response / 応答:**
+
+Applied the rewrite to `main.tex:118` (now `main.tex:116`). First compile pushed Conclusion onto p6 (one-line overflow). Tightened the new Limitation 1 paragraph in two passes (lengthy "for trips that did occur" → "for realised trips"; "would-be users who anticipate or observe a full station divert or abandon, and never appear in the dataset" → "users who divert or abandon when expecting a full station and never appear in the dataset"; dropped "we do not apply it because"). Also compressed §8 Conclusion last sentence by replacing the period before "Evaluate Poisson..." with a semicolon. Final layout: main 5p / refs 1p / appendix 9p / total 15p.
+
+---
+
+## Prompt #174
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+§7 の autocorrelation-preserving arrival generator は MBTA 用の話になっているが、Bluebikes にも arrival 側の精緻化が必要なはず。Bluebikes の高 CV の主要因は §4.1 自身が non-stationarity と言っており、time-varying λ(t) (NHPP) で各時間帯内 Poisson を繋げれば arrival process の相当部分が再現できる可能性がある。現状の §4.3 の「arrival correction alone cannot close the gap」も、i.i.d. bootstrap でしか検証していないので、time-varying λ を試したわけではない。Future Work に Bluebikes 用の time-varying λ 拡張（service 側の time-varying µ と組み合わせ）を追加する案、および §6 Limitation の "service-process non-stationarity unmodelled" を arrival も含めた non-stationarity 一般に拡張する案を出して。
+
+**English:**
+
+§7's autocorrelation-preserving arrival generator is currently MBTA-only, but Bluebikes also needs arrival-side refinement. The high BB CV is itself attributed to non-stationarity in §4.1; chaining hourly Poisson via NHPP λ(t) could reproduce a large share of the arrival process. The §4.3 claim "arrival correction alone cannot close the gap" was only tested with i.i.d. bootstrap — time-varying λ has not been tried. Propose adding a Bluebikes time-varying λ extension (combined with time-varying μ) to Future Work, and extending §6 Limitation's "service-process non-stationarity unmodelled" to general non-stationarity including arrivals.
+
+**Response / 応答:**
+
+Agreed the current attribution is overstated — i.i.d. bootstrap with marginal CV=1.75 cannot reproduce high-rate clusters during peak hours. Proposed (a) §7 rewrite as three numbered extensions including a new Bluebikes NHPP × time-varying μ(t) test, (b) §6 paragraph generalised from "Service-process non-stationarity" to "Non-stationarity" with explicit acknowledgement that the i.i.d. bootstrap tests neither λ nor μ time variation. Flagged required consistency edits: §4.3 main text, Abstract, §1 Contributions all carry "isolating service-process non-stationarity" language that would conflict with the new Limitation. Recommended softening "isolating" → "suggesting" / "consistent with" everywhere.
+
+---
+
+## Prompt #175
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+yes
+
+**English:**
+
+Yes (proceed with all 5 edits).
+
+**Response / 応答:**
+
+Made five coordinated edits to align the report's framing: (1) Abstract — "isolating service-process non-stationarity" → "suggesting service-process non-stationarity (and untested arrival non-stationarity)" + "stationary arrival-process correction"; (2) §1 Contributions — "isolating service-process non-stationarity" → "suggesting non-stationarity in λ(t) and/or μ(t)" + "stationary arrival-process correction"; (3) §4.3 subsection title "isolates service non-stationarity" → "points to non-stationarity"; §4.3 body — "the residual is attributable to service-process non-stationarity" → "consistent with time-varying μ(t) (...) and with time-varying λ(t) that the i.i.d. bootstrap does not test"; (4) §6 Limitations — "Service-process non-stationarity unmodelled" → "Non-stationarity unmodelled", body now says the i.i.d. bootstrap tests neither λ(t) nor μ(t), so the attribution to service is suggestive; (5) §7 Future Work — restructured as three numbered extensions: (1) Mellou–Jaillet arrival reconstruction, (2) NEW: NHPP λ(t) × time-varying μ(t) for Bluebikes, (3) MBTA autocorrelation-preserving generator. Also updated §8 Conclusion to "leaving non-stationarity in λ(t) and/or μ(t) as the residual" for consistency. First compile overflowed Conclusion onto p6 by ~3 lines; compressed §4.3 body, §6 Inventory reconstruction uncertainty (dropped "forward from trip events"), and §6 Non-stationarity paragraph until Conclusion fit cleanly on p5. Final layout: main 5p / refs 1p / appendix 9p / total 15p, citations resolved.
+
+---
+
+## Prompt #176 (autonomous push)
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+(Auto mode — no explicit prompt; finalised the implementation per the approved plan.)
+
+**English:**
+
+(Auto mode continuation — finalised per the approved plan in `~/.claude/plans/tranquil-leaping-trinket.md`.)
+
+**Response / 応答:**
+
+Appended Prompts #172-#176 to prompts.md. Staged main.tex, recompiled report.pdf, prompts.md. Committed and pushed to origin/main.
