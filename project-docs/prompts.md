@@ -3154,3 +3154,39 @@ Update research_plan to the latest state too.
 **Response / 応答:**
 
 Updated `project-docs/requirements/research_plan.md` with the cumulative state since the last update (commit `1e5a563`, 2026-04-24): (1) Fixed the §4.2.2 page-count metadata from 13 → 15 to match the post-§3.2b PDF; (2) Marked §4.2.2a A2 (service-process non-stationarity direction verification) as superseded by the D18 softening; (3) Marked §4.2.2a B1 ("Error direction is predictable from structure" overreach concern) as resolved by the §5 paragraph merge; (4) Added a new §4.2c "Editorial revisions: framing and metric-split emphasis (2026-05-01 → 2026-05-03)" with seven tracked steps covering the dwell-asymmetry note, MBTA reframing, Vassar sentence removal, Limitation 1 rewrite, non-stationarity softening, metric-split surfacing, and stale-figure cleanup, plus a before/after comparison table; (5) Added four new decisions to the Summary table — D16 (MBTA over-prediction framing), D17 (latent demand vs censoring), D18 (residual blocking gap source), D19 (metric-split surfacing). All commits cross-referenced in the plan entries (`94cbd64`, `83adf71`, `b3d1c30`, `4abf79f`, `1b184f7`, `822939e`).
+
+---
+
+## Prompt #182
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+§4.3 の "dock occupancy swells at peak departures, collapses midday" は物理的に逆。借出ピーク時はドックから自転車が出ていくので占有時間は短くなる（µ大）、閑散時は自転車が残り続けて占有時間が長くなる（µ小）。修正案を出して。
+
+**English:**
+
+§4.3's "dock occupancy swells at peak departures, collapses midday" has the physics reversed. At peak demand bikes leave the dock quickly so dock occupancy is *short* (high μ); off-peak bikes sit idle so occupancy is *long* (low μ). Propose fixes.
+
+**Response / 應答:**
+
+Confirmed the user is correct: dock occupancy = time from a bike's arrival to the next user taking it, so high turnover at peak demand → short occupancy → high μ. Offered three options: (A) minimal direction-flip with same wording structure; (B) Kendall-specific asymmetric-flow explanation (recommended) — at Kendall, morning commuter inflow piles incoming bikes against a low outflow rate, so μ(t) falls exactly when λ(t) peaks, which is what physically drives the blocking events at this transit-hub station; (C) μ-language compact form. Recommended (B) for parallelism with the §4.2 dwell-asymmetry note (MBTA direction differences explained by physical asymmetry) and for explanatory power.
+
+---
+
+## Prompt #183
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+案Bで。+1行追加でページ予算オーバーする場合は §6 か §5 で1行圧縮して吸収して。
+
+**English:**
+
+Go with option B. If the +1 line pushes over the page budget, absorb it by compressing §6 or §5 by one line.
+
+**Response / 応答:**
+
+Replaced the §4.3 parenthetical with the option-B wording: "(at Kendall, morning commuter inflow piles incoming bikes against a low outflow rate, suppressing μ(t) exactly when λ(t) peaks)". Recompiled with bibtex; total 15 pages, main body still 5 pages — no compression needed because the new parenthetical happened to wrap within the existing line flow rather than adding a fresh line. §4.3 sentence verified on page 4; Conclusion still ends cleanly on page 5 with "evaluate Poisson by direction, magnitude, and decision path." No compensating cuts to §5 or §6.
