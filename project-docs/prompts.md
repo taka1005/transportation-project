@@ -2938,3 +2938,39 @@ Push.
 **Response / 応答:**
 
 Appended Prompts #167–#169 to prompts.md. Staged main.tex, the recompiled report.pdf, and prompts.md. Committed and pushed to origin/main.
+
+---
+
+## Prompt #170
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+§5 Discussion の "Off the decision path: MBTA wait" の最後の一文 "The same logic neutralises Bluebikes MIT Vassar St, where 53 docks push Wq to zero under every model" は論理がズレている。MBTA は decision path 軸、Vassar St は magnitude 軸の話で、"The same logic" でくくれない。さらに Vassar St は blocking metric では §4.3 で重大な過小評価が出ている。三軸フレームの一貫性のため、(A) この文を削除して
+
+**English:**
+
+The closing sentence of the "Off the decision path: MBTA wait" paragraph in §5 ("The same logic neutralises Bluebikes MIT Vassar~St, where 53 docks push $W_q$ to zero under every model") has a logical mismatch. MBTA is harmless via the decision-path axis; Vassar~St is harmless via the magnitude axis — they cannot share "the same logic". Worse, §4.3 shows Vassar~St is *not* harmless in the blocking dimension (Erlang B $\approx$ 0% vs observed 2.88%). For three-axis-framework consistency, (A) delete the sentence.
+
+**Response / 応答:**
+
+Removed the offending sentence from `main.tex:109` (§5 Off-path paragraph). Re-ran bibtex + pdflatex twice; layout unchanged: main body 5 pages (Conclusion still finishes on p5), references on p6, appendix p7-15, total 15. The "Off the decision path" paragraph now strictly addresses MBTA via the decision-path axis without contaminating it with the magnitude-axis Vassar~St case (which §4.3 already shows is not actually harmless in blocking).
+
+---
+
+## Prompt #171
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+push it
+
+**English:**
+
+Push.
+
+**Response / 応答:**
+
+Appended Prompts #170-#171 to prompts.md. Staged main.tex, recompiled report.pdf, and prompts.md. Committed and pushed to origin/main.
