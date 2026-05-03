@@ -3208,3 +3208,39 @@ Log the prompt and push.
 **Response / 応答:**
 
 Prompts #182 and #183 were already logged in commit `25672c7` per the new immediate-logging rule, so the working tree was clean. Appended this prompt (#184) and pushed a small follow-up commit recording the acknowledgement.
+
+---
+
+## Prompt #185
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+あなたは、ビデオも生成できるのですか？可能であればリサーチプランに反映してください。
+
+**English:**
+
+Can you also generate videos? If possible, please reflect it in the research plan.
+
+**Response / 応答:**
+
+Honestly answered no — Claude Code has no video-generation tool, and the underlying Anthropic API produces text/image only, not video. Did NOT update research_plan based on a false capability. Suggested alternatives: matplotlib `FuncAnimation` for SimPy visualisations (which I can generate scripts for), OBS/QuickTime/Loom for screen recording (manual), or external services like Sora/Veo/Runway (cannot invoke). Offered to add a SimPy animation task to §4.4 Presentation if useful.
+
+---
+
+## Prompt #186
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+タスクに追加してください。
+
+**English:**
+
+Add it as a task.
+
+**Response / 応答:**
+
+Added §4.4.4 *(Optional)* "SimPy DES animation for slides" to `project-docs/requirements/research_plan.md`. Goal: visualise the $W_q$ vs blocking metric split (D19) by animating empirical-IAT bursts against the Kendall/MIT 23-dock capacity, showing blocking events that stationary Erlang B misses even while $W_q$ stays modest. Method: extend `src/phase3_simulation.py` to log per-event timestamps and animate with matplotlib `FuncAnimation`. Output: 5–15 sec MP4/GIF, ideally Poisson-vs-empirical side-by-side on the same time axis. Owner split: Claude writes the script, Taka records and embeds. Marked as optional and off the critical path for the 5/8 deadline.

@@ -380,6 +380,12 @@ Timeline: 2026-04-08 → 2026-05-08
 - [ ] **4.4.1** Prepare presentation slides (15 min + Q&A)
 - [ ] **4.4.2** Rehearse and refine
 - [ ] **4.4.3** Submit slides to teaching staff before presentation session (5/6 or 5/8)
+- [ ] **4.4.4** *(Optional)* SimPy DES animation for slides
+  - Goal: visually demonstrate the $W_q$ vs blocking metric split (D19) — show how empirical-IAT bursts pile incoming bikes against the 23-dock capacity at Kendall/MIT, producing blocking events that stationary Erlang B does not predict, even while $W_q$ stays modest
+  - Method: extend `src/phase3_simulation.py` to log per-event timestamps (arrival, docking, full-state, blocked); animate with matplotlib `FuncAnimation` (dock occupancy bar + arrival ticker + cumulative blocked counter); export MP4 or GIF
+  - Output: 5–15 sec clip embedded in 1–2 presentation slides; ideally one Poisson-arrival run side-by-side with one empirical-arrival run on the same time axis
+  - Owner: Claude generates the animation script; Taka records final MP4 and embeds in slides
+  - Trigger: only if requested by Taka — not on the critical path for the 5/8 deadline
 
 ---
 
