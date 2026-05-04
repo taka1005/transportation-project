@@ -3352,3 +3352,21 @@ Want to expand §8 Conclusion but no slack in the 5-page budget. Proposal: merge
 **Response / 応答:**
 
 Implemented the merge: renamed §6 to "Limitations and future work", folded the three matched future-work clauses (Mellou–Jaillet for Latent demand suppression, autocorrelation-preserving generator for DES-destroys-autocorrelation, NHPP × time-varying μ(t) for Non-stationarity unmodelled) directly into their corresponding limitation paragraphs. Removed the standalone §7 section heading + "Three extensions" lead-in, freeing roughly 3 lines. Expanded §8 (now §7) Conclusion to the user-supplied two-paragraph version. First compile overflowed Conclusion onto p6 by ~3 lines; tightened in two passes — dropped the "user-driven systems overdispersed, timetabled systems underdispersed" parenthetical recap (already in §5 Off-the-decision-path), compressed para 2 first sentence ("Weibull captures bursty user-driven arrivals, log-normal captures schedule-driven regularity, both reproduce empirical Wq within a second" → "Weibull and log-normal reproduce empirical Wq within a second"), and trimmed the closing from "evaluate by direction, magnitude, and decision path before reaching for Poisson" to "evaluate by direction, magnitude, and decision path." Updated `appendix.tex` cross-reference `\S\ref{sec:future}` → `\S\ref{sec:limitations}`. Final layout: main 5p / refs 1p / appendix 9p / total 15p; Conclusion ends cleanly on p5.
+
+---
+
+## Prompt #193
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+プロンプト記録してpushして
+
+**English:**
+
+Log the prompt and push.
+
+**Response / 応答:**
+
+Working tree was clean (#192 was already logged in commit `2701b12` per the immediate-logging memory rule). Appended this prompt (#193) and pushed a small follow-up commit with the log entry only.
