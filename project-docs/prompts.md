@@ -3370,3 +3370,21 @@ Log the prompt and push.
 **Response / 応答:**
 
 Working tree was clean (#192 was already logged in commit `2701b12` per the immediate-logging memory rule). Appended this prompt (#193) and pushed a small follow-up commit with the log entry only.
+
+---
+
+## Prompt #194
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+リサーチプランは最新？
+
+**English:**
+
+Is the research plan up to date?
+
+**Response / 応答:**
+
+Confirmed it was NOT up to date. Last research_plan update was commit `0294dcd`; since then four substantive commits (`25672c7` §4.3 physics fix, `3c9e539` initial animation, `3409c7a` real-data switch, `2701b12` §6+§7 merge + §8 expansion) had modified the report and the animation without being recorded. Updated `project-docs/requirements/research_plan.md`: (1) added §4.2c.8 (D20: §4.3 μ(t) physics correction with Kendall asymmetric-flow framing); (2) added §4.2c.9 (D21: §6 / §7 merge structure); (3) added §4.2c.10 (D22: §8 Conclusion two-paragraph expansion); (4) marked §4.4.4 as completed (D23) with full implementation details — representative day choice (2025-09-17), 36-sec window, real-inventory-replay framing on the right panel, all output paths and tooling notes; (5) extended the Cumulative-effect comparison table with three new rows (μ(t) physics, §6/§7 structure, §8 Conclusion); (6) added D20–D23 to the Summary of Decisions. Logged this prompt and pushed.
