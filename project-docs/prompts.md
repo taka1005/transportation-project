@@ -3334,3 +3334,21 @@ Change of plan. Right panel should NOT be a simulation — it should be the dire
 **Response / 応答:**
 
 Restructured `src/animation_des.py`: right panel now loads the §3.2b inventory reconstruction directly from `bb_inventory_M32004.parquet` (89 trip-ends + 88 trip-starts on 2025-09-17 06:00–18:00, initial N(06:00)=1) and identifies blocking events as committed full-interval starts via `get_full_capacity_periods()` (31 events on this day, matching §3.2b). Removed `SEED_RIGHT_SERVICE` and the right-panel SimPy run entirely. Updated title: "Poisson DES (left, simulated) vs real Kendall/MIT inventory N(t) (right, observed)". Added per-panel sub-labels at the bottom explicitly stating "Left: Poisson(λ̄) arrivals + Exp(1/μ̄) service" and "Right: real Kendall data 2025-09-17 — observed inventory N(t)" so a viewer cannot confuse the data sources. Recompiled MP4: now Poisson 0 blocks vs **31 real committed full intervals (291.9 min observed full-time, 41% of operating hours)**. The comparison is now "model vs reality" rather than "model vs model" — directly mapping to the §4.3 claim. Verified preview frames at 06:00 / 08:30 (BLOCKED) / 10:00 (Saturation) / 14:00 / 17:30 — visual narrative is now physically honest.
+
+---
+
+## Prompt #192
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+§8 Conclusion を具体化したいが、5ページ制約に余裕がない。スペース確保のため §6 Limitations と §7 Future Work を統合する案：各 limitation の直後に対応する future work を1文添える形にする。その上で §8 Conclusion を 2 段落（decision path frame の具体化 + metric split + 構造的予測）に拡張。
+
+**English:**
+
+Want to expand §8 Conclusion but no slack in the 5-page budget. Proposal: merge §6 Limitations and §7 Future Work — append the matching future-work sentence to each limitation. Then expand §8 Conclusion into two paragraphs (decision-path frame with concrete numbers + metric split + structural prediction).
+
+**Response / 応答:**
+
+Implemented the merge: renamed §6 to "Limitations and future work", folded the three matched future-work clauses (Mellou–Jaillet for Latent demand suppression, autocorrelation-preserving generator for DES-destroys-autocorrelation, NHPP × time-varying μ(t) for Non-stationarity unmodelled) directly into their corresponding limitation paragraphs. Removed the standalone §7 section heading + "Three extensions" lead-in, freeing roughly 3 lines. Expanded §8 (now §7) Conclusion to the user-supplied two-paragraph version. First compile overflowed Conclusion onto p6 by ~3 lines; tightened in two passes — dropped the "user-driven systems overdispersed, timetabled systems underdispersed" parenthetical recap (already in §5 Off-the-decision-path), compressed para 2 first sentence ("Weibull captures bursty user-driven arrivals, log-normal captures schedule-driven regularity, both reproduce empirical Wq within a second" → "Weibull and log-normal reproduce empirical Wq within a second"), and trimmed the closing from "evaluate by direction, magnitude, and decision path before reaching for Poisson" to "evaluate by direction, magnitude, and decision path." Updated `appendix.tex` cross-reference `\S\ref{sec:future}` → `\S\ref{sec:limitations}`. Final layout: main 5p / refs 1p / appendix 9p / total 15p; Conclusion ends cleanly on p5.
