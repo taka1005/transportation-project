@@ -3298,3 +3298,39 @@ All four approved, proceed with implementation. Note: the current §4.3 wording 
 **Response / 応答:**
 
 Installed `imageio-ffmpeg`; wrote `src/animation_des.py` (~280 lines): finite-capacity simulation (heap-based, no SimPy needed), per-frame state precomputation, matplotlib `FuncAnimation` with FFMpegWriter. First render produced a noisy result (Poisson 5 blocks, Empirical 2 — opposite of the intended narrative due to small-N variance). Swept 20 service-time seed pairs and selected the cleanest representative run (sweep seed=17 → left=35, right=36): **Poisson 0 blocks, Empirical 7 blocks** with 6 of the 7 clustered at 08:30–08:47 in the "Commuter inflow" period. Documented the seed choice in code comments. Improved "BLOCKED" overlay legibility with white-on-red text + 6-pt black stroke (`matplotlib.patheffects.withStroke`). Final outputs: `outputs/animations/des_blocking_comparison.mp4` (2.6 MB, 1920×1080, 30 fps, 36 sec) and `outputs/animations/frame_to_event_log.csv` (1080 rows). Verified preview frames at 06:00 / 08:30 (BLOCKED moment) / 10:00 (Saturation) / 17:30 — visual narrative lands. The §4.3 wording-tweak question is deferred to post-video review per Taka's note.
+
+---
+
+## Prompt #190
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+Empirical DES (right): 7 blocksはどう言う意味ですか？これは実データ？それとも予測データ？どうやって最初の６ブロックを観測したの？
+
+**English:**
+
+What does "Empirical DES (right): 7 blocks" actually mean? Is that real data or prediction? How were the first 6 blocks observed?
+
+**Response / 応答:**
+
+Honestly answered: the 7 blocks were SIMULATOR OUTPUTS, not observations. Right panel was a hybrid — real arrival timestamps replayed + Exp(1/μ̄) stochastic service + computed dock-fill state. Real Bluebikes data cannot directly observe blocking events because would-be users who couldn't dock are censored (latent demand, §6 Limitation 1). What real data DOES show on 2025-09-17 is the §3.2b inventory reconstruction: 31 committed full intervals totalling 291.9 min — periods when the dock was demonstrably full but the count of actually-blocked users is unknown. Flagged that the title "Empirical DES" risks misreading as "observed" rather than "DES with empirical arrivals", and offered three relabelling options.
+
+---
+
+## Prompt #191
+
+**Date / 日付:** 2026-05-03
+
+**Japanese / 日本語:**
+
+方針変更したい。右パネルを「Empirical DES（シミュレート）」ではなく「実データそのままの在庫数」にしたい。Bluebikes データには trip-end と trip-start の両方があるので N(t) は実データから直接計算できる。23/23 になった瞬間 = 実観測の blocking 発生。サービス時間のシミュレートは右パネルから外す。
+
+**English:**
+
+Change of plan. Right panel should NOT be a simulation — it should be the directly observed inventory N(t) computed from real trip-end (+1) and trip-start (-1) events, using the §3.2b reconstruction logic. Reaching 23/23 = observed blocking. Drop service-time simulation from the right panel.
+
+**Response / 応答:**
+
+Restructured `src/animation_des.py`: right panel now loads the §3.2b inventory reconstruction directly from `bb_inventory_M32004.parquet` (89 trip-ends + 88 trip-starts on 2025-09-17 06:00–18:00, initial N(06:00)=1) and identifies blocking events as committed full-interval starts via `get_full_capacity_periods()` (31 events on this day, matching §3.2b). Removed `SEED_RIGHT_SERVICE` and the right-panel SimPy run entirely. Updated title: "Poisson DES (left, simulated) vs real Kendall/MIT inventory N(t) (right, observed)". Added per-panel sub-labels at the bottom explicitly stating "Left: Poisson(λ̄) arrivals + Exp(1/μ̄) service" and "Right: real Kendall data 2025-09-17 — observed inventory N(t)" so a viewer cannot confuse the data sources. Recompiled MP4: now Poisson 0 blocks vs **31 real committed full intervals (291.9 min observed full-time, 41% of operating hours)**. The comparison is now "model vs reality" rather than "model vs model" — directly mapping to the §4.3 claim. Verified preview frames at 06:00 / 08:30 (BLOCKED) / 10:00 (Saturation) / 14:00 / 17:30 — visual narrative is now physically honest.
