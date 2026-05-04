@@ -1,0 +1,1081 @@
+frame,time,period,left_occupancy,right_occupancy,left_blocked_cum,right_blocked_cum,left_blocked_in_frame,right_blocked_in_frame,left_latest_event,right_latest_event
+0,06:00,Early morning (off-peak),0,0,0,0,False,False,—,—
+1,06:01,Early morning (off-peak),0,0,0,0,False,False,—,—
+2,06:02,Early morning (off-peak),0,0,0,0,False,False,—,—
+3,06:02,Early morning (off-peak),0,0,0,0,False,False,—,—
+4,06:03,Early morning (off-peak),0,0,0,0,False,False,—,—
+5,06:04,Early morning (off-peak),0,0,0,0,False,False,—,—
+6,06:04,Early morning (off-peak),0,0,0,0,False,False,—,—
+7,06:05,Early morning (off-peak),0,0,0,0,False,False,—,—
+8,06:06,Early morning (off-peak),0,0,0,0,False,False,—,—
+9,06:06,Early morning (off-peak),0,0,0,0,False,False,—,—
+10,06:07,Early morning (off-peak),0,0,0,0,False,False,—,—
+11,06:08,Early morning (off-peak),0,0,0,0,False,False,—,—
+12,06:08,Early morning (off-peak),0,0,0,0,False,False,—,—
+13,06:09,Early morning (off-peak),0,0,0,0,False,False,—,—
+14,06:10,Early morning (off-peak),0,0,0,0,False,False,—,—
+15,06:10,Early morning (off-peak),0,0,0,0,False,False,—,—
+16,06:11,Early morning (off-peak),0,0,0,0,False,False,—,—
+17,06:12,Early morning (off-peak),0,0,0,0,False,False,—,—
+18,06:12,Early morning (off-peak),0,0,0,0,False,False,—,—
+19,06:13,Early morning (off-peak),0,0,0,0,False,False,—,—
+20,06:14,Early morning (off-peak),0,0,0,0,False,False,—,—
+21,06:14,Early morning (off-peak),0,0,0,0,False,False,—,—
+22,06:15,Early morning (off-peak),0,0,0,0,False,False,—,—
+23,06:16,Early morning (off-peak),0,0,0,0,False,False,—,—
+24,06:16,Early morning (off-peak),0,0,0,0,False,False,—,—
+25,06:17,Early morning (off-peak),0,0,0,0,False,False,—,—
+26,06:18,Early morning (off-peak),0,0,0,0,False,False,—,—
+27,06:18,Early morning (off-peak),0,0,0,0,False,False,—,—
+28,06:19,Early morning (off-peak),0,0,0,0,False,False,—,—
+29,06:20,Early morning (off-peak),1,0,0,0,False,False,ARRIVAL,—
+30,06:20,Early morning (off-peak),1,0,0,0,False,False,ARRIVAL,—
+31,06:21,Early morning (off-peak),1,0,0,0,False,False,ARRIVAL,—
+32,06:22,Early morning (off-peak),1,0,0,0,False,False,ARRIVAL,—
+33,06:22,Early morning (off-peak),1,0,0,0,False,False,ARRIVAL,—
+34,06:23,Early morning (off-peak),1,0,0,0,False,False,ARRIVAL,—
+35,06:24,Early morning (off-peak),1,0,0,0,False,False,ARRIVAL,—
+36,06:24,Early morning (off-peak),1,0,0,0,False,False,ARRIVAL,—
+37,06:25,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+38,06:26,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+39,06:26,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+40,06:27,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+41,06:28,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+42,06:28,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+43,06:29,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+44,06:30,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+45,06:30,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+46,06:31,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+47,06:32,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+48,06:32,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+49,06:33,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+50,06:34,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+51,06:34,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+52,06:35,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+53,06:36,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+54,06:36,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+55,06:37,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+56,06:38,Early morning (off-peak),1,1,0,0,False,False,ARRIVAL,ARRIVAL
+57,06:38,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+58,06:39,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+59,06:40,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+60,06:40,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+61,06:41,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+62,06:42,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+63,06:42,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+64,06:43,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+65,06:44,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+66,06:44,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+67,06:45,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+68,06:46,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+69,06:46,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+70,06:47,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+71,06:48,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+72,06:48,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+73,06:49,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+74,06:50,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+75,06:50,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+76,06:51,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+77,06:52,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+78,06:52,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+79,06:53,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+80,06:54,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+81,06:54,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+82,06:55,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+83,06:56,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+84,06:56,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+85,06:57,Early morning (off-peak),2,1,0,0,False,False,ARRIVAL,ARRIVAL
+86,06:58,Early morning (off-peak),3,1,0,0,False,False,ARRIVAL,ARRIVAL
+87,06:58,Early morning (off-peak),3,1,0,0,False,False,ARRIVAL,ARRIVAL
+88,06:59,Early morning (off-peak),3,1,0,0,False,False,ARRIVAL,ARRIVAL
+89,07:00,Early morning (off-peak),4,1,0,0,False,False,ARRIVAL,ARRIVAL
+90,07:00,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+91,07:01,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+92,07:02,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+93,07:02,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+94,07:03,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+95,07:04,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+96,07:04,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+97,07:05,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+98,07:06,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+99,07:06,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+100,07:07,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+101,07:08,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+102,07:08,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+103,07:09,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+104,07:10,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+105,07:10,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+106,07:11,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+107,07:12,Early morning (off-peak),4,1,0,0,False,False,DEPARTURE,ARRIVAL
+108,07:12,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+109,07:13,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+110,07:14,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+111,07:14,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+112,07:15,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+113,07:16,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+114,07:16,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+115,07:17,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+116,07:18,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+117,07:18,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+118,07:19,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+119,07:20,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+120,07:20,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+121,07:21,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+122,07:22,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+123,07:22,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+124,07:23,Early morning (off-peak),5,1,0,0,False,False,ARRIVAL,ARRIVAL
+125,07:24,Early morning (off-peak),6,1,0,0,False,False,ARRIVAL,ARRIVAL
+126,07:24,Early morning (off-peak),6,0,0,0,False,False,ARRIVAL,DEPARTURE
+127,07:25,Early morning (off-peak),6,0,0,0,False,False,ARRIVAL,DEPARTURE
+128,07:26,Early morning (off-peak),6,0,0,0,False,False,ARRIVAL,DEPARTURE
+129,07:26,Early morning (off-peak),6,0,0,0,False,False,ARRIVAL,DEPARTURE
+130,07:27,Early morning (off-peak),6,0,0,0,False,False,ARRIVAL,DEPARTURE
+131,07:28,Early morning (off-peak),6,0,0,0,False,False,ARRIVAL,DEPARTURE
+132,07:28,Early morning (off-peak),6,1,0,0,False,False,ARRIVAL,ARRIVAL
+133,07:29,Early morning (off-peak),6,1,0,0,False,False,ARRIVAL,ARRIVAL
+134,07:30,Early morning (off-peak),6,1,0,0,False,False,ARRIVAL,ARRIVAL
+135,07:30,Early morning (off-peak),6,2,0,0,False,False,ARRIVAL,ARRIVAL
+136,07:31,Early morning (off-peak),6,2,0,0,False,False,ARRIVAL,ARRIVAL
+137,07:32,Early morning (off-peak),6,2,0,0,False,False,ARRIVAL,ARRIVAL
+138,07:32,Early morning (off-peak),6,2,0,0,False,False,ARRIVAL,ARRIVAL
+139,07:33,Early morning (off-peak),6,2,0,0,False,False,ARRIVAL,ARRIVAL
+140,07:34,Early morning (off-peak),6,2,0,0,False,False,ARRIVAL,ARRIVAL
+141,07:34,Early morning (off-peak),6,2,0,0,False,False,ARRIVAL,ARRIVAL
+142,07:35,Early morning (off-peak),6,2,0,0,False,False,ARRIVAL,ARRIVAL
+143,07:36,Early morning (off-peak),6,2,0,0,False,False,ARRIVAL,ARRIVAL
+144,07:36,Early morning (off-peak),5,2,0,0,False,False,DEPARTURE,ARRIVAL
+145,07:37,Early morning (off-peak),5,2,0,0,False,False,DEPARTURE,ARRIVAL
+146,07:38,Early morning (off-peak),5,2,0,0,False,False,DEPARTURE,ARRIVAL
+147,07:38,Early morning (off-peak),5,2,0,0,False,False,DEPARTURE,ARRIVAL
+148,07:39,Early morning (off-peak),4,2,0,0,False,False,DEPARTURE,ARRIVAL
+149,07:40,Early morning (off-peak),4,2,0,0,False,False,DEPARTURE,ARRIVAL
+150,07:40,Early morning (off-peak),4,2,0,0,False,False,DEPARTURE,ARRIVAL
+151,07:41,Early morning (off-peak),4,2,0,0,False,False,DEPARTURE,ARRIVAL
+152,07:42,Early morning (off-peak),4,3,0,0,False,False,DEPARTURE,ARRIVAL
+153,07:42,Early morning (off-peak),4,3,0,0,False,False,DEPARTURE,ARRIVAL
+154,07:43,Early morning (off-peak),4,3,0,0,False,False,DEPARTURE,ARRIVAL
+155,07:44,Early morning (off-peak),4,3,0,0,False,False,DEPARTURE,ARRIVAL
+156,07:44,Early morning (off-peak),4,3,0,0,False,False,DEPARTURE,ARRIVAL
+157,07:45,Early morning (off-peak),4,3,0,0,False,False,DEPARTURE,ARRIVAL
+158,07:46,Early morning (off-peak),4,3,0,0,False,False,DEPARTURE,ARRIVAL
+159,07:46,Early morning (off-peak),4,3,0,0,False,False,DEPARTURE,ARRIVAL
+160,07:47,Early morning (off-peak),4,3,0,0,False,False,DEPARTURE,ARRIVAL
+161,07:48,Early morning (off-peak),4,3,0,0,False,False,DEPARTURE,ARRIVAL
+162,07:48,Early morning (off-peak),4,4,0,0,False,False,DEPARTURE,ARRIVAL
+163,07:49,Early morning (off-peak),5,4,0,0,False,False,ARRIVAL,ARRIVAL
+164,07:50,Early morning (off-peak),6,4,0,0,False,False,ARRIVAL,ARRIVAL
+165,07:50,Early morning (off-peak),6,4,0,0,False,False,ARRIVAL,ARRIVAL
+166,07:51,Early morning (off-peak),6,4,0,0,False,False,ARRIVAL,ARRIVAL
+167,07:52,Early morning (off-peak),6,4,0,0,False,False,ARRIVAL,ARRIVAL
+168,07:52,Early morning (off-peak),6,4,0,0,False,False,ARRIVAL,ARRIVAL
+169,07:53,Early morning (off-peak),6,5,0,0,False,False,ARRIVAL,ARRIVAL
+170,07:54,Early morning (off-peak),6,5,0,0,False,False,ARRIVAL,ARRIVAL
+171,07:54,Early morning (off-peak),6,5,0,0,False,False,ARRIVAL,ARRIVAL
+172,07:55,Early morning (off-peak),6,5,0,0,False,False,ARRIVAL,ARRIVAL
+173,07:56,Early morning (off-peak),6,5,0,0,False,False,ARRIVAL,ARRIVAL
+174,07:56,Early morning (off-peak),6,5,0,0,False,False,ARRIVAL,ARRIVAL
+175,07:57,Early morning (off-peak),6,5,0,0,False,False,ARRIVAL,ARRIVAL
+176,07:58,Early morning (off-peak),6,5,0,0,False,False,ARRIVAL,ARRIVAL
+177,07:58,Early morning (off-peak),7,5,0,0,False,False,ARRIVAL,ARRIVAL
+178,07:59,Early morning (off-peak),8,5,0,0,False,False,ARRIVAL,ARRIVAL
+179,08:00,Commuter inflow,8,5,0,0,False,False,ARRIVAL,ARRIVAL
+180,08:00,Commuter inflow,8,6,0,0,False,False,ARRIVAL,ARRIVAL
+181,08:01,Commuter inflow,7,6,0,0,False,False,DEPARTURE,ARRIVAL
+182,08:02,Commuter inflow,6,6,0,0,False,False,DEPARTURE,ARRIVAL
+183,08:02,Commuter inflow,6,6,0,0,False,False,DEPARTURE,ARRIVAL
+184,08:03,Commuter inflow,5,6,0,0,False,False,DEPARTURE,ARRIVAL
+185,08:04,Commuter inflow,5,6,0,0,False,False,DEPARTURE,ARRIVAL
+186,08:04,Commuter inflow,5,7,0,0,False,False,DEPARTURE,ARRIVAL
+187,08:05,Commuter inflow,5,8,0,0,False,False,DEPARTURE,ARRIVAL
+188,08:06,Commuter inflow,5,8,0,0,False,False,DEPARTURE,ARRIVAL
+189,08:06,Commuter inflow,5,8,0,0,False,False,DEPARTURE,ARRIVAL
+190,08:07,Commuter inflow,5,8,0,0,False,False,DEPARTURE,ARRIVAL
+191,08:08,Commuter inflow,6,8,0,0,False,False,ARRIVAL,ARRIVAL
+192,08:08,Commuter inflow,6,8,0,0,False,False,ARRIVAL,ARRIVAL
+193,08:09,Commuter inflow,6,8,0,0,False,False,ARRIVAL,ARRIVAL
+194,08:10,Commuter inflow,6,9,0,0,False,False,ARRIVAL,ARRIVAL
+195,08:10,Commuter inflow,6,10,0,0,False,False,ARRIVAL,ARRIVAL
+196,08:11,Commuter inflow,6,10,0,0,False,False,ARRIVAL,ARRIVAL
+197,08:12,Commuter inflow,6,10,0,0,False,False,ARRIVAL,ARRIVAL
+198,08:12,Commuter inflow,6,10,0,0,False,False,ARRIVAL,ARRIVAL
+199,08:13,Commuter inflow,6,10,0,0,False,False,ARRIVAL,ARRIVAL
+200,08:14,Commuter inflow,6,10,0,0,False,False,ARRIVAL,ARRIVAL
+201,08:14,Commuter inflow,6,12,0,0,False,False,ARRIVAL,DEPARTURE
+202,08:15,Commuter inflow,6,13,0,0,False,False,ARRIVAL,ARRIVAL
+203,08:16,Commuter inflow,6,16,0,0,False,False,ARRIVAL,ARRIVAL
+204,08:16,Commuter inflow,5,17,0,0,False,False,DEPARTURE,ARRIVAL
+205,08:17,Commuter inflow,5,17,0,0,False,False,DEPARTURE,ARRIVAL
+206,08:18,Commuter inflow,5,17,0,0,False,False,DEPARTURE,ARRIVAL
+207,08:18,Commuter inflow,5,17,0,0,False,False,DEPARTURE,ARRIVAL
+208,08:19,Commuter inflow,5,17,0,0,False,False,DEPARTURE,ARRIVAL
+209,08:20,Commuter inflow,5,17,0,0,False,False,DEPARTURE,ARRIVAL
+210,08:20,Commuter inflow,5,17,0,0,False,False,DEPARTURE,ARRIVAL
+211,08:21,Commuter inflow,5,18,0,0,False,False,DEPARTURE,ARRIVAL
+212,08:22,Commuter inflow,6,18,0,0,False,False,ARRIVAL,ARRIVAL
+213,08:22,Commuter inflow,6,18,0,0,False,False,ARRIVAL,ARRIVAL
+214,08:23,Commuter inflow,6,20,0,0,False,False,ARRIVAL,ARRIVAL
+215,08:24,Commuter inflow,6,20,0,0,False,False,ARRIVAL,ARRIVAL
+216,08:24,Commuter inflow,7,21,0,0,False,False,ARRIVAL,ARRIVAL
+217,08:25,Commuter inflow,6,20,0,0,False,False,DEPARTURE,DEPARTURE
+218,08:26,Commuter inflow,6,20,0,0,False,False,DEPARTURE,DEPARTURE
+219,08:26,Commuter inflow,6,22,0,0,False,False,DEPARTURE,ARRIVAL
+220,08:27,Commuter inflow,6,22,0,0,False,False,DEPARTURE,ARRIVAL
+221,08:28,Commuter inflow,6,23,0,0,False,False,DEPARTURE,ARRIVAL
+222,08:28,Commuter inflow,6,23,0,0,False,False,DEPARTURE,ARRIVAL
+223,08:29,Commuter inflow,6,23,0,0,False,False,DEPARTURE,ARRIVAL
+224,08:30,Commuter inflow,6,23,0,1,False,True,DEPARTURE,BLOCKED
+225,08:30,Commuter inflow,6,23,0,1,False,False,DEPARTURE,BLOCKED
+226,08:31,Commuter inflow,6,23,0,1,False,False,DEPARTURE,BLOCKED
+227,08:32,Commuter inflow,6,23,0,1,False,False,DEPARTURE,BLOCKED
+228,08:32,Commuter inflow,6,23,0,2,False,True,DEPARTURE,BLOCKED
+229,08:33,Commuter inflow,6,23,0,2,False,False,DEPARTURE,BLOCKED
+230,08:34,Commuter inflow,6,23,0,2,False,False,DEPARTURE,BLOCKED
+231,08:34,Commuter inflow,7,23,0,2,False,False,ARRIVAL,BLOCKED
+232,08:35,Commuter inflow,7,23,0,3,False,True,ARRIVAL,BLOCKED
+233,08:36,Commuter inflow,8,23,0,3,False,False,ARRIVAL,BLOCKED
+234,08:36,Commuter inflow,9,23,0,3,False,False,ARRIVAL,BLOCKED
+235,08:37,Commuter inflow,9,23,0,3,False,False,ARRIVAL,BLOCKED
+236,08:38,Commuter inflow,9,23,0,3,False,False,ARRIVAL,BLOCKED
+237,08:38,Commuter inflow,9,23,0,3,False,False,ARRIVAL,BLOCKED
+238,08:39,Commuter inflow,9,23,0,3,False,False,DEPARTURE,BLOCKED
+239,08:40,Commuter inflow,9,23,0,4,False,True,DEPARTURE,BLOCKED
+240,08:40,Commuter inflow,8,23,0,4,False,False,DEPARTURE,BLOCKED
+241,08:41,Commuter inflow,8,23,0,4,False,False,DEPARTURE,BLOCKED
+242,08:42,Commuter inflow,8,23,0,4,False,False,DEPARTURE,BLOCKED
+243,08:42,Commuter inflow,8,23,0,4,False,False,DEPARTURE,BLOCKED
+244,08:43,Commuter inflow,8,23,0,4,False,False,DEPARTURE,BLOCKED
+245,08:44,Commuter inflow,8,23,0,4,False,False,DEPARTURE,BLOCKED
+246,08:44,Commuter inflow,8,23,0,5,False,True,DEPARTURE,BLOCKED
+247,08:45,Commuter inflow,8,23,0,5,False,False,DEPARTURE,BLOCKED
+248,08:46,Commuter inflow,8,23,0,5,False,False,DEPARTURE,BLOCKED
+249,08:46,Commuter inflow,8,23,0,5,False,False,ARRIVAL,BLOCKED
+250,08:47,Commuter inflow,8,22,0,6,False,True,ARRIVAL,BLOCKED
+251,08:48,Commuter inflow,8,22,0,6,False,False,ARRIVAL,BLOCKED
+252,08:48,Commuter inflow,8,22,0,6,False,False,ARRIVAL,BLOCKED
+253,08:49,Commuter inflow,8,21,0,6,False,False,ARRIVAL,DEPARTURE
+254,08:50,Commuter inflow,8,21,0,6,False,False,DEPARTURE,DEPARTURE
+255,08:50,Commuter inflow,8,21,0,6,False,False,DEPARTURE,DEPARTURE
+256,08:51,Commuter inflow,8,20,0,6,False,False,DEPARTURE,DEPARTURE
+257,08:52,Commuter inflow,8,20,0,6,False,False,DEPARTURE,DEPARTURE
+258,08:52,Commuter inflow,8,20,0,6,False,False,DEPARTURE,DEPARTURE
+259,08:53,Commuter inflow,8,20,0,6,False,False,DEPARTURE,DEPARTURE
+260,08:54,Commuter inflow,8,20,0,6,False,False,DEPARTURE,DEPARTURE
+261,08:54,Commuter inflow,8,20,0,6,False,False,DEPARTURE,DEPARTURE
+262,08:55,Commuter inflow,8,20,0,6,False,False,DEPARTURE,DEPARTURE
+263,08:56,Commuter inflow,8,20,0,6,False,False,DEPARTURE,DEPARTURE
+264,08:56,Commuter inflow,8,20,0,6,False,False,DEPARTURE,DEPARTURE
+265,08:57,Commuter inflow,8,19,0,6,False,False,DEPARTURE,DEPARTURE
+266,08:58,Commuter inflow,8,20,0,6,False,False,DEPARTURE,ARRIVAL
+267,08:58,Commuter inflow,8,20,0,6,False,False,DEPARTURE,ARRIVAL
+268,08:59,Commuter inflow,8,20,0,6,False,False,DEPARTURE,ARRIVAL
+269,09:00,Commuter inflow,9,20,0,6,False,False,ARRIVAL,ARRIVAL
+270,09:00,Commuter inflow,9,20,0,6,False,False,ARRIVAL,ARRIVAL
+271,09:01,Commuter inflow,9,20,0,6,False,False,ARRIVAL,ARRIVAL
+272,09:02,Commuter inflow,10,20,0,6,False,False,ARRIVAL,ARRIVAL
+273,09:02,Commuter inflow,10,20,0,6,False,False,ARRIVAL,ARRIVAL
+274,09:03,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+275,09:04,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+276,09:04,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+277,09:05,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+278,09:06,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+279,09:06,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+280,09:07,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+281,09:08,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+282,09:08,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+283,09:09,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+284,09:10,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+285,09:10,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+286,09:11,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+287,09:12,Commuter inflow,10,19,0,6,False,False,ARRIVAL,DEPARTURE
+288,09:12,Commuter inflow,10,18,0,6,False,False,ARRIVAL,DEPARTURE
+289,09:13,Commuter inflow,10,18,0,6,False,False,ARRIVAL,DEPARTURE
+290,09:14,Commuter inflow,10,18,0,6,False,False,ARRIVAL,DEPARTURE
+291,09:14,Commuter inflow,10,18,0,6,False,False,ARRIVAL,DEPARTURE
+292,09:15,Commuter inflow,10,18,0,6,False,False,ARRIVAL,DEPARTURE
+293,09:16,Commuter inflow,10,18,0,6,False,False,ARRIVAL,DEPARTURE
+294,09:16,Commuter inflow,11,18,0,6,False,False,ARRIVAL,DEPARTURE
+295,09:17,Commuter inflow,10,18,0,6,False,False,DEPARTURE,DEPARTURE
+296,09:18,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+297,09:18,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+298,09:19,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+299,09:20,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+300,09:20,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+301,09:21,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+302,09:22,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+303,09:22,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+304,09:23,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+305,09:24,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+306,09:24,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+307,09:25,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+308,09:26,Commuter inflow,9,18,0,6,False,False,DEPARTURE,DEPARTURE
+309,09:26,Commuter inflow,10,18,0,6,False,False,ARRIVAL,DEPARTURE
+310,09:27,Commuter inflow,10,17,0,6,False,False,ARRIVAL,DEPARTURE
+311,09:28,Commuter inflow,10,17,0,6,False,False,ARRIVAL,DEPARTURE
+312,09:28,Commuter inflow,10,18,0,6,False,False,ARRIVAL,ARRIVAL
+313,09:29,Commuter inflow,10,18,0,6,False,False,ARRIVAL,ARRIVAL
+314,09:30,Commuter inflow,9,19,0,6,False,False,DEPARTURE,ARRIVAL
+315,09:30,Commuter inflow,9,19,0,6,False,False,DEPARTURE,ARRIVAL
+316,09:31,Commuter inflow,9,19,0,6,False,False,DEPARTURE,ARRIVAL
+317,09:32,Commuter inflow,10,19,0,6,False,False,ARRIVAL,ARRIVAL
+318,09:32,Commuter inflow,10,19,0,6,False,False,ARRIVAL,ARRIVAL
+319,09:33,Commuter inflow,10,19,0,6,False,False,ARRIVAL,ARRIVAL
+320,09:34,Commuter inflow,10,19,0,6,False,False,ARRIVAL,ARRIVAL
+321,09:34,Commuter inflow,10,18,0,6,False,False,ARRIVAL,DEPARTURE
+322,09:35,Commuter inflow,11,18,0,6,False,False,ARRIVAL,DEPARTURE
+323,09:36,Commuter inflow,11,18,0,6,False,False,ARRIVAL,DEPARTURE
+324,09:36,Commuter inflow,11,18,0,6,False,False,ARRIVAL,DEPARTURE
+325,09:37,Commuter inflow,11,18,0,6,False,False,ARRIVAL,DEPARTURE
+326,09:38,Commuter inflow,11,18,0,6,False,False,ARRIVAL,DEPARTURE
+327,09:38,Commuter inflow,11,18,0,6,False,False,ARRIVAL,DEPARTURE
+328,09:39,Commuter inflow,12,18,0,6,False,False,ARRIVAL,DEPARTURE
+329,09:40,Commuter inflow,13,18,0,6,False,False,ARRIVAL,DEPARTURE
+330,09:40,Commuter inflow,13,18,0,6,False,False,ARRIVAL,DEPARTURE
+331,09:41,Commuter inflow,14,18,0,6,False,False,ARRIVAL,DEPARTURE
+332,09:42,Commuter inflow,14,18,0,6,False,False,ARRIVAL,DEPARTURE
+333,09:42,Commuter inflow,14,17,0,6,False,False,ARRIVAL,DEPARTURE
+334,09:43,Commuter inflow,14,17,0,6,False,False,ARRIVAL,DEPARTURE
+335,09:44,Commuter inflow,14,17,0,6,False,False,ARRIVAL,DEPARTURE
+336,09:44,Commuter inflow,14,17,0,6,False,False,ARRIVAL,DEPARTURE
+337,09:45,Commuter inflow,14,16,0,6,False,False,ARRIVAL,DEPARTURE
+338,09:46,Commuter inflow,14,16,0,6,False,False,ARRIVAL,DEPARTURE
+339,09:46,Commuter inflow,15,17,0,6,False,False,ARRIVAL,ARRIVAL
+340,09:47,Commuter inflow,14,18,0,6,False,False,DEPARTURE,ARRIVAL
+341,09:48,Commuter inflow,14,18,0,6,False,False,DEPARTURE,ARRIVAL
+342,09:48,Commuter inflow,14,18,0,6,False,False,DEPARTURE,ARRIVAL
+343,09:49,Commuter inflow,14,18,0,6,False,False,DEPARTURE,ARRIVAL
+344,09:50,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+345,09:50,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+346,09:51,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+347,09:52,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+348,09:52,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+349,09:53,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+350,09:54,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+351,09:54,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+352,09:55,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+353,09:56,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+354,09:56,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+355,09:57,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+356,09:58,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+357,09:58,Commuter inflow,15,18,0,6,False,False,ARRIVAL,ARRIVAL
+358,09:59,Commuter inflow,14,19,0,6,False,False,DEPARTURE,ARRIVAL
+359,10:00,Saturation,15,19,0,6,False,False,ARRIVAL,ARRIVAL
+360,10:00,Saturation,15,19,0,6,False,False,ARRIVAL,ARRIVAL
+361,10:01,Saturation,15,19,0,6,False,False,ARRIVAL,ARRIVAL
+362,10:02,Saturation,15,18,0,6,False,False,ARRIVAL,DEPARTURE
+363,10:02,Saturation,15,18,0,6,False,False,ARRIVAL,DEPARTURE
+364,10:03,Saturation,15,17,0,6,False,False,ARRIVAL,DEPARTURE
+365,10:04,Saturation,15,17,0,6,False,False,ARRIVAL,DEPARTURE
+366,10:04,Saturation,15,17,0,6,False,False,ARRIVAL,DEPARTURE
+367,10:05,Saturation,15,17,0,6,False,False,ARRIVAL,DEPARTURE
+368,10:06,Saturation,16,16,0,6,False,False,ARRIVAL,DEPARTURE
+369,10:06,Saturation,16,16,0,6,False,False,ARRIVAL,DEPARTURE
+370,10:07,Saturation,16,16,0,6,False,False,ARRIVAL,DEPARTURE
+371,10:08,Saturation,17,16,0,6,False,False,ARRIVAL,DEPARTURE
+372,10:08,Saturation,17,16,0,6,False,False,ARRIVAL,DEPARTURE
+373,10:09,Saturation,17,16,0,6,False,False,ARRIVAL,DEPARTURE
+374,10:10,Saturation,17,16,0,6,False,False,ARRIVAL,DEPARTURE
+375,10:10,Saturation,17,15,0,6,False,False,ARRIVAL,DEPARTURE
+376,10:11,Saturation,18,15,0,6,False,False,ARRIVAL,DEPARTURE
+377,10:12,Saturation,18,15,0,6,False,False,ARRIVAL,DEPARTURE
+378,10:12,Saturation,18,15,0,6,False,False,ARRIVAL,DEPARTURE
+379,10:13,Saturation,18,15,0,6,False,False,ARRIVAL,DEPARTURE
+380,10:14,Saturation,18,15,0,6,False,False,ARRIVAL,DEPARTURE
+381,10:14,Saturation,17,15,0,6,False,False,DEPARTURE,DEPARTURE
+382,10:15,Saturation,17,15,0,6,False,False,DEPARTURE,DEPARTURE
+383,10:16,Saturation,17,15,0,6,False,False,DEPARTURE,DEPARTURE
+384,10:16,Saturation,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+385,10:17,Saturation,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+386,10:18,Saturation,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+387,10:18,Saturation,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+388,10:19,Saturation,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+389,10:20,Saturation,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+390,10:20,Saturation,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+391,10:21,Saturation,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+392,10:22,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+393,10:22,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+394,10:23,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+395,10:24,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+396,10:24,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+397,10:25,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+398,10:26,Saturation,18,14,0,6,False,False,DEPARTURE,DEPARTURE
+399,10:26,Saturation,18,14,0,6,False,False,DEPARTURE,DEPARTURE
+400,10:27,Saturation,18,14,0,6,False,False,DEPARTURE,DEPARTURE
+401,10:28,Saturation,18,14,0,6,False,False,DEPARTURE,DEPARTURE
+402,10:28,Saturation,18,14,0,6,False,False,DEPARTURE,DEPARTURE
+403,10:29,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+404,10:30,Saturation,19,15,0,6,False,False,ARRIVAL,ARRIVAL
+405,10:30,Saturation,19,16,0,6,False,False,ARRIVAL,ARRIVAL
+406,10:31,Saturation,20,16,0,6,False,False,ARRIVAL,ARRIVAL
+407,10:32,Saturation,20,16,0,6,False,False,ARRIVAL,ARRIVAL
+408,10:32,Saturation,20,16,0,6,False,False,ARRIVAL,ARRIVAL
+409,10:33,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+410,10:34,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+411,10:34,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+412,10:35,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+413,10:36,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+414,10:36,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+415,10:37,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+416,10:38,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+417,10:38,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+418,10:39,Saturation,18,16,0,6,False,False,DEPARTURE,ARRIVAL
+419,10:40,Saturation,18,16,0,6,False,False,DEPARTURE,ARRIVAL
+420,10:40,Saturation,18,16,0,6,False,False,DEPARTURE,ARRIVAL
+421,10:41,Saturation,18,16,0,6,False,False,DEPARTURE,ARRIVAL
+422,10:42,Saturation,18,16,0,6,False,False,DEPARTURE,ARRIVAL
+423,10:42,Saturation,19,16,0,6,False,False,ARRIVAL,ARRIVAL
+424,10:43,Saturation,19,16,0,6,False,False,ARRIVAL,ARRIVAL
+425,10:44,Saturation,19,16,0,6,False,False,ARRIVAL,ARRIVAL
+426,10:44,Saturation,19,16,0,6,False,False,ARRIVAL,ARRIVAL
+427,10:45,Saturation,19,16,0,6,False,False,ARRIVAL,ARRIVAL
+428,10:46,Saturation,19,16,0,6,False,False,ARRIVAL,ARRIVAL
+429,10:46,Saturation,18,16,0,6,False,False,DEPARTURE,ARRIVAL
+430,10:47,Saturation,18,16,0,6,False,False,DEPARTURE,ARRIVAL
+431,10:48,Saturation,17,16,0,6,False,False,DEPARTURE,ARRIVAL
+432,10:48,Saturation,17,16,0,6,False,False,DEPARTURE,ARRIVAL
+433,10:49,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+434,10:50,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+435,10:50,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+436,10:51,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+437,10:52,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+438,10:52,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+439,10:53,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+440,10:54,Saturation,17,16,0,6,False,False,ARRIVAL,ARRIVAL
+441,10:54,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+442,10:55,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+443,10:56,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+444,10:56,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+445,10:57,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+446,10:58,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+447,10:58,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+448,10:59,Saturation,16,16,0,6,False,False,DEPARTURE,ARRIVAL
+449,11:00,Saturation,16,15,0,6,False,False,DEPARTURE,DEPARTURE
+450,11:00,Saturation,16,15,0,6,False,False,DEPARTURE,DEPARTURE
+451,11:01,Saturation,16,15,0,6,False,False,DEPARTURE,DEPARTURE
+452,11:02,Saturation,16,15,0,6,False,False,DEPARTURE,DEPARTURE
+453,11:02,Saturation,17,15,0,6,False,False,ARRIVAL,DEPARTURE
+454,11:03,Saturation,18,15,0,6,False,False,ARRIVAL,DEPARTURE
+455,11:04,Saturation,18,15,0,6,False,False,ARRIVAL,DEPARTURE
+456,11:04,Saturation,18,15,0,6,False,False,ARRIVAL,DEPARTURE
+457,11:05,Saturation,18,15,0,6,False,False,ARRIVAL,DEPARTURE
+458,11:06,Saturation,18,15,0,6,False,False,ARRIVAL,DEPARTURE
+459,11:06,Saturation,17,15,0,6,False,False,DEPARTURE,DEPARTURE
+460,11:07,Saturation,17,15,0,6,False,False,DEPARTURE,DEPARTURE
+461,11:08,Saturation,16,15,0,6,False,False,DEPARTURE,DEPARTURE
+462,11:08,Saturation,16,15,0,6,False,False,DEPARTURE,DEPARTURE
+463,11:09,Saturation,16,14,0,6,False,False,DEPARTURE,DEPARTURE
+464,11:10,Saturation,16,14,0,6,False,False,DEPARTURE,DEPARTURE
+465,11:10,Saturation,16,14,0,6,False,False,DEPARTURE,DEPARTURE
+466,11:11,Saturation,16,14,0,6,False,False,DEPARTURE,DEPARTURE
+467,11:12,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+468,11:12,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+469,11:13,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+470,11:14,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+471,11:14,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+472,11:15,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+473,11:16,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+474,11:16,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+475,11:17,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+476,11:18,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+477,11:18,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+478,11:19,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+479,11:20,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+480,11:20,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+481,11:21,Saturation,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+482,11:22,Saturation,17,13,0,6,False,False,ARRIVAL,DEPARTURE
+483,11:22,Saturation,17,13,0,6,False,False,ARRIVAL,DEPARTURE
+484,11:23,Saturation,18,13,0,6,False,False,ARRIVAL,DEPARTURE
+485,11:24,Saturation,18,13,0,6,False,False,ARRIVAL,DEPARTURE
+486,11:24,Saturation,18,13,0,6,False,False,ARRIVAL,DEPARTURE
+487,11:25,Saturation,18,13,0,6,False,False,ARRIVAL,DEPARTURE
+488,11:26,Saturation,18,13,0,6,False,False,ARRIVAL,DEPARTURE
+489,11:26,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+490,11:27,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+491,11:28,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+492,11:28,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+493,11:29,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+494,11:30,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+495,11:30,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+496,11:31,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+497,11:32,Saturation,18,13,0,6,False,False,ARRIVAL,ARRIVAL
+498,11:32,Saturation,18,13,0,6,False,False,ARRIVAL,ARRIVAL
+499,11:33,Saturation,18,13,0,6,False,False,ARRIVAL,ARRIVAL
+500,11:34,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+501,11:34,Saturation,18,13,0,6,False,False,ARRIVAL,ARRIVAL
+502,11:35,Saturation,18,13,0,6,False,False,ARRIVAL,ARRIVAL
+503,11:36,Saturation,18,13,0,6,False,False,ARRIVAL,ARRIVAL
+504,11:36,Saturation,18,14,0,6,False,False,ARRIVAL,ARRIVAL
+505,11:37,Saturation,19,13,0,6,False,False,ARRIVAL,DEPARTURE
+506,11:38,Saturation,19,13,0,6,False,False,ARRIVAL,DEPARTURE
+507,11:38,Saturation,20,13,0,6,False,False,ARRIVAL,DEPARTURE
+508,11:39,Saturation,20,14,0,6,False,False,ARRIVAL,ARRIVAL
+509,11:40,Saturation,19,14,0,6,False,False,DEPARTURE,ARRIVAL
+510,11:40,Saturation,19,14,0,6,False,False,DEPARTURE,ARRIVAL
+511,11:41,Saturation,21,14,0,6,False,False,ARRIVAL,ARRIVAL
+512,11:42,Saturation,21,14,0,6,False,False,ARRIVAL,ARRIVAL
+513,11:42,Saturation,21,14,0,6,False,False,ARRIVAL,ARRIVAL
+514,11:43,Saturation,20,15,0,6,False,False,DEPARTURE,ARRIVAL
+515,11:44,Saturation,20,14,0,6,False,False,DEPARTURE,DEPARTURE
+516,11:44,Saturation,20,13,0,6,False,False,DEPARTURE,DEPARTURE
+517,11:45,Saturation,20,13,0,6,False,False,DEPARTURE,DEPARTURE
+518,11:46,Saturation,20,13,0,6,False,False,DEPARTURE,DEPARTURE
+519,11:46,Saturation,20,13,0,6,False,False,DEPARTURE,DEPARTURE
+520,11:47,Saturation,20,13,0,6,False,False,DEPARTURE,DEPARTURE
+521,11:48,Saturation,19,13,0,6,False,False,DEPARTURE,DEPARTURE
+522,11:48,Saturation,19,14,0,6,False,False,DEPARTURE,ARRIVAL
+523,11:49,Saturation,19,14,0,6,False,False,DEPARTURE,ARRIVAL
+524,11:50,Saturation,19,14,0,6,False,False,DEPARTURE,ARRIVAL
+525,11:50,Saturation,19,14,0,6,False,False,DEPARTURE,ARRIVAL
+526,11:51,Saturation,19,14,0,6,False,False,DEPARTURE,ARRIVAL
+527,11:52,Saturation,19,13,0,6,False,False,DEPARTURE,DEPARTURE
+528,11:52,Saturation,19,13,0,6,False,False,DEPARTURE,DEPARTURE
+529,11:53,Saturation,19,13,0,6,False,False,ARRIVAL,DEPARTURE
+530,11:54,Saturation,19,12,0,6,False,False,ARRIVAL,DEPARTURE
+531,11:54,Saturation,19,12,0,6,False,False,ARRIVAL,DEPARTURE
+532,11:55,Saturation,19,12,0,6,False,False,ARRIVAL,DEPARTURE
+533,11:56,Saturation,18,12,0,6,False,False,DEPARTURE,DEPARTURE
+534,11:56,Saturation,18,12,0,6,False,False,DEPARTURE,DEPARTURE
+535,11:57,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+536,11:58,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+537,11:58,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+538,11:59,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+539,12:00,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+540,12:00,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+541,12:01,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+542,12:02,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+543,12:02,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+544,12:03,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+545,12:04,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+546,12:04,Saturation,18,13,0,6,False,False,DEPARTURE,ARRIVAL
+547,12:05,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+548,12:06,Saturation,17,13,0,6,False,False,DEPARTURE,ARRIVAL
+549,12:06,Saturation,16,13,0,6,False,False,DEPARTURE,ARRIVAL
+550,12:07,Saturation,16,13,0,6,False,False,DEPARTURE,ARRIVAL
+551,12:08,Saturation,16,13,0,6,False,False,DEPARTURE,ARRIVAL
+552,12:08,Saturation,16,13,0,6,False,False,DEPARTURE,ARRIVAL
+553,12:09,Saturation,16,13,0,6,False,False,DEPARTURE,ARRIVAL
+554,12:10,Saturation,16,13,0,6,False,False,DEPARTURE,ARRIVAL
+555,12:10,Saturation,16,12,0,6,False,False,DEPARTURE,DEPARTURE
+556,12:11,Saturation,16,12,0,6,False,False,DEPARTURE,DEPARTURE
+557,12:12,Saturation,16,12,0,6,False,False,DEPARTURE,DEPARTURE
+558,12:12,Saturation,16,12,0,6,False,False,DEPARTURE,DEPARTURE
+559,12:13,Saturation,16,12,0,6,False,False,DEPARTURE,DEPARTURE
+560,12:14,Saturation,16,12,0,6,False,False,DEPARTURE,DEPARTURE
+561,12:14,Saturation,16,12,0,6,False,False,DEPARTURE,DEPARTURE
+562,12:15,Saturation,16,12,0,6,False,False,DEPARTURE,DEPARTURE
+563,12:16,Saturation,16,13,0,6,False,False,DEPARTURE,ARRIVAL
+564,12:16,Saturation,15,13,0,6,False,False,DEPARTURE,ARRIVAL
+565,12:17,Saturation,14,12,0,6,False,False,DEPARTURE,DEPARTURE
+566,12:18,Saturation,14,12,0,6,False,False,DEPARTURE,DEPARTURE
+567,12:18,Saturation,14,13,0,6,False,False,DEPARTURE,ARRIVAL
+568,12:19,Saturation,14,13,0,6,False,False,DEPARTURE,ARRIVAL
+569,12:20,Saturation,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+570,12:20,Saturation,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+571,12:21,Saturation,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+572,12:22,Saturation,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+573,12:22,Saturation,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+574,12:23,Saturation,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+575,12:24,Saturation,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+576,12:24,Saturation,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+577,12:25,Saturation,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+578,12:26,Saturation,15,14,0,6,False,False,ARRIVAL,ARRIVAL
+579,12:26,Saturation,15,14,0,6,False,False,ARRIVAL,ARRIVAL
+580,12:27,Saturation,15,14,0,6,False,False,ARRIVAL,ARRIVAL
+581,12:28,Saturation,15,14,0,6,False,False,ARRIVAL,ARRIVAL
+582,12:28,Saturation,15,14,0,6,False,False,ARRIVAL,ARRIVAL
+583,12:29,Saturation,15,14,0,6,False,False,ARRIVAL,ARRIVAL
+584,12:30,Saturation,15,14,0,6,False,False,ARRIVAL,ARRIVAL
+585,12:30,Saturation,16,14,0,6,False,False,ARRIVAL,ARRIVAL
+586,12:31,Saturation,16,14,0,6,False,False,ARRIVAL,ARRIVAL
+587,12:32,Saturation,16,15,0,6,False,False,ARRIVAL,ARRIVAL
+588,12:32,Saturation,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+589,12:33,Saturation,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+590,12:34,Saturation,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+591,12:34,Saturation,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+592,12:35,Saturation,16,15,0,6,False,False,DEPARTURE,ARRIVAL
+593,12:36,Saturation,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+594,12:36,Saturation,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+595,12:37,Saturation,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+596,12:38,Saturation,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+597,12:38,Saturation,18,15,0,6,False,False,ARRIVAL,ARRIVAL
+598,12:39,Saturation,18,15,0,6,False,False,ARRIVAL,ARRIVAL
+599,12:40,Saturation,19,15,0,6,False,False,ARRIVAL,ARRIVAL
+600,12:40,Saturation,19,15,0,6,False,False,ARRIVAL,ARRIVAL
+601,12:41,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+602,12:42,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+603,12:42,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+604,12:43,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+605,12:44,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+606,12:44,Saturation,19,15,0,6,False,False,ARRIVAL,ARRIVAL
+607,12:45,Saturation,19,15,0,6,False,False,ARRIVAL,ARRIVAL
+608,12:46,Saturation,19,14,0,6,False,False,ARRIVAL,DEPARTURE
+609,12:46,Saturation,19,13,0,6,False,False,ARRIVAL,DEPARTURE
+610,12:47,Saturation,19,13,0,6,False,False,ARRIVAL,DEPARTURE
+611,12:48,Saturation,19,13,0,6,False,False,ARRIVAL,DEPARTURE
+612,12:48,Saturation,20,12,0,6,False,False,ARRIVAL,DEPARTURE
+613,12:49,Saturation,20,13,0,6,False,False,ARRIVAL,ARRIVAL
+614,12:50,Saturation,20,13,0,6,False,False,ARRIVAL,ARRIVAL
+615,12:50,Saturation,20,13,0,6,False,False,ARRIVAL,ARRIVAL
+616,12:51,Saturation,20,13,0,6,False,False,ARRIVAL,ARRIVAL
+617,12:52,Saturation,20,13,0,6,False,False,ARRIVAL,ARRIVAL
+618,12:52,Saturation,19,13,0,6,False,False,DEPARTURE,ARRIVAL
+619,12:53,Saturation,19,13,0,6,False,False,DEPARTURE,ARRIVAL
+620,12:54,Saturation,19,14,0,6,False,False,DEPARTURE,ARRIVAL
+621,12:54,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+622,12:55,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+623,12:56,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+624,12:56,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+625,12:57,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+626,12:58,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+627,12:58,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+628,12:59,Saturation,19,16,0,6,False,False,DEPARTURE,ARRIVAL
+629,13:00,Saturation,20,16,0,6,False,False,ARRIVAL,ARRIVAL
+630,13:00,Saturation,20,16,0,6,False,False,ARRIVAL,ARRIVAL
+631,13:01,Saturation,20,16,0,6,False,False,ARRIVAL,ARRIVAL
+632,13:02,Saturation,20,16,0,6,False,False,ARRIVAL,ARRIVAL
+633,13:02,Saturation,20,17,0,6,False,False,ARRIVAL,ARRIVAL
+634,13:03,Saturation,19,17,0,6,False,False,DEPARTURE,ARRIVAL
+635,13:04,Saturation,19,17,0,6,False,False,DEPARTURE,ARRIVAL
+636,13:04,Saturation,19,17,0,6,False,False,DEPARTURE,ARRIVAL
+637,13:05,Saturation,19,17,0,6,False,False,DEPARTURE,ARRIVAL
+638,13:06,Saturation,19,17,0,6,False,False,DEPARTURE,ARRIVAL
+639,13:06,Saturation,19,18,0,6,False,False,DEPARTURE,ARRIVAL
+640,13:07,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+641,13:08,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+642,13:08,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+643,13:09,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+644,13:10,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+645,13:10,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+646,13:11,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+647,13:12,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+648,13:12,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+649,13:13,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+650,13:14,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+651,13:14,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+652,13:15,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+653,13:16,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+654,13:16,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+655,13:17,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+656,13:18,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+657,13:18,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+658,13:19,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+659,13:20,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+660,13:20,Saturation,20,17,0,6,False,False,ARRIVAL,DEPARTURE
+661,13:21,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+662,13:22,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+663,13:22,Saturation,19,18,0,6,False,False,DEPARTURE,ARRIVAL
+664,13:23,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+665,13:24,Saturation,19,17,0,6,False,False,DEPARTURE,DEPARTURE
+666,13:24,Saturation,18,17,0,6,False,False,DEPARTURE,DEPARTURE
+667,13:25,Saturation,18,17,0,6,False,False,DEPARTURE,DEPARTURE
+668,13:26,Saturation,17,17,0,6,False,False,DEPARTURE,DEPARTURE
+669,13:26,Saturation,17,17,0,6,False,False,DEPARTURE,DEPARTURE
+670,13:27,Saturation,17,17,0,6,False,False,DEPARTURE,DEPARTURE
+671,13:28,Saturation,17,17,0,6,False,False,DEPARTURE,DEPARTURE
+672,13:28,Saturation,16,17,0,6,False,False,DEPARTURE,DEPARTURE
+673,13:29,Saturation,16,17,0,6,False,False,DEPARTURE,DEPARTURE
+674,13:30,Saturation,16,16,0,6,False,False,DEPARTURE,DEPARTURE
+675,13:30,Saturation,16,16,0,6,False,False,DEPARTURE,DEPARTURE
+676,13:31,Saturation,16,17,0,6,False,False,DEPARTURE,ARRIVAL
+677,13:32,Saturation,16,17,0,6,False,False,DEPARTURE,ARRIVAL
+678,13:32,Saturation,16,17,0,6,False,False,DEPARTURE,ARRIVAL
+679,13:33,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+680,13:34,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+681,13:34,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+682,13:35,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+683,13:36,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+684,13:36,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+685,13:37,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+686,13:38,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+687,13:38,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+688,13:39,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+689,13:40,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+690,13:40,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+691,13:41,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+692,13:42,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+693,13:42,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+694,13:43,Saturation,16,18,0,6,False,False,DEPARTURE,ARRIVAL
+695,13:44,Saturation,16,17,0,6,False,False,DEPARTURE,DEPARTURE
+696,13:44,Saturation,16,17,0,6,False,False,DEPARTURE,DEPARTURE
+697,13:45,Saturation,16,16,0,6,False,False,DEPARTURE,DEPARTURE
+698,13:46,Saturation,16,16,0,6,False,False,DEPARTURE,DEPARTURE
+699,13:46,Saturation,16,16,0,6,False,False,DEPARTURE,DEPARTURE
+700,13:47,Saturation,16,16,0,6,False,False,DEPARTURE,DEPARTURE
+701,13:48,Saturation,16,16,0,6,False,False,DEPARTURE,DEPARTURE
+702,13:48,Saturation,16,16,0,6,False,False,DEPARTURE,DEPARTURE
+703,13:49,Saturation,16,16,0,6,False,False,DEPARTURE,DEPARTURE
+704,13:50,Saturation,15,16,0,6,False,False,DEPARTURE,DEPARTURE
+705,13:50,Saturation,15,16,0,6,False,False,DEPARTURE,DEPARTURE
+706,13:51,Saturation,15,16,0,6,False,False,DEPARTURE,DEPARTURE
+707,13:52,Saturation,15,14,0,6,False,False,DEPARTURE,DEPARTURE
+708,13:52,Saturation,15,14,0,6,False,False,DEPARTURE,DEPARTURE
+709,13:53,Saturation,15,14,0,6,False,False,DEPARTURE,DEPARTURE
+710,13:54,Saturation,15,14,0,6,False,False,DEPARTURE,DEPARTURE
+711,13:54,Saturation,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+712,13:55,Saturation,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+713,13:56,Saturation,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+714,13:56,Saturation,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+715,13:57,Saturation,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+716,13:58,Saturation,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+717,13:58,Saturation,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+718,13:59,Saturation,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+719,14:00,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+720,14:00,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+721,14:01,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+722,14:02,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+723,14:02,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+724,14:03,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+725,14:04,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+726,14:04,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+727,14:05,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+728,14:06,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+729,14:06,Afternoon drain,15,13,0,6,False,False,ARRIVAL,DEPARTURE
+730,14:07,Afternoon drain,15,13,0,6,False,False,ARRIVAL,DEPARTURE
+731,14:08,Afternoon drain,15,13,0,6,False,False,ARRIVAL,DEPARTURE
+732,14:08,Afternoon drain,15,13,0,6,False,False,ARRIVAL,DEPARTURE
+733,14:09,Afternoon drain,15,13,0,6,False,False,ARRIVAL,DEPARTURE
+734,14:10,Afternoon drain,15,13,0,6,False,False,ARRIVAL,DEPARTURE
+735,14:10,Afternoon drain,15,13,0,6,False,False,ARRIVAL,DEPARTURE
+736,14:11,Afternoon drain,15,13,0,6,False,False,ARRIVAL,DEPARTURE
+737,14:12,Afternoon drain,16,13,0,6,False,False,ARRIVAL,DEPARTURE
+738,14:12,Afternoon drain,16,13,0,6,False,False,ARRIVAL,DEPARTURE
+739,14:13,Afternoon drain,16,13,0,6,False,False,ARRIVAL,DEPARTURE
+740,14:14,Afternoon drain,16,13,0,6,False,False,ARRIVAL,DEPARTURE
+741,14:14,Afternoon drain,16,13,0,6,False,False,ARRIVAL,DEPARTURE
+742,14:15,Afternoon drain,16,13,0,6,False,False,ARRIVAL,DEPARTURE
+743,14:16,Afternoon drain,16,13,0,6,False,False,ARRIVAL,DEPARTURE
+744,14:16,Afternoon drain,15,13,0,6,False,False,DEPARTURE,DEPARTURE
+745,14:17,Afternoon drain,15,13,0,6,False,False,DEPARTURE,DEPARTURE
+746,14:18,Afternoon drain,14,13,0,6,False,False,DEPARTURE,DEPARTURE
+747,14:18,Afternoon drain,14,13,0,6,False,False,DEPARTURE,DEPARTURE
+748,14:19,Afternoon drain,14,13,0,6,False,False,DEPARTURE,DEPARTURE
+749,14:20,Afternoon drain,14,13,0,6,False,False,DEPARTURE,DEPARTURE
+750,14:20,Afternoon drain,14,13,0,6,False,False,DEPARTURE,DEPARTURE
+751,14:21,Afternoon drain,14,13,0,6,False,False,DEPARTURE,DEPARTURE
+752,14:22,Afternoon drain,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+753,14:22,Afternoon drain,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+754,14:23,Afternoon drain,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+755,14:24,Afternoon drain,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+756,14:24,Afternoon drain,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+757,14:25,Afternoon drain,15,14,0,6,False,False,ARRIVAL,ARRIVAL
+758,14:26,Afternoon drain,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+759,14:26,Afternoon drain,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+760,14:27,Afternoon drain,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+761,14:28,Afternoon drain,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+762,14:28,Afternoon drain,14,14,0,6,False,False,DEPARTURE,ARRIVAL
+763,14:29,Afternoon drain,14,14,0,6,False,False,DEPARTURE,DEPARTURE
+764,14:30,Afternoon drain,14,14,0,6,False,False,DEPARTURE,DEPARTURE
+765,14:30,Afternoon drain,14,14,0,6,False,False,DEPARTURE,DEPARTURE
+766,14:31,Afternoon drain,14,14,0,6,False,False,DEPARTURE,DEPARTURE
+767,14:32,Afternoon drain,14,14,0,6,False,False,DEPARTURE,DEPARTURE
+768,14:32,Afternoon drain,14,14,0,6,False,False,DEPARTURE,DEPARTURE
+769,14:33,Afternoon drain,14,14,0,6,False,False,DEPARTURE,DEPARTURE
+770,14:34,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+771,14:34,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+772,14:35,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+773,14:36,Afternoon drain,15,14,0,6,False,False,ARRIVAL,DEPARTURE
+774,14:36,Afternoon drain,13,14,0,6,False,False,DEPARTURE,DEPARTURE
+775,14:37,Afternoon drain,12,14,0,6,False,False,DEPARTURE,DEPARTURE
+776,14:38,Afternoon drain,12,14,0,6,False,False,DEPARTURE,DEPARTURE
+777,14:38,Afternoon drain,14,14,0,6,False,False,ARRIVAL,DEPARTURE
+778,14:39,Afternoon drain,14,14,0,6,False,False,ARRIVAL,DEPARTURE
+779,14:40,Afternoon drain,14,14,0,6,False,False,ARRIVAL,DEPARTURE
+780,14:40,Afternoon drain,13,14,0,6,False,False,DEPARTURE,DEPARTURE
+781,14:41,Afternoon drain,13,14,0,6,False,False,DEPARTURE,DEPARTURE
+782,14:42,Afternoon drain,13,14,0,6,False,False,DEPARTURE,DEPARTURE
+783,14:42,Afternoon drain,13,14,0,6,False,False,DEPARTURE,DEPARTURE
+784,14:43,Afternoon drain,13,14,0,6,False,False,DEPARTURE,DEPARTURE
+785,14:44,Afternoon drain,13,14,0,6,False,False,DEPARTURE,DEPARTURE
+786,14:44,Afternoon drain,13,14,0,6,False,False,DEPARTURE,DEPARTURE
+787,14:45,Afternoon drain,13,14,0,6,False,False,DEPARTURE,DEPARTURE
+788,14:46,Afternoon drain,12,14,0,6,False,False,DEPARTURE,DEPARTURE
+789,14:46,Afternoon drain,13,14,0,6,False,False,ARRIVAL,DEPARTURE
+790,14:47,Afternoon drain,13,14,0,6,False,False,ARRIVAL,DEPARTURE
+791,14:48,Afternoon drain,13,14,0,6,False,False,ARRIVAL,DEPARTURE
+792,14:48,Afternoon drain,12,14,0,6,False,False,DEPARTURE,DEPARTURE
+793,14:49,Afternoon drain,12,14,0,6,False,False,DEPARTURE,DEPARTURE
+794,14:50,Afternoon drain,12,14,0,6,False,False,DEPARTURE,DEPARTURE
+795,14:50,Afternoon drain,11,14,0,6,False,False,DEPARTURE,DEPARTURE
+796,14:51,Afternoon drain,12,14,0,6,False,False,ARRIVAL,DEPARTURE
+797,14:52,Afternoon drain,12,14,0,6,False,False,ARRIVAL,DEPARTURE
+798,14:52,Afternoon drain,11,14,0,6,False,False,DEPARTURE,DEPARTURE
+799,14:53,Afternoon drain,11,14,0,6,False,False,DEPARTURE,DEPARTURE
+800,14:54,Afternoon drain,11,14,0,6,False,False,DEPARTURE,DEPARTURE
+801,14:54,Afternoon drain,11,13,0,6,False,False,DEPARTURE,DEPARTURE
+802,14:55,Afternoon drain,11,13,0,6,False,False,DEPARTURE,DEPARTURE
+803,14:56,Afternoon drain,11,13,0,6,False,False,DEPARTURE,DEPARTURE
+804,14:56,Afternoon drain,11,14,0,6,False,False,DEPARTURE,ARRIVAL
+805,14:57,Afternoon drain,11,13,0,6,False,False,DEPARTURE,DEPARTURE
+806,14:58,Afternoon drain,11,13,0,6,False,False,DEPARTURE,DEPARTURE
+807,14:58,Afternoon drain,11,13,0,6,False,False,DEPARTURE,DEPARTURE
+808,14:59,Afternoon drain,11,13,0,6,False,False,DEPARTURE,DEPARTURE
+809,15:00,Afternoon drain,11,13,0,6,False,False,DEPARTURE,DEPARTURE
+810,15:00,Afternoon drain,11,14,0,6,False,False,DEPARTURE,ARRIVAL
+811,15:01,Afternoon drain,11,14,0,6,False,False,DEPARTURE,ARRIVAL
+812,15:02,Afternoon drain,11,14,0,6,False,False,DEPARTURE,ARRIVAL
+813,15:02,Afternoon drain,11,14,0,6,False,False,DEPARTURE,ARRIVAL
+814,15:03,Afternoon drain,11,14,0,6,False,False,DEPARTURE,ARRIVAL
+815,15:04,Afternoon drain,12,14,0,6,False,False,ARRIVAL,ARRIVAL
+816,15:04,Afternoon drain,12,14,0,6,False,False,ARRIVAL,ARRIVAL
+817,15:05,Afternoon drain,12,14,0,6,False,False,ARRIVAL,ARRIVAL
+818,15:06,Afternoon drain,12,14,0,6,False,False,ARRIVAL,ARRIVAL
+819,15:06,Afternoon drain,12,14,0,6,False,False,ARRIVAL,ARRIVAL
+820,15:07,Afternoon drain,12,14,0,6,False,False,ARRIVAL,ARRIVAL
+821,15:08,Afternoon drain,12,14,0,6,False,False,ARRIVAL,ARRIVAL
+822,15:08,Afternoon drain,12,15,0,6,False,False,ARRIVAL,ARRIVAL
+823,15:09,Afternoon drain,12,15,0,6,False,False,ARRIVAL,ARRIVAL
+824,15:10,Afternoon drain,12,15,0,6,False,False,ARRIVAL,ARRIVAL
+825,15:10,Afternoon drain,12,15,0,6,False,False,ARRIVAL,ARRIVAL
+826,15:11,Afternoon drain,12,14,0,6,False,False,ARRIVAL,DEPARTURE
+827,15:12,Afternoon drain,12,14,0,6,False,False,ARRIVAL,DEPARTURE
+828,15:12,Afternoon drain,12,14,0,6,False,False,ARRIVAL,DEPARTURE
+829,15:13,Afternoon drain,12,15,0,6,False,False,ARRIVAL,ARRIVAL
+830,15:14,Afternoon drain,12,15,0,6,False,False,ARRIVAL,ARRIVAL
+831,15:14,Afternoon drain,12,14,0,6,False,False,ARRIVAL,DEPARTURE
+832,15:15,Afternoon drain,12,14,0,6,False,False,ARRIVAL,DEPARTURE
+833,15:16,Afternoon drain,12,14,0,6,False,False,ARRIVAL,DEPARTURE
+834,15:16,Afternoon drain,12,14,0,6,False,False,ARRIVAL,DEPARTURE
+835,15:17,Afternoon drain,12,14,0,6,False,False,ARRIVAL,DEPARTURE
+836,15:18,Afternoon drain,12,12,0,6,False,False,ARRIVAL,DEPARTURE
+837,15:18,Afternoon drain,12,12,0,6,False,False,ARRIVAL,DEPARTURE
+838,15:19,Afternoon drain,12,12,0,6,False,False,ARRIVAL,DEPARTURE
+839,15:20,Afternoon drain,13,13,0,6,False,False,ARRIVAL,ARRIVAL
+840,15:20,Afternoon drain,13,13,0,6,False,False,ARRIVAL,ARRIVAL
+841,15:21,Afternoon drain,13,13,0,6,False,False,ARRIVAL,ARRIVAL
+842,15:22,Afternoon drain,13,13,0,6,False,False,ARRIVAL,ARRIVAL
+843,15:22,Afternoon drain,14,13,0,6,False,False,ARRIVAL,ARRIVAL
+844,15:23,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+845,15:24,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+846,15:24,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+847,15:25,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+848,15:26,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+849,15:26,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+850,15:27,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+851,15:28,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+852,15:28,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+853,15:29,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+854,15:30,Afternoon drain,14,13,0,6,False,False,DEPARTURE,ARRIVAL
+855,15:30,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+856,15:31,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+857,15:32,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+858,15:32,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+859,15:33,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+860,15:34,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+861,15:34,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+862,15:35,Afternoon drain,15,13,0,6,False,False,ARRIVAL,ARRIVAL
+863,15:36,Afternoon drain,15,12,0,6,False,False,ARRIVAL,DEPARTURE
+864,15:36,Afternoon drain,15,12,0,6,False,False,ARRIVAL,DEPARTURE
+865,15:37,Afternoon drain,14,11,0,6,False,False,DEPARTURE,DEPARTURE
+866,15:38,Afternoon drain,14,11,0,6,False,False,DEPARTURE,DEPARTURE
+867,15:38,Afternoon drain,14,11,0,6,False,False,DEPARTURE,DEPARTURE
+868,15:39,Afternoon drain,13,11,0,6,False,False,DEPARTURE,DEPARTURE
+869,15:40,Afternoon drain,13,11,0,6,False,False,DEPARTURE,DEPARTURE
+870,15:40,Afternoon drain,13,11,0,6,False,False,DEPARTURE,DEPARTURE
+871,15:41,Afternoon drain,13,11,0,6,False,False,DEPARTURE,DEPARTURE
+872,15:42,Afternoon drain,13,11,0,6,False,False,DEPARTURE,DEPARTURE
+873,15:42,Afternoon drain,13,11,0,6,False,False,DEPARTURE,DEPARTURE
+874,15:43,Afternoon drain,12,11,0,6,False,False,DEPARTURE,DEPARTURE
+875,15:44,Afternoon drain,12,12,0,6,False,False,DEPARTURE,ARRIVAL
+876,15:44,Afternoon drain,11,11,0,6,False,False,DEPARTURE,DEPARTURE
+877,15:45,Afternoon drain,11,11,0,6,False,False,DEPARTURE,DEPARTURE
+878,15:46,Afternoon drain,11,11,0,6,False,False,DEPARTURE,DEPARTURE
+879,15:46,Afternoon drain,11,11,0,6,False,False,DEPARTURE,DEPARTURE
+880,15:47,Afternoon drain,11,11,0,6,False,False,DEPARTURE,DEPARTURE
+881,15:48,Afternoon drain,11,11,0,6,False,False,DEPARTURE,DEPARTURE
+882,15:48,Afternoon drain,11,10,0,6,False,False,DEPARTURE,DEPARTURE
+883,15:49,Afternoon drain,10,10,0,6,False,False,DEPARTURE,DEPARTURE
+884,15:50,Afternoon drain,10,11,0,6,False,False,DEPARTURE,ARRIVAL
+885,15:50,Afternoon drain,10,11,0,6,False,False,DEPARTURE,ARRIVAL
+886,15:51,Afternoon drain,11,11,0,6,False,False,ARRIVAL,ARRIVAL
+887,15:52,Afternoon drain,11,11,0,6,False,False,ARRIVAL,ARRIVAL
+888,15:52,Afternoon drain,11,11,0,6,False,False,ARRIVAL,ARRIVAL
+889,15:53,Afternoon drain,11,10,0,6,False,False,ARRIVAL,DEPARTURE
+890,15:54,Afternoon drain,11,10,0,6,False,False,ARRIVAL,DEPARTURE
+891,15:54,Afternoon drain,10,10,0,6,False,False,DEPARTURE,DEPARTURE
+892,15:55,Afternoon drain,10,10,0,6,False,False,DEPARTURE,DEPARTURE
+893,15:56,Afternoon drain,10,10,0,6,False,False,DEPARTURE,DEPARTURE
+894,15:56,Afternoon drain,10,10,0,6,False,False,DEPARTURE,DEPARTURE
+895,15:57,Afternoon drain,10,10,0,6,False,False,DEPARTURE,DEPARTURE
+896,15:58,Afternoon drain,11,10,0,6,False,False,ARRIVAL,DEPARTURE
+897,15:58,Afternoon drain,11,10,0,6,False,False,ARRIVAL,DEPARTURE
+898,15:59,Afternoon drain,11,10,0,6,False,False,ARRIVAL,DEPARTURE
+899,16:00,Afternoon drain,11,10,0,6,False,False,ARRIVAL,DEPARTURE
+900,16:00,Afternoon drain,11,10,0,6,False,False,ARRIVAL,DEPARTURE
+901,16:01,Afternoon drain,11,10,0,6,False,False,ARRIVAL,DEPARTURE
+902,16:02,Afternoon drain,11,10,0,6,False,False,ARRIVAL,DEPARTURE
+903,16:02,Afternoon drain,11,10,0,6,False,False,ARRIVAL,DEPARTURE
+904,16:03,Afternoon drain,10,10,0,6,False,False,DEPARTURE,DEPARTURE
+905,16:04,Afternoon drain,10,9,0,6,False,False,DEPARTURE,DEPARTURE
+906,16:04,Afternoon drain,10,9,0,6,False,False,DEPARTURE,DEPARTURE
+907,16:05,Afternoon drain,10,9,0,6,False,False,DEPARTURE,DEPARTURE
+908,16:06,Afternoon drain,9,9,0,6,False,False,DEPARTURE,DEPARTURE
+909,16:06,Afternoon drain,9,9,0,6,False,False,DEPARTURE,DEPARTURE
+910,16:07,Afternoon drain,9,9,0,6,False,False,DEPARTURE,DEPARTURE
+911,16:08,Afternoon drain,9,9,0,6,False,False,DEPARTURE,DEPARTURE
+912,16:08,Afternoon drain,9,9,0,6,False,False,DEPARTURE,DEPARTURE
+913,16:09,Afternoon drain,9,9,0,6,False,False,DEPARTURE,DEPARTURE
+914,16:10,Afternoon drain,9,9,0,6,False,False,DEPARTURE,DEPARTURE
+915,16:10,Afternoon drain,9,9,0,6,False,False,DEPARTURE,DEPARTURE
+916,16:11,Afternoon drain,9,10,0,6,False,False,DEPARTURE,ARRIVAL
+917,16:12,Afternoon drain,9,10,0,6,False,False,DEPARTURE,ARRIVAL
+918,16:12,Afternoon drain,9,10,0,6,False,False,DEPARTURE,ARRIVAL
+919,16:13,Afternoon drain,9,10,0,6,False,False,DEPARTURE,ARRIVAL
+920,16:14,Afternoon drain,9,10,0,6,False,False,DEPARTURE,ARRIVAL
+921,16:14,Afternoon drain,9,10,0,6,False,False,DEPARTURE,ARRIVAL
+922,16:15,Afternoon drain,10,10,0,6,False,False,ARRIVAL,ARRIVAL
+923,16:16,Afternoon drain,10,10,0,6,False,False,ARRIVAL,ARRIVAL
+924,16:16,Afternoon drain,10,10,0,6,False,False,ARRIVAL,ARRIVAL
+925,16:17,Afternoon drain,9,10,0,6,False,False,DEPARTURE,ARRIVAL
+926,16:18,Afternoon drain,9,10,0,6,False,False,DEPARTURE,ARRIVAL
+927,16:18,Afternoon drain,9,10,0,6,False,False,DEPARTURE,ARRIVAL
+928,16:19,Afternoon drain,9,10,0,6,False,False,DEPARTURE,ARRIVAL
+929,16:20,Afternoon drain,9,9,0,6,False,False,DEPARTURE,DEPARTURE
+930,16:20,Afternoon drain,9,9,0,6,False,False,DEPARTURE,DEPARTURE
+931,16:21,Afternoon drain,10,9,0,6,False,False,ARRIVAL,DEPARTURE
+932,16:22,Afternoon drain,10,9,0,6,False,False,ARRIVAL,DEPARTURE
+933,16:22,Afternoon drain,10,9,0,6,False,False,ARRIVAL,DEPARTURE
+934,16:23,Afternoon drain,10,8,0,6,False,False,ARRIVAL,DEPARTURE
+935,16:24,Afternoon drain,10,8,0,6,False,False,ARRIVAL,DEPARTURE
+936,16:24,Afternoon drain,10,8,0,6,False,False,ARRIVAL,DEPARTURE
+937,16:25,Afternoon drain,10,8,0,6,False,False,ARRIVAL,DEPARTURE
+938,16:26,Afternoon drain,10,8,0,6,False,False,ARRIVAL,DEPARTURE
+939,16:26,Afternoon drain,10,8,0,6,False,False,ARRIVAL,DEPARTURE
+940,16:27,Afternoon drain,10,9,0,6,False,False,ARRIVAL,ARRIVAL
+941,16:28,Afternoon drain,10,9,0,6,False,False,ARRIVAL,ARRIVAL
+942,16:28,Afternoon drain,10,10,0,6,False,False,ARRIVAL,ARRIVAL
+943,16:29,Afternoon drain,10,10,0,6,False,False,ARRIVAL,ARRIVAL
+944,16:30,Afternoon drain,10,11,0,6,False,False,ARRIVAL,ARRIVAL
+945,16:30,Afternoon drain,10,11,0,6,False,False,ARRIVAL,ARRIVAL
+946,16:31,Afternoon drain,10,11,0,6,False,False,ARRIVAL,ARRIVAL
+947,16:32,Afternoon drain,11,11,0,6,False,False,ARRIVAL,ARRIVAL
+948,16:32,Afternoon drain,11,11,0,6,False,False,ARRIVAL,ARRIVAL
+949,16:33,Afternoon drain,11,11,0,6,False,False,ARRIVAL,ARRIVAL
+950,16:34,Afternoon drain,11,11,0,6,False,False,ARRIVAL,ARRIVAL
+951,16:34,Afternoon drain,12,11,0,6,False,False,ARRIVAL,ARRIVAL
+952,16:35,Afternoon drain,13,11,0,6,False,False,ARRIVAL,ARRIVAL
+953,16:36,Afternoon drain,13,11,0,6,False,False,ARRIVAL,ARRIVAL
+954,16:36,Afternoon drain,14,11,0,6,False,False,ARRIVAL,ARRIVAL
+955,16:37,Afternoon drain,15,11,0,6,False,False,ARRIVAL,ARRIVAL
+956,16:38,Afternoon drain,16,11,0,6,False,False,ARRIVAL,ARRIVAL
+957,16:38,Afternoon drain,16,11,0,6,False,False,ARRIVAL,ARRIVAL
+958,16:39,Afternoon drain,16,11,0,6,False,False,ARRIVAL,ARRIVAL
+959,16:40,Afternoon drain,16,11,0,6,False,False,ARRIVAL,ARRIVAL
+960,16:40,Afternoon drain,16,11,0,6,False,False,ARRIVAL,ARRIVAL
+961,16:41,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+962,16:42,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+963,16:42,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+964,16:43,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+965,16:44,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+966,16:44,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+967,16:45,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+968,16:46,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+969,16:46,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+970,16:47,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+971,16:48,Afternoon drain,16,12,0,6,False,False,ARRIVAL,ARRIVAL
+972,16:48,Afternoon drain,16,13,0,6,False,False,ARRIVAL,ARRIVAL
+973,16:49,Afternoon drain,16,13,0,6,False,False,ARRIVAL,ARRIVAL
+974,16:50,Afternoon drain,16,13,0,6,False,False,ARRIVAL,ARRIVAL
+975,16:50,Afternoon drain,15,13,0,6,False,False,DEPARTURE,ARRIVAL
+976,16:51,Afternoon drain,15,14,0,6,False,False,DEPARTURE,ARRIVAL
+977,16:52,Afternoon drain,16,14,0,6,False,False,ARRIVAL,ARRIVAL
+978,16:52,Afternoon drain,16,14,0,6,False,False,ARRIVAL,ARRIVAL
+979,16:53,Afternoon drain,16,15,0,6,False,False,ARRIVAL,ARRIVAL
+980,16:54,Afternoon drain,16,15,0,6,False,False,ARRIVAL,ARRIVAL
+981,16:54,Afternoon drain,16,15,0,6,False,False,ARRIVAL,ARRIVAL
+982,16:55,Afternoon drain,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+983,16:56,Afternoon drain,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+984,16:56,Afternoon drain,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+985,16:57,Afternoon drain,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+986,16:58,Afternoon drain,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+987,16:58,Afternoon drain,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+988,16:59,Afternoon drain,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+989,17:00,Evening,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+990,17:00,Evening,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+991,17:01,Evening,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+992,17:02,Evening,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+993,17:02,Evening,18,14,0,6,False,False,ARRIVAL,DEPARTURE
+994,17:03,Evening,17,14,0,6,False,False,DEPARTURE,DEPARTURE
+995,17:04,Evening,17,14,0,6,False,False,DEPARTURE,DEPARTURE
+996,17:04,Evening,17,14,0,6,False,False,DEPARTURE,DEPARTURE
+997,17:05,Evening,16,14,0,6,False,False,DEPARTURE,DEPARTURE
+998,17:06,Evening,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+999,17:06,Evening,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+1000,17:07,Evening,16,14,0,6,False,False,DEPARTURE,DEPARTURE
+1001,17:08,Evening,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+1002,17:08,Evening,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+1003,17:09,Evening,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+1004,17:10,Evening,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+1005,17:10,Evening,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+1006,17:11,Evening,17,14,0,6,False,False,ARRIVAL,DEPARTURE
+1007,17:12,Evening,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+1008,17:12,Evening,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+1009,17:13,Evening,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+1010,17:14,Evening,17,15,0,6,False,False,ARRIVAL,ARRIVAL
+1011,17:14,Evening,17,16,0,6,False,False,ARRIVAL,ARRIVAL
+1012,17:15,Evening,17,16,0,6,False,False,ARRIVAL,ARRIVAL
+1013,17:16,Evening,17,16,0,6,False,False,ARRIVAL,ARRIVAL
+1014,17:16,Evening,17,16,0,6,False,False,ARRIVAL,ARRIVAL
+1015,17:17,Evening,17,16,0,6,False,False,ARRIVAL,ARRIVAL
+1016,17:18,Evening,17,17,0,6,False,False,ARRIVAL,ARRIVAL
+1017,17:18,Evening,17,17,0,6,False,False,ARRIVAL,ARRIVAL
+1018,17:19,Evening,17,18,0,6,False,False,ARRIVAL,ARRIVAL
+1019,17:20,Evening,17,19,0,6,False,False,ARRIVAL,ARRIVAL
+1020,17:20,Evening,17,19,0,6,False,False,ARRIVAL,ARRIVAL
+1021,17:21,Evening,17,18,0,6,False,False,ARRIVAL,DEPARTURE
+1022,17:22,Evening,17,19,0,6,False,False,ARRIVAL,ARRIVAL
+1023,17:22,Evening,17,20,0,6,False,False,ARRIVAL,ARRIVAL
+1024,17:23,Evening,18,21,0,6,False,False,ARRIVAL,ARRIVAL
+1025,17:24,Evening,18,21,0,6,False,False,ARRIVAL,ARRIVAL
+1026,17:24,Evening,18,21,0,6,False,False,ARRIVAL,ARRIVAL
+1027,17:25,Evening,18,22,0,6,False,False,ARRIVAL,ARRIVAL
+1028,17:26,Evening,18,22,0,6,False,False,ARRIVAL,ARRIVAL
+1029,17:26,Evening,18,23,0,6,False,False,ARRIVAL,ARRIVAL
+1030,17:27,Evening,18,23,0,7,False,True,ARRIVAL,BLOCKED
+1031,17:28,Evening,18,23,0,7,False,False,ARRIVAL,BLOCKED
+1032,17:28,Evening,17,23,0,7,False,False,DEPARTURE,BLOCKED
+1033,17:29,Evening,16,23,0,7,False,False,DEPARTURE,BLOCKED
+1034,17:30,Evening,16,22,0,7,False,False,DEPARTURE,DEPARTURE
+1035,17:30,Evening,16,22,0,7,False,False,DEPARTURE,DEPARTURE
+1036,17:31,Evening,16,22,0,7,False,False,DEPARTURE,DEPARTURE
+1037,17:32,Evening,16,22,0,7,False,False,DEPARTURE,DEPARTURE
+1038,17:32,Evening,16,22,0,7,False,False,DEPARTURE,DEPARTURE
+1039,17:33,Evening,16,22,0,7,False,False,DEPARTURE,DEPARTURE
+1040,17:34,Evening,17,22,0,7,False,False,ARRIVAL,DEPARTURE
+1041,17:34,Evening,17,22,0,7,False,False,ARRIVAL,DEPARTURE
+1042,17:35,Evening,16,22,0,7,False,False,DEPARTURE,DEPARTURE
+1043,17:36,Evening,16,22,0,7,False,False,DEPARTURE,DEPARTURE
+1044,17:36,Evening,17,22,0,7,False,False,ARRIVAL,DEPARTURE
+1045,17:37,Evening,16,22,0,7,False,False,DEPARTURE,DEPARTURE
+1046,17:38,Evening,16,22,0,7,False,False,ARRIVAL,DEPARTURE
+1047,17:38,Evening,16,22,0,7,False,False,ARRIVAL,DEPARTURE
+1048,17:39,Evening,16,23,0,7,False,False,ARRIVAL,ARRIVAL
+1049,17:40,Evening,16,23,0,7,False,False,ARRIVAL,ARRIVAL
+1050,17:40,Evening,16,22,0,7,False,False,ARRIVAL,DEPARTURE
+1051,17:41,Evening,16,22,0,7,False,False,ARRIVAL,DEPARTURE
+1052,17:42,Evening,17,22,0,7,False,False,ARRIVAL,DEPARTURE
+1053,17:42,Evening,17,21,0,7,False,False,ARRIVAL,DEPARTURE
+1054,17:43,Evening,17,21,0,7,False,False,ARRIVAL,DEPARTURE
+1055,17:44,Evening,17,21,0,7,False,False,ARRIVAL,DEPARTURE
+1056,17:44,Evening,17,21,0,7,False,False,ARRIVAL,DEPARTURE
+1057,17:45,Evening,18,21,0,7,False,False,ARRIVAL,DEPARTURE
+1058,17:46,Evening,18,21,0,7,False,False,ARRIVAL,DEPARTURE
+1059,17:46,Evening,18,21,0,7,False,False,ARRIVAL,DEPARTURE
+1060,17:47,Evening,18,21,0,7,False,False,ARRIVAL,DEPARTURE
+1061,17:48,Evening,18,21,0,7,False,False,ARRIVAL,DEPARTURE
+1062,17:48,Evening,18,21,0,7,False,False,ARRIVAL,DEPARTURE
+1063,17:49,Evening,19,20,0,7,False,False,ARRIVAL,DEPARTURE
+1064,17:50,Evening,19,20,0,7,False,False,ARRIVAL,DEPARTURE
+1065,17:50,Evening,19,20,0,7,False,False,ARRIVAL,DEPARTURE
+1066,17:51,Evening,19,20,0,7,False,False,ARRIVAL,DEPARTURE
+1067,17:52,Evening,19,19,0,7,False,False,ARRIVAL,DEPARTURE
+1068,17:52,Evening,19,19,0,7,False,False,ARRIVAL,DEPARTURE
+1069,17:53,Evening,19,19,0,7,False,False,ARRIVAL,DEPARTURE
+1070,17:54,Evening,19,19,0,7,False,False,ARRIVAL,DEPARTURE
+1071,17:54,Evening,19,19,0,7,False,False,ARRIVAL,DEPARTURE
+1072,17:55,Evening,19,19,0,7,False,False,ARRIVAL,DEPARTURE
+1073,17:56,Evening,19,19,0,7,False,False,ARRIVAL,DEPARTURE
+1074,17:56,Evening,19,19,0,7,False,False,ARRIVAL,DEPARTURE
+1075,17:57,Evening,19,19,0,7,False,False,ARRIVAL,DEPARTURE
+1076,17:58,Evening,19,19,0,7,False,False,ARRIVAL,DEPARTURE
+1077,17:58,Evening,19,18,0,7,False,False,ARRIVAL,DEPARTURE
+1078,17:59,Evening,19,18,0,7,False,False,ARRIVAL,DEPARTURE
+1079,18:00,Evening,19,17,0,7,False,False,ARRIVAL,DEPARTURE
