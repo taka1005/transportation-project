@@ -3507,3 +3507,28 @@ User chose B without paragraph split. Executed:
 - **main.tex §3** — appended 3-line GoF rationale to the existing testing-statistics sentence: "KS captures global CDF shape mismatch; AD weighs tail discrepancies, where rare events (including blocking) sit; χ² provides a binned-frequency robustness check."
 
 Build verification: 2 pdflatex passes clean, **15 pages preserved**. PDF p.2 visual confirmation: the Arrival-process characterization paragraph now sits at 13 lines, ends cleanly on p.2 just above the page footer; flow "compute → fit (with rationale) → test (with rationale)" reads as a coherent single thought-unit. Long but not catastrophic — split deferred unless user requests.
+
+---
+
+## Prompt #200
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+評価表示 (続) A
+
+**English:**
+
+Show me the evaluation. — Go with A.
+
+**Response / 応答:**
+
+Per Plan §2.4, evaluated whether to add a 3-line statement about i.i.d. bootstrap's intentional structure removal to §3 Methods Discrete-event simulation paragraph. Strongly recommended Plan original (case A) — this is Phase 2's single highest-value Wu Q&A defence (Wu hit Xian's i.i.d. resampling 4× consecutively in Day 1, transcript 9:02/9:26/9:58/10:21). The "intentionally removing" + "we exploit this property" active voice transforms a perceived weakness into a deliberate analytical tool, and forward-links §3 to the §4.3 residual-attribution argument. Compared against B (passive voice — loses rhetorical confidence), C (parenthetical compression — drops the self-aware "we exploit" phrasing), and D (skip — abandons the strongest defence opportunity). Note that §6 Limitations already mentions autocorrelation loss but in a different context (MBTA W_q non-zero), so §3 addition is non-redundant.
+
+User chose A. Executed:
+- **main.tex §3 Discrete-event simulation** — inserted after the three-generator listing and before "Each configuration uses 20,000...": "The empirical bootstrap preserves the marginal IAT distribution exactly but samples i.i.d., intentionally removing any sequential or time-of-day structure. We exploit this property in §4.3 to attribute residual blocking error to non-stationarity rather than to the marginal distribution."
+
+Build verification: 2 pdflatex passes clean, **15 pages preserved**, `\ref{sec:results-erlangb}` resolves correctly (renders as "§4.3"). PDF p.3 visual confirmation: Discrete-event simulation paragraph now ~7 lines (was 3); the "intentionally removing" → "we exploit this property in §4.3" → "attribute residual blocking error to non-stationarity" logical chain reads cleanly as a unit. §4 Results begins after the paragraph on the same page.
+
+Phase 2.1-2.4 (§3 Methods reinforcements) all complete. §3 has grown from ~14 lines / 3 paragraphs to ~24 lines / 4 paragraphs, with all four Wu defence vectors (intuition, distribution rationale, GoF rationale, bootstrap honesty) now in place.

@@ -39,7 +39,7 @@ W_q = \frac{C(c, a)}{c\mu - \lambda}, \quad a = \lambda/\mu,\ \rho = a/c,
 \end{equation}
 where $C(c,a)$ is the Erlang~C probability of queueing, and M/M/$c/c$ giving the Erlang~B blocking $B(c,a) = a\,B(c-1,a) / (c + a\,B(c-1,a))$ with $B(0,a) = 1$. MBTA: M/M/1 with service = dwell time. Bluebikes $\mu$ is estimated via Little's Law \cite{little1961} from the average non-full dock occupancy. Derivations in Appendix~\ref{app:derivations}.
 
-\paragraph{Discrete-event simulation.} We implement each system in SimPy \cite{simpy} with three arrival generators: Poisson ($\mathrm{Exp}(1/\lambda)$), empirical i.i.d.\ bootstrap from the observed IATs, and best-fit sampling from the MLE Weibull (Bluebikes) or log-normal (MBTA). Each configuration uses 20,000 arrivals with a 2,000-arrival warmup and 10 replications (95\% CI via Student's~$t$).
+\paragraph{Discrete-event simulation.} We implement each system in SimPy \cite{simpy} with three arrival generators: Poisson ($\mathrm{Exp}(1/\lambda)$), empirical i.i.d.\ bootstrap from the observed IATs, and best-fit sampling from the MLE Weibull (Bluebikes) or log-normal (MBTA). The empirical bootstrap preserves the marginal IAT distribution exactly but samples i.i.d., intentionally removing any sequential or time-of-day structure. We exploit this property in \S\ref{sec:results-erlangb} to attribute residual blocking error to non-stationarity rather than to the marginal distribution. Each configuration uses 20,000 arrivals with a 2,000-arrival warmup and 10 replications (95\% CI via Student's~$t$).
 
 % ===== 4. Results =====
 \section{Results}\label{sec:results}
