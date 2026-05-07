@@ -23,8 +23,6 @@ Our contributions are: quantitative Poisson-deviation measurements for both syst
 
 \paragraph{Fullness exclusion.} Observed Bluebikes arrivals are censored when a station is at capacity. We reconstruct station inventory by forward event replay with bookkeeping clamps for unlogged operator rebalancing, and flag a full-capacity interval only when a natural $C_s-1 \to C_s$ trip-end transition is followed by a trip-start with no intervening trip-end; IATs overlapping any committed interval are excluded from $\lambda$, $\mu$, and distribution fitting. Kendall/MIT is full $3.73\%$ of operating time and MIT Vassar~St $2.88\%$; we use these as the validation target for Erlang~B blocking (\S\ref{sec:results-erlangb}). Algorithm in Appendix~\ref{app:fullness}.
 
-\paragraph{Reproducibility.} Code, derived data, and figures at \url{https://github.com/taka1005/transportation-project} (MIT license).
-
 % ===== 3. Methods =====
 \section{Methods}\label{sec:methods}
 

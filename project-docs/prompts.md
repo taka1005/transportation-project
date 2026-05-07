@@ -3734,3 +3734,23 @@ Sections added (one cohesive block):
 12. **残作業** — project-side TODOs (submission, Alex's review, presentation)
 
 The result is a self-contained record: anyone reading `report_revision.md` from top sees both the plan and how it played out, including which Plan suggestions were adopted as-is, which were modified (with case-letter rationale), and which were skipped (with reasoning).
+
+---
+
+## Prompt #208
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+reportからReproducibilityの章を削除してください
+
+**English:**
+
+Please remove the Reproducibility section from the report.
+
+**Response / 応答:**
+
+Searched main.tex / appendix.tex / report.tex for "Reproducibility" — found exactly one occurrence: `\paragraph{Reproducibility.}` at main.tex:26 within §2 Data (sentence: "Code, derived data, and figures at https://github.com/taka1005/transportation-project (MIT license)."). Confirmed no `\label{}` attached and no cross-references pointing to it.
+
+Removed the entire paragraph (one line + surrounding blank). Build verification: 2 pdflatex passes clean, **15 pages preserved**, p.2 visual confirmation: §2 Data Fullness-exclusion paragraph now flows directly into §3 Methods without the Reproducibility paragraph in between, layout unchanged.
