@@ -3674,3 +3674,29 @@ Per Phase 3.1 (Alex's "engineering approximation" framing for §1 first sentence
 User chose C. No edit to main.tex.
 
 **Phase 4.4 substantively complete.** Skipped items: §2.8 (audience mismatch — Q&A live, not report-domain), §3.1 (existing §1 sufficient), §3.2 (already done in Phase 1 Figure 8 caption commit). Eight commits total: Phase 1 + Phase 2.1-2.7 (with 2.5 + density tweak bundled). Total report state: 15 pages, main body 5 pages, all Wu-readable defensive language adjustments in place, no overflow, all references resolve.
+
+---
+
+## Prompt #206
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+research_planを更新して
+
+**English:**
+
+Update the research_plan.
+
+**Response / 応答:**
+
+Synced `project-docs/requirements/research_plan.md` with Phase 4.4 completion, parallel to the prior Phase 4.2c sync pattern. Three additions (line count 427 → 469, +42 lines):
+
+1. **New section §4.2d** "Editorial revisions: Phase 4.4 post-presentation pass (2026-05-07)" with sub-items 4.2d.1 through 4.2d.9 documenting each commit and its decision context (cases considered, choice rationale, slide-report parity reasoning, etc.). 4.2d.9 explicitly records the Phase 2.8 / 3.1 skip decisions including the team's Q&A priority (NHPP × μ(t) > autocorrelation-preserving > Mellou-Jaillet) so it isn't lost.
+
+2. **Phase 4.4 cumulative-effect table** with 11 rows (one per before/after framing change), parallel to the Phase 4.2c table. Captures Little's Law derivation, distributions reported, Figure 8 caption, IoD ranges, §3 Wu defence, §4.1 segmentation, §4.3 residual structure, §5 / §7 "harmless", page geometry, page budget.
+
+3. **Summary of Decisions** extended with D24-D27: D24 (numerical consistency 4-part), D25 (§3 Wu defence quartet), D26 (§4 / §5 / §7 framing tightening), D27 (page geometry tightening).
+
+No code or report changes in this turn — pure documentation sync.
