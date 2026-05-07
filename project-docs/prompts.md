@@ -3611,3 +3611,35 @@ User chose B. Executed:
 The replacement preserves all four references (Appendix B.2 / Table 4 / Appendix C / Fig 7) and structurally connects to Phase 2.1's Diagnostic-intuition framing (which set up "aggregation artefact vs persistent within-window feature" as the test) — §4.1 now delivers the conclusion of that test.
 
 Build verification: 2 pdflatex passes clean, **15 pages preserved**, references all resolve. PDF p.3 visual confirmation: §4.1 second paragraph reads coherently with the new defence-aware structure; layout density (after the Phase A margin/spacing tweak) holds; no page break problems.
+
+---
+
+## Prompt #204
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+評価表示 (続) 案Cでいいんだけど、「$W_q$ is not on a planning decision path that depends on per-train accuracy」ってどういう意味だっけ？MBTAは番線の数を決める時に列車がホームに入線する待ち時間を考慮して決めているわけはないと言いたいんだよね？ (続) (2)でいいけど、rathar than wastefulっていきなりいう必要ある？
+
+**English:**
+
+Show me the evaluation. — Case C is fine, but what does "$W_q$ is not on a planning decision path that depends on per-train accuracy" mean? You're saying MBTA doesn't decide the number of platforms by looking at per-train wait times, right? — Improvement (2) is fine, but is "rather than wasteful" really necessary at that point?
+
+**Response / 応答:**
+
+Per Plan §2.6, evaluated whether to soften "harmless" to a context-bound expression at two locations (§5 Off-decision-path subsection and §7 Conclusion). Recommended case C (compressed) over Plan original (case A) because Plan §7 was largely duplicating §5's parenthetical context detail in the Conclusion, breaking the §5-substantive-/-§7-terse split that Phase 4.3 D22 established.
+
+User accepted case C structure but raised two sharp critiques:
+
+(1) The Plan-original phrasing "$W_q$ is not on a planning decision path that depends on per-train accuracy" is too abstract — "decision path" + "per-train accuracy" is a double abstraction. User correctly inferred the intended meaning ("MBTA doesn't decide platform count by looking at per-train wait times") but flagged the obscurity. Confirmed user's interpretation; offered four clearer alternatives (named-decision, abstract-but-clearer, concrete-with-examples, drop-entirely). User chose alternative (2): "no planning decision uses per-train $W_q$ as an input" — keeps the meta-level claim, drops the obscure "decision path" terminology.
+
+(2) Asked whether "rather than wasteful" is needed in §5. Reviewed: the phrase was a leftover from the original "harmless rather than wasteful" rhetorical contrast, but with "low-risk in this context" + the explicit "no planning decision uses..." elaboration, "wasteful" is introduced cold without prior context. Agreed to drop it.
+
+Executed:
+- **main.tex §5** — "so the over-prediction is harmless rather than wasteful." → "so the over-prediction is low-risk in this context---no planning decision uses per-train $W_q$ as an input."
+- **main.tex §7** — "The MBTA wait over-prediction is harmless because per-train $W_q$ does not feed transit planning." → "The MBTA wait over-prediction is low-risk in this context because per-train $W_q$ does not feed transit planning."
+
+Both replacements achieve Wu defence (context-bound, not unconditional) while preserving §5 substance / §7 terseness asymmetry. Net add: ~+1 line to §5, ±0 to §7.
+
+Build verification: 2 pdflatex passes clean, **15 pages preserved**, main body §1-§7 still p.1-p.5. PDF p.5 visual confirmation: §5 Off-decision-path paragraph reads cleanly with the new "no planning decision uses..." elaboration; §7 Conclusion still terse. p.5 has comfortable white space below §7, confirming buffer for Phase 2.8 (+5 lines estimated).
