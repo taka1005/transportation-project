@@ -3643,3 +3643,34 @@ Executed:
 Both replacements achieve Wu defence (context-bound, not unconditional) while preserving §5 substance / §7 terseness asymmetry. Net add: ~+1 line to §5, ±0 to §7.
 
 Build verification: 2 pdflatex passes clean, **15 pages preserved**, main body §1-§7 still p.1-p.5. PDF p.5 visual confirmation: §5 Off-decision-path paragraph reads cleanly with the new "no planning decision uses..." elaboration; §7 Conclusion still terse. p.5 has comfortable white space below §7, confirming buffer for Phase 2.8 (+5 lines estimated).
+
+---
+
+## Prompt #205
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+評価して (続) そもそもレポートを見て質問される訳ではないから、いらないよね？プレゼンの時に自分たちの中で優先順位を決めておけばいいだけで。 (続) (A) (続) C
+
+**English:**
+
+Evaluate. — Wu doesn't ask questions while looking at the report, right? It's enough for us to have decided priority among ourselves before the presentation. — (A) [evaluate Phase 3.1]. — C [skip].
+
+**Response / 応答:**
+
+User raised a critical audience-distinction insight on Plan §2.8 that I had missed: I had been treating "Wu Q&A defence" as monolithic, but Phase 2.6 ("harmless" → "low-risk in this context") and Phase 2.8 ("which extension first?" priority summary) target different audiences:
+
+- §2.6 modifies a **claim Wu reads in the report** ("harmless" as an absolute) — needs the report-side fix
+- §2.8 anticipates a **live Q&A question** ("which first?") — Wu doesn't open the report mid-Q&A, so the priority just needs to be in the team's heads, not in writing
+
+Acknowledged the conflation. Also surfaced a structural concern: §2.8 would partially undo Phase 4.3 D21's deliberate decision to merge §6 Limitations and §7 Future Work and distribute future-work clauses into limitation paragraphs — adding a summary list at the end of §6 reintroduces a "Three extensions" lead-in that D21 explicitly removed to free 3 lines.
+
+Recommended **skip Phase 2.8** from the report. Noted priority for the team's Q&A prep (1st: NHPP × time-varying μ(t) — directly tests §4.3 residual attribution; 2nd: autocorrelation-preserving generator — tests timetable-structure on MBTA Wq; 3rd: Mellou–Jaillet reconstruction — censoring vs real non-Poissonness separation). User accepted skip.
+
+Per Phase 3.1 (Alex's "engineering approximation" framing for §1 first sentence), evaluated four cases: A (Plan original, +1 line), B (em-dash compression, +0.5 line), C (skip — current §1 already conveys "the assumption is approximate" / "they almost never are"), D (Plan original + drop the now-redundant "so the assumption is approximate" from sentence 4, net +0.5 line). Recommended D as the most efficient, but flagged that C (skip) was a legitimate judgement call since §1 already carries the approximation message.
+
+User chose C. No edit to main.tex.
+
+**Phase 4.4 substantively complete.** Skipped items: §2.8 (audience mismatch — Q&A live, not report-domain), §3.1 (existing §1 sufficient), §3.2 (already done in Phase 1 Figure 8 caption commit). Eight commits total: Phase 1 + Phase 2.1-2.7 (with 2.5 + density tweak bundled). Total report state: 15 pages, main body 5 pages, all Wu-readable defensive language adjustments in place, no overflow, all references resolve.
