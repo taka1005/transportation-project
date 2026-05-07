@@ -3532,3 +3532,57 @@ User chose A. Executed:
 Build verification: 2 pdflatex passes clean, **15 pages preserved**, `\ref{sec:results-erlangb}` resolves correctly (renders as "§4.3"). PDF p.3 visual confirmation: Discrete-event simulation paragraph now ~7 lines (was 3); the "intentionally removing" → "we exploit this property in §4.3" → "attribute residual blocking error to non-stationarity" logical chain reads cleanly as a unit. §4 Results begins after the paragraph on the same page.
 
 Phase 2.1-2.4 (§3 Methods reinforcements) all complete. §3 has grown from ~14 lines / 3 paragraphs to ~24 lines / 4 paragraphs, with all four Wu defence vectors (intuition, distribution rationale, GoF rationale, bootstrap honesty) now in place.
+
+---
+
+## Prompt #201
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+アルファで (続) 評価表示 (続) これはレポートであってこれを見てプレゼンするわけではないからCでもいいよね？それでプレゼンと内容が一致するならCで。
+
+**English:**
+
+Go with alpha (one at a time). — Show me the evaluation. — This is a report, we're not reading off it during the presentation, so C should be fine, right? If the content matches the slides, go with C.
+
+**Response / 応答:**
+
+Per Plan §2.5, evaluated whether to restructure §4.3 around three time-structure effects (λ(t) / μ(t) / temporal coupling). Plan original (case A) was an enumerated (i)(ii)(iii) format mirroring slides 22-25 visually; recommended case E (numbered prose with markers) as a budget-aware compromise after noting Phase 4.4 cumulative budget pressure (+13 lines used of +15-20 total).
+
+User pointed out a critical insight I had missed: the report and slides serve different purposes — the report is a standalone read, slides are the live presentation. Slide-report parity needs to be on **content** (the three named effects), not **format** (itemization). Confirmed case C content matches slides exactly: time-varying λ(t) ✓, time-varying μ(t) ✓, temporal coupling ✓. Format (prose vs list) is irrelevant.
+
+Executed case C:
+- **main.tex §4.3** — replaced the dense single-sentence residual explanation with three semicolon-separated effects + a closing MBTA disclaimer: "Three time-structure effects neither stationary model captures: time-varying λ(t) (bike returns peak at commute hours, averaged out by single-λ models); time-varying μ(t) (Kendall dock turnover slows during peak return demand when rentals drop, missed by fixed-μ assumption); and temporal coupling between the two—λ peaks coincide with μ valleys at the same hour, compounding blocking multiplicatively in a way neither stationary Erlang B nor i.i.d. empirical DES exposes. The MBTA has no analogue at ρ = 0.15--0.20."
+
+Build verification surfaced a problem: page count went **15 → 16** after Phase 2.5. Inspected p.5/p.6 — main body had spilled onto p.6 (now §6 4-paragraphs + §7 Conclusion + References on p.6). The +1 line from Phase 2.5 had tipped over the p.5 page-break threshold. Confirmed the Phase 4.3 priority compression list was already exhausted. User informed of overflow before commit.
+
+---
+
+## Prompt #202
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+フォーマットを２列にしたら収まらない？制約あったっけ？ (続) 本文はすでに５ページ半なので、抜本的な解決が必要です。２コラム化のリスクはわかりました。あとはアブストラクトをもっと幅広に表示して縦幅を圧縮する。タイトルをもっと上に書く。文字を小さくする。ページの余白を小さくする。などの対策が考えられます。 (続) 段階的
+
+**English:**
+
+Could we fit it in two-column format? Is there a constraint? — Main body is already 5.5 pages, so we need a fundamental solution. I see the 2-column risk. Other options: widen the abstract to compress vertical space, push title up, shrink font, reduce margins, etc. — Phased approach.
+
+**Response / 応答:**
+
+Searched the project for format constraints — `report.tex` uses `\documentclass[11pt]{article}` with default single-column, `geometry` set to 1in margins, `\setstretch{1.15}`. No explicit single-column constraint in `research_plan.md` or any spec file in the repo. The MIT 1.200 syllabus is not in the repo so course-level constraints can't be verified, but the prior Phase 4.2/4.3 framing only ever mentioned "main body ≤ 5 pages, appendix ≤ 10 pages" without referencing column count.
+
+Evaluated 2-column risk: high — Figure 1 is 3-panel `\linewidth`, Tables 4 (14 cols) and 5 (11 cols) won't fit in single-column width, all would need `figure*` / `table*` rewrites, plus full layout re-verification. For just +1 line of overflow, the 1-2 hour layout-debug cost is overkill the day before deadline.
+
+Presented user-suggested density levers (margin / line-spacing / font / abstract width / title position / Figure 1 size) with per-page density estimates. Recommended a phased conservative approach: Phase A (margin 1in→0.85in + setstretch 1.15→1.10, +13% density) first; escalate only if needed.
+
+User chose phased. Executed:
+- **report.tex** — `\usepackage[letterpaper,margin=0.85in]{geometry}` (was 1in), `\setstretch{1.10}` (was 1.15).
+
+Build verification: 2 pdflatex passes clean. **15 pages restored** (was 16); main body §1-§7 now fits on p.1-p.5, References [1] starts on p.5 and continues to p.6. Visual confirmation across pp.1-2 (title/abstract/§1/§2/§3), pp.3-4 (§4 results, Figure 1 3-panel intact), p.5 (§5/§6/§7 + Refs[1]), pp.8-10 (appendix tables — Table 3/4/5/6 all fit cleanly under tighter margins, no overflow). Layout density up but readable; no crammed feeling.
+
+Phase 2.5 case C + Phase A density tweaks bundled into one commit since they are causally linked (density tweak is the budget enabler for the Phase 2.5 addition). Phase 4.4 cumulative budget effectively reset by the density gain — Phase 2.7 / 2.8 should now fit comfortably in remaining budget without further structural compression.
