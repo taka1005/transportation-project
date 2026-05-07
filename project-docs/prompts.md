@@ -3432,3 +3432,28 @@ After approval, executed unified Phase 1 edit (4 changes, 1 commit):
 - **appendix.tex Figure 8 caption (line 209)** — added "DES (Weibull best-fit)" to bar list, prefixed "at Kendall/MIT" (figure title shows Kendall only), changed Vassar mention to "(not shown)".
 
 Build verification: bibtex clean, 4 pdflatex passes clean, **15 pages preserved**, no undefined references, layout intact across §4.1 / §4.3 / §A.2 / Figure 8. Visual confirmation via PDF rendering pp.3-4, 7-8, 14 — all four edits typeset cleanly.
+
+---
+
+## Prompt #197
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+2.1-2.4を先にやりましょう。一つずつ確認していきたい。変更するに及ばない案件もある可能性がある。 (続) タイトニング版を採用したら、methodsの全体構成はどうなる? 部分だけでなく全体を見てほしい。 (続) 推奨案で
+
+**English:**
+
+Do 2.1-2.4 first. Want to evaluate one at a time — some items may not need a change. — Show the whole §3 Methods structure under the tightening version, not just the diff. — Go with the recommended option.
+
+**Response / 応答:**
+
+Per Plan §2.1, evaluated whether to add a CV/IoD intuition paragraph to §3 Methods. Critical assessment: Plan's 5-line proposal was partially redundant with existing "$\mathrm{CV} = \mathrm{IoD} = 1$ are the Poisson values" line, but the third sentence (segmentation rationale: "aggregation artefact vs persistent within-window feature") is genuinely new and acts as a methodological forward-buttress for §4.1's segmentation results. Proposed a 3-line tightened version stripping the redundant rephrasing.
+
+When user asked to see the whole §3 structure, presented four options: A (inline integration into existing paragraph — ~8-line paragraph), B (new \paragraph{Diagnostic intuition.} header — clean 4-paragraph structure), C (skip entirely), D (compact: only segmentation rationale inline, no intuition rephrase). Recommended B with the conditional note that it scales best if §2.2/§2.3 are later approved (each adds 3-4 lines to the Arrival-process characterization paragraph; B keeps intuition isolated in its own block).
+
+User chose B. Executed:
+- **main.tex §3** — inserted new `\paragraph{Diagnostic intuition.}` (3 lines) before existing `\paragraph{Arrival-process characterization.}`. Used `\ref{app:tables}` for the Appendix B forward ref to match existing label-based style (e.g., main.tex:47 uses `\ref{app:hour}`).
+
+Build verification: 2 pdflatex passes clean, **15 pages preserved**, `(Appendix B)` resolves correctly. PDF p.2 visual confirmation: new paragraph typesets cleanly between §2 Data and the existing §3 Arrival-process characterization paragraph; 4-paragraph §3 structure (Diagnostic intuition / Arrival-process characterization / Queueing models / Discrete-event simulation) is symmetric and readable.
