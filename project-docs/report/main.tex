@@ -65,7 +65,7 @@ MBTA Southbound  & 20{,}880 & 378 & 0.63 & 4.5 & 0.52 \\
 \end{tabular}
 \end{table}
 
-Within-day segmentation (Appendix~\ref{app:hour}, Table~\ref{tab:cv-hour}; empirical CDFs with fits in Appendix~\ref{app:figures}, Fig.~\ref{fig:cdfs}) attributes the Bluebikes CV to non-stationarity: Kendall/MIT falls to $\mathrm{CV} \approx 1.0$ at midnight and peaks near 2.0; MBTA stays below~1 at every hour. A single-window Poisson hypothesis is thus rejected \emph{more} strongly at peak hours, not less.
+Within-day segmentation (Appendix~\ref{app:hour}, Table~\ref{tab:cv-hour}; empirical CDFs with fits in Appendix~\ref{app:figures}, Fig.~\ref{fig:cdfs}) shows that the Bluebikes CV reflects both non-stationarity and within-window non-Poissonness: Kendall/MIT falls to $\mathrm{CV} \approx 1.0$ at midnight and peaks at $2.4$ at 18:00 but stays $\geq 1.0$ at every hour, while MBTA stays below~1 throughout. The rejection of Poisson is not solely an aggregation artefact---a single-window Poisson hypothesis fails at every hour, more strongly at peak.
 
 \subsection{Queueing predictions diverge in magnitude and direction}\label{sec:results-queueing}
 
