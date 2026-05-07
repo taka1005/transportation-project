@@ -3700,3 +3700,37 @@ Synced `project-docs/requirements/research_plan.md` with Phase 4.4 completion, p
 3. **Summary of Decisions** extended with D24-D27: D24 (numerical consistency 4-part), D25 (§3 Wu defence quartet), D26 (§4 / §5 / §7 framing tightening), D27 (page geometry tightening).
 
 No code or report changes in this turn — pure documentation sync.
+
+---
+
+## Prompt #207
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+report_revision.mdに結果を追記してくれる？
+
+**English:**
+
+Could you append the results to report_revision.md?
+
+**Response / 応答:**
+
+Appended a "実行結果(2026-05-07 完了)" results section to `project-docs/plans/report_revision.md` after the original "開始時の最初のアクション" closing line. The plan file was previously forward-looking only; this append converts it into a complete plan-and-outcome record.
+
+Sections added (one cohesive block):
+1. **サマリ** — high-level outcome (Phase 1 + 7/8 Phase 2 + 1/2 Phase 3 adopted, 10 commits, 15 pages preserved)
+2. **Phase 1.2 監査結果** — what the audit found (8 values clean, 0.46% Weibull as the one true gap, 0.10% DES Exp as a side-finding deliberately not added, 3 judgement calls to user)
+3. **Phase 1 採用判断表** — 5 changes (1.1 + 1.3 + 1.2-derived IoD fix + 3.2-derived caption fix), all bundled in commit ae6c25e
+4. **Phase 2 採用判断表** — 8 items with case-letter choices (B / E / B / A / C / mixed-case / B / skip), each mapped to commit
+5. **Phase 2.5 後のページオーバーフロー対応** — narrative of the +1-line overflow caused by case C, the format-level options considered, the 2-column risk rejection, and the Phase A density tightening (margin 1in→0.85in, setstretch 1.15→1.10) that recovered 15 pages
+6. **Phase 3 採用判断表** — 3.1 skip rationale, 3.2 already-handled-in-Phase-1 note
+7. **Skip 項目の理由まとめ** — 2.8 / 3.1 / 3.2 explanations
+8. **チーム Q&A 用 priority** — the team-internal answer for "which extension first?" (NHPP > autocorrelation-preserving > Mellou-Jaillet) preserved here as a record so the team can use it for presentation prep
+9. **累積効果** — pointer to the research_plan.md §4.2d cumulative-effect table
+10. **コミット一覧** — 10-row table of all Phase 4.4 commits with brief content
+11. **検証** — build/page/render verification summary
+12. **残作業** — project-side TODOs (submission, Alex's review, presentation)
+
+The result is a self-contained record: anyone reading `report_revision.md` from top sees both the plan and how it played out, including which Plan suggestions were adopted as-is, which were modified (with case-letter rationale), and which were skipped (with reasoning).

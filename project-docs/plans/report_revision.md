@@ -377,3 +377,164 @@ Exponential / DES Empirical / DES Weibull / Observed)と整合しているかを
 変更しない読み取り専用のタスクで、結果を見てから他の修正の優先順位を
 最終決定します。1.2 の結果報告を受けたあと、私が「1.1 を実行」「1.3 を
 実行」など個別に指示します。
+
+---
+
+## 実行結果(2026-05-07 完了)
+
+### サマリ
+
+Phase 1 + Phase 2 のうち 7/8 項目を採用、Phase 3 は 1/2 項目を採用
+(残りは現状で対応済み or skip)。**累計 10 commits**(うち 1 件は
+密度調整、1 件は skip 決定の log、1 件は research_plan 同期)。
+ページ予算 `main body ≤ 5 / appendix ≤ 10` を遵守、
+**total 15 ページ維持**。
+
+### Phase 1.2 監査結果(2026-05-07 開始時)
+
+監査表の 10 値のうち:
+
+- **8 値完全一致**(修正不要)
+- **1 真のギャップ**: best-fit Weibull DES Kendall blocking = 0.46%
+  → main.tex / appendix.tex のどこにも記載なし(Figure 8 PNG にのみ
+  存在)。Plan §1.3 で対応予定。
+- **1 副次発見**: DES Exponential = 0.10% も同様に本文未言及だが、
+  Erlang B 解析解の DES サニティチェックに過ぎず、empirical vs
+  Weibull 比較の主論からは外れるため**追加せず**(ユーザ承認)。
+- **判断要請 3 件**(Figure 8 caption、Table 6 列追加、IoD 範囲の
+  スライド整合性)→ ユーザ判断で全て解決。
+
+監査時の重要発見: Plan が想定していた "0.07%" 丸め不整合
+(Figure 9 caption)は実体としては存在せず、Figure 8 PNG 内の
+バーラベル(`f"{val:.2f}%"` 由来)のみ。本文・表は全て "0.068%"
+で統一済み。**本文側の修正不要、PNG 再生成も skip**(締切前夜に
+レイアウト破綻リスクを取らない判断)。
+
+### Phase 1: 必須の正確性修正
+
+| 項目 | 状態 | 採用判断 | コミット |
+|---|---|---|---|
+| 1.1 §A.2 Little's Law 式の循環参照修正 | ✅ | Plan 原案そのまま | `ae6c25e` |
+| 1.2 数値整合性監査 | ✅ | 読み取り専用、結果報告 | (no edit) |
+| 1.3 §4.3 best-fit DES blocking 値追加 | ✅ | Plan 原案そのまま、Table 6 列追加は省略(appendix 10p 制限) | `ae6c25e` |
+| 1.2 由来追加修正: §4.1 IoD 範囲を Table 1 と整合 | ✅ | Option A(2--8 → 3.2--4.7、0.4--0.6 → 0.52--0.58) | `ae6c25e` |
+| 3.2 由来追加修正: Figure 8 caption の 5バー対応 | ✅ | "DES (Weibull best-fit)" 追加 + "at Kendall/MIT" 明示 | `ae6c25e` |
+
+Phase 1 は 4 修正を 1 コミットにまとめた(全て同じ「必須の正確性
+修正」グループ、causally linked)。
+
+### Phase 2: Q&A 防御のためのセクション強化
+
+| 項目 | 状態 | 採用判断 | コミット |
+|---|---|---|---|
+| 2.1 §3 CV/IoD 直感的定義 | ✅ | **案 B**(タイトニング版 + 新 `\paragraph{Diagnostic intuition.}` header)。Plan 原案 5 行を 3 行へ圧縮(冗長 "CV=IoD=1 for Poisson" 削除)。新 paragraph を独立 header で立てる構造判断 | `b0a22e5` |
+| 2.2 §3 4分布選択の rationale | ✅ | **案 E**(hazard 用語不使用)。Plan 原案の "hazard structure" 語法はユーザに通じない可能性 → "inter-arrival behaviors" に書き換え | `9b3ad61` |
+| 2.3 §3 GoF テストの rationale | ✅ | **案 B**(微修正版)。"emphasizes" → "weighs"(統計用語として正確)、"where ... live" → "where ... sit"(less literary) | `82e5d0c` |
+| 2.4 §3 i.i.d. bootstrap 限界の先出し | ✅ | **案 A**(Plan 原案そのまま)。Phase 2 全項目中 Wu 防御として最高優先(Day 1 に Wu が Xian へ 4× 連続攻撃した vector) | `d08fd30` |
+| 2.5 §4.3 三段構造化(λ(t)/μ(t)/coupling) | ✅ | **案 C**(prose 形式、enumeration なし)。ユーザの判断「レポートはレポートとして読まれる、スライドの format と一致する必要なし、内容(3効果)が一致すれば十分」 | `595cdff` |
+| 2.6 "harmless" を限定的表現に | ✅ | **§5 改善案 (2) + "rather than wasteful" 削除 / §7 word swap のみ**。Plan 原案の "decision path that depends on per-train accuracy" は抽象すぎ → "no planning decision uses per-train Wq as an input" へ変更。"rather than wasteful" は唐突な対比(導入なし)につき削除 | `7551e0e` |
+| 2.7 §4.1 segmentation 慎重化 | ✅ | **案 B**(synthesis)。Plan 原案は MBTA 対比 / peak-hour punchline / Fig 7 ref を全部削るので overshoot → 既存構造に Wu 防御要素を graft する形に修正。"peaks near 2.0" → "peaks at 2.4 at 18:00"(Table 4 精度) | `3ed445d` |
+| 2.8 §6 future work 統合まとめ | ❌ skip | ユーザの sharp insight: **Wu はプレゼン中の Q&A でレポートを開かない** → 優先順位はチーム内で握っていれば足りる、レポートに書く必要なし。加えて Phase 4.3 D21 の future-work distribute 設計と構造的に衝突 | (no edit) |
+
+#### Phase 2.5 後のページオーバーフロー対応
+
+Phase 2.5 case C の +1 行が p.5 末尾の閾値を踏み越え、main body
+が 5p → 6p へ overflow(total 16p)。Plan 4.3 priority compression
+list は既に使い切り済みのため、**構造的解決**を選択:
+
+- ユーザ提案の format-level 対策(余白縮小、タイトル位置、
+  フォント、abstract 幅、2-column)を評価
+- **2-column はリスク高**(Figure 1 3パネル、Table 4/5 大型表、
+  数式幅 — 1-2時間のレイアウト点検必要、締切前夜にリスク取らない)
+- **Phase A 段階的対応**: margin 1in → 0.85in、setstretch
+  1.15 → 1.10 で +13% 密度向上 → **15 ページに復帰、main body 5p**
+- 全ての表・図(Fig 1、Tables 1-6)が新マージンで正常表示確認済み
+
+Phase 2.5 + 密度調整は causally linked のため 1 コミットに bundle
+(`595cdff`)。
+
+### Phase 3: 任意の改善
+
+| 項目 | 状態 | 採用判断 |
+|---|---|---|
+| 3.1 §1 Introduction "engineering approximation" framing | ❌ skip | **案 C**(現状維持)。§1 既存の「the assumption is approximate」「they almost never are」で実質的なメッセージは届いており、+1 行のコストに見合う rhetorical 価値は薄い |
+| 3.2 Figure 8 caption 整合確認 | ✅ | Phase 1.2 監査時に発見 → Phase 1 commit `ae6c25e` で対応済 |
+
+### Skip 項目の理由まとめ
+
+1. **2.8 (priority summary)**: audience mismatch — Wu はプレゼン中
+   の Q&A でレポートを開かない、priority はチーム内で握っていれば
+   足りる。さらに Phase 4.3 D21 の future-work distribute 設計と
+   構造的に衝突
+2. **3.1 (engineering approximation)**: §1 既存内容で実質メッセージ
+   到達、+1 行のコストに見合う rhetorical 強化価値が薄い
+3. **3.2 (Figure 8 caption)**: Phase 1 audit で発見されて即座に
+   Phase 1 で対応済
+
+### チーム Q&A 用 priority(レポートには書かない)
+
+Plan §2.8 で skip した summary 内容は、プレゼン Q&A で「どれを
+最初にやるか?」と聞かれた時の team-internal 回答として記録:
+
+- **(1st priority)** 非斉次 Erlang B(時間変動 λ(t) + μ(t))
+  - 理由: §4.3 の residual-attribution 論証(non-stationarity が
+    dominant residual)を直接テストできる
+- **(2nd priority)** i.i.d. bootstrap → autocorrelation-preserving
+  generator(block bootstrap or MMPP)
+  - 理由: §4.2 の MBTA Southbound $W_q = 0.9$s 残差(timetable
+    structure 喪失)をテスト
+- **(3rd priority)** Mellou-Jaillet 復元 → §4.1 / §4.3 を再実行
+  - 理由: censoring artefact vs real non-Poissonness の分離(より
+    foundational だが現状の論証への直接性は低い)
+
+### 累積効果
+
+レポートの最終状態は `research_plan.md` §4.2d の
+「Cumulative effect on the report (Phase 4.4 increments)」表に
+記録(11 行 before/after 対照)。主要な変化:
+
+- §A.2 Little's Law: 循環参照解消、§D.3 と整合
+- §4.3 distributions: 3値 → 4値(0.46% Weibull DES 追加、
+  marginal-IAT-insufficient claim 定量化)
+- Figure 8 caption: 4-bar list → 5-bar list(実図と整合)
+- §4.1 IoD ranges: Table 1 と整合("3.2--4.7", "0.52--0.58")
+- §3 Methods: Wu 防御 4 vector 追加(intuition / 分布 / GoF /
+  bootstrap)
+- §4.1 segmentation: 強い因果主張 → context-bound("not solely
+  an aggregation artefact")
+- §4.3 residual: dense single-sentence → 3-effect prose(slide 整合)
+- §5 / §7 "harmless" → "low-risk in this context"
+- Page geometry: margin 1in/1.15 → 0.85in/1.10(Phase 4.4 加筆吸収)
+
+### コミット一覧
+
+| Commit | 内容 |
+|---|---|
+| `ae6c25e` | Phase 1 統合(Little's Law + IoD + Weibull DES + Figure 8 caption) |
+| `b0a22e5` | Phase 2.1 — Diagnostic intuition |
+| `9b3ad61` | Phase 2.2 — 4分布 rationale(案 E) |
+| `82e5d0c` | Phase 2.3 — GoF rationale(案 B) |
+| `d08fd30` | Phase 2.4 — i.i.d. bootstrap honesty |
+| `595cdff` | Phase 2.5 + 密度調整(案 C + margin/setstretch) |
+| `3ed445d` | Phase 2.7 — §4.1 segmentation(案 B) |
+| `7551e0e` | Phase 2.6 — "harmless" → "low-risk in this context" |
+| `7d08542` | Phase 2.8 / 3.1 skip 決定 log |
+| `9ed92fb` | research_plan.md 同期(§4.2d、D24-D27、cumulative table) |
+
+### 検証
+
+- pdflatex クリーンビルド: ✓ (各コミット後 2 passes)
+- bibtex: ✓
+- 参照切れ・引用切れ: なし
+- ページ数: **15(維持)**
+- main body: **5 ページ**(制約遵守)
+- references: 1 ページ
+- appendix: 9 ページ(制約遵守)
+- レンダリング目視確認: pp.1-2 / pp.3-4 / p.5(本文) / pp.7-10(appendix)で全変更箇所を確認、レイアウト崩れなし
+
+### 残作業(プロジェクト側、レポート本体は完成)
+
+- 4.2.5 提出(5/8 11:59pm ET)
+- 4.2.6 Alex のレビュー
+- 4.2.7 Alex のコードコメント追加
+- 4.4.1-4.4.3 プレゼン準備(スライド、リハーサル、提出)
