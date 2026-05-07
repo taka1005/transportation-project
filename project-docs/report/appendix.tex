@@ -16,11 +16,11 @@
 
 \subsection{Service-rate estimation via Little's Law}\label{app:service-rate}
 
-For Bluebikes we treat each dock slot as a server and define the service time as the elapsed time between a bike arriving at the dock and the next departure of that slot. We estimate $\mu$ from reconstructed inventory using Little's Law:
-\begin{equation}
-\mu = \frac{\lambda \, \bar{W}_{\text{slot}}}{L_{\text{non-full}}} \cdot \frac{1}{c},
-\end{equation}
-where $L_{\text{non-full}}$ is the mean number of occupied docks during non-full periods, $c$ is the dock count, and $\bar{W}_{\text{slot}}$ is the resulting per-slot average service time. After fullness correction the estimated mean service times are $7{,}367$~s at Kendall/MIT and $6{,}670$~s at MIT Vassar~St, yielding per-server utilisations of $\rho = 0.48$ and $\rho = 0.33$ respectively. For MBTA the service time is the observed platform dwell time; $\rho$ ranges from $0.15$ to $0.20$.
+For Bluebikes we treat each dock slot as a server and define the service time as the elapsed time between a bike arriving at the dock and the next departure of that slot. Let $L_{\text{non-full}}$ be the average number of occupied docks during non-full periods and $\lambda$ be the accepted arrival rate. By Little's Law applied per-slot, the mean dock occupancy time is $\bar{W}_{\text{slot}} = L_{\text{non-full}}/\lambda$, so the per-slot service rate is
+\[
+\mu = \frac{1}{\bar{W}_{\text{slot}}} = \frac{\lambda}{L_{\text{non-full}}}.
+\]
+After fullness correction the estimated mean service times are $7{,}367$~s at Kendall/MIT and $6{,}670$~s at MIT Vassar~St, yielding per-server utilisations of $\rho = 0.48$ and $\rho = 0.33$ respectively. For MBTA the service time is the observed platform dwell time; $\rho$ ranges from $0.15$ to $0.20$.
 
 \subsection{Discrete-event simulation}\label{app:des}
 
@@ -206,7 +206,7 @@ Figures~\ref{fig:bb-daily}--\ref{fig:error-summary} provide the full set of diag
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.75\linewidth]{phase3_blocking_comparison.png}
-\caption{Blocking probability: Erlang B analytical vs.\ DES (Poisson) vs.\ DES (empirical) vs.\ observed full-capacity rate. Log $y$-axis. The $55\times$ gap at Kendall/MIT is the visual centre; MIT Vassar~St shows a qualitatively parallel gap from effectively zero predicted blocking to $2.88\%$ observed.}
+\caption{Blocking probability at Kendall/MIT: Erlang B analytical vs.\ DES (Poisson) vs.\ DES (empirical) vs.\ DES (Weibull best-fit) vs.\ observed full-capacity rate. Log $y$-axis. The $55\times$ gap is the visual centre; MIT Vassar~St (not shown) has a qualitatively parallel gap from effectively zero predicted blocking to $2.88\%$ observed.}
 \label{fig:blocking}
 \end{figure}
 

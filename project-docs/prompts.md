@@ -3388,3 +3388,47 @@ Is the research plan up to date?
 **Response / 応答:**
 
 Confirmed it was NOT up to date. Last research_plan update was commit `0294dcd`; since then four substantive commits (`25672c7` §4.3 physics fix, `3c9e539` initial animation, `3409c7a` real-data switch, `2701b12` §6+§7 merge + §8 expansion) had modified the report and the animation without being recorded. Updated `project-docs/requirements/research_plan.md`: (1) added §4.2c.8 (D20: §4.3 μ(t) physics correction with Kendall asymmetric-flow framing); (2) added §4.2c.9 (D21: §6 / §7 merge structure); (3) added §4.2c.10 (D22: §8 Conclusion two-paragraph expansion); (4) marked §4.4.4 as completed (D23) with full implementation details — representative day choice (2025-09-17), 36-sec window, real-inventory-replay framing on the right panel, all output paths and tooling notes; (5) extended the Cumulative-effect comparison table with three new rows (μ(t) physics, §6/§7 structure, §8 Conclusion); (6) added D20–D23 to the Summary of Decisions. Logged this prompt and pushed.
+
+---
+
+## Prompt #195
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+ここにレポート修正のプランをアップしたので確認し、実行して。`/Users/epiphaneia2/Projects/transportation-project/project-docs/plans/report_revision.md`
+
+**English:**
+
+Plan for the report revision has been uploaded here — please review and execute it. `project-docs/plans/report_revision.md`
+
+**Response / 応答:**
+
+Read `report_revision.md` (Phase 4.4 post-presentation revision pass driven by Alex's review email + final video/slides + Wu's Day-1 Q&A pattern). Per the plan's "Start with Phase 1.2 (numerical consistency audit, read-only) first" instruction, executed only the audit — no edits made. Grepped main.tex + appendix.tex for all 10 values in the audit table. Findings: (1) **No "0.07%" rounding inconsistency exists** — Plan's example was speculative; all 0.068% appearances use the same precision. (2) Eight of the ten values are perfectly consistent across every appearance. (3) **Only one true gap**: best-fit Weibull DES Kendall blocking (0.46%) appears in zero locations across both .tex files — not in §4.3 prose, not in Table 6, not in the Figure 8 (`fig:blocking`) caption (which lists only 4 bars: Erlang B / DES Poisson / DES empirical / observed). (4) Three judgement calls flagged for user: (a) verify whether `phase3_blocking_comparison.png` actually has 5 bars including Weibull, then decide if the Figure 8 caption needs expansion; (b) decide whether 0.46% goes into §4.3 prose only (Plan §1.3 default) or also into Table 6 as a new column (recommended against — appendix page-budget pressure); (c) confirm whether presentation slides use IoD range "2--8" matching main.tex:47, or a different range that needs alignment. Awaiting user decisions before proceeding to Phase 1.1 / 1.3.
+
+---
+
+## Prompt #196
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+(1) DES weibullのバーは青色で乗っているとおもうけど、5本目のバーってどういうこと? (2) appendixにもページ制限があるんだっけ? そうであれば省略で良い。(3) スライドでは、bluebikeはkendallの3.4しか言及していません。そもそもなんでこんなに幅があるんだっけ? 4.1の本文とtable1の範囲が一致していないのでは? (続) スライドはAIで作成し、根拠を確認していないのでなぜ3.4なのかはわかりません。テーブルと本文を合わせる方針Aで良いと思います。 (続) 懸念フラグ1の意味がわからない (続) OK
+
+**English:**
+
+(1) The Weibull DES bar is the blue one already, no? What does "5th bar" mean? (2) Does appendix also have a page limit? If so, skip Table 6 expansion. (3) Slides only mention Bluebikes Kendall = 3.4. Why is the range so wide? Doesn't main.tex:47 disagree with Table 1? — Slides were AI-generated and the source of "3.4" isn't verified, so go with Option A (align main.tex:47 to Table 1). — I don't understand concern flag #1. — OK [proceed].
+
+**Response / 応答:**
+
+(1) Inspected `outputs/figures/phase3_blocking_comparison.png` and `src/visualize_phase3.py:81-118` — confirmed figure has **5 bars** (not 4 as caption stated): Erlang B 0.07% / DES Exponential 0.10% / DES Empirical 0.54% / DES Weibull 0.46% / Observed 3.73%. Found a 2nd undocumented value: DES Exponential = 0.10% appears in zero locations in either .tex file. Recommended NOT adding it to text — it's a sanity check (Erlang B ≈ Poisson DES) not a finding, and adding would dilute the empirical-vs-Weibull message. User approved skipping. (2) Confirmed appendix ≤ 10 page limit — skipping Table 6 column expansion, §4.3 prose-only addition. (3) Decomposed main.tex:47 "IoD 2--8" — range mixes Table 1 (30-min: BB Kendall 3.2, BB Vassar 4.7) with Table 5 (60-min Peak/Off-Pk: 2.6/4.4 Kendall, 5.1/8.4 Vassar) without disclosing the aggregation. User chose Option A (align with Table 1 only). Slide value 3.4 left unverified per user's note that slides were AI-generated.
+
+After approval, executed unified Phase 1 edit (4 changes, 1 commit):
+- **main.tex:47** — IoD ranges aligned with Table 1: `2--8` → `3.2--4.7` (Bluebikes), `0.4--0.6` → `0.52--0.58` (MBTA).
+- **main.tex §4.3 (line 100)** — appended best-fit Weibull DES sentence per Plan §1.3: "Best-fit Weibull DES gives 0.46%, comparable to empirical bootstrap and well short of the observed 3.73%; the marginal IAT distribution alone is insufficient regardless of whether resampled empirically or fit parametrically."
+- **appendix.tex §A.2 (lines 17-23)** — replaced circular Little's Law derivation per Plan §1.1 with the §D.3-consistent form: $\bar{W}_{\text{slot}} = L_{\text{non-full}}/\lambda$, $\mu = \lambda/L_{\text{non-full}}$. Numerical values (7367s, 6670s, ρ=0.48, ρ=0.33) preserved.
+- **appendix.tex Figure 8 caption (line 209)** — added "DES (Weibull best-fit)" to bar list, prefixed "at Kendall/MIT" (figure title shows Kendall only), changed Vassar mention to "(not shown)".
+
+Build verification: bibtex clean, 4 pdflatex passes clean, **15 pages preserved**, no undefined references, layout intact across §4.1 / §4.3 / §A.2 / Figure 8. Visual confirmation via PDF rendering pp.3-4, 7-8, 14 — all four edits typeset cleanly.
