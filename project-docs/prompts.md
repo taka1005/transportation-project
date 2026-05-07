@@ -3484,3 +3484,26 @@ User chose E. Executed:
 - **main.tex §3** — inserted 4-line rationale after "We fit exponential, log-normal, Weibull, and gamma by maximum likelihood and rank them by AIC." in the Arrival-process characterization paragraph: "The four candidates span the relevant inter-arrival behaviors: exponential is the Poisson memoryless baseline; Weibull captures clustered or regular gaps through its shape parameter; log-normal arises naturally when arrivals are scheduled with multiplicative jitter; gamma is a flexible comparator that nests several of these regimes."
 
 Build verification: 2 pdflatex passes clean, **15 pages preserved**. PDF p.2 visual confirmation: rationale typesets cleanly between the AIC-ranking sentence and the GoF-statistics sentence; the Arrival-process characterization paragraph is now ~9 lines (was 5), still readable as a single block. If §2.3 GoF rationale is also approved, paragraph will reach ~12 lines and may warrant splitting (flag for next turn).
+
+---
+
+## Prompt #199
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+評価表示 (続) B
+
+**English:**
+
+Show me the evaluation. — Go with B.
+
+**Response / 応答:**
+
+Per Plan §2.3, evaluated whether to add a 3-test GoF rationale (KS / AD / χ²) to §3 Methods. Highlighted the methodological link between AD's tail-emphasis and §4.3 blocking gap (rare events live in the tail) as the strongest reason to accept. Flagged the Plan original's "where predictions of rare events live" phrasing as oblique, and offered option B (微修正版): "weighs tail discrepancies" (statistically more accurate verb than "emphasizes") and "where rare events ... sit" (less literary than "live"). Also raised the structural question of whether to split the now-12-line Arrival-process characterization paragraph into Characterization + Distribution-fitting paragraphs; recommended deferring split until visual check.
+
+User chose B without paragraph split. Executed:
+- **main.tex §3** — appended 3-line GoF rationale to the existing testing-statistics sentence: "KS captures global CDF shape mismatch; AD weighs tail discrepancies, where rare events (including blocking) sit; χ² provides a binned-frequency robustness check."
+
+Build verification: 2 pdflatex passes clean, **15 pages preserved**. PDF p.2 visual confirmation: the Arrival-process characterization paragraph now sits at 13 lines, ends cleanly on p.2 just above the page footer; flow "compute → fit (with rationale) → test (with rationale)" reads as a coherent single thought-unit. Long but not catastrophic — split deferred unless user requests.
