@@ -3457,3 +3457,30 @@ User chose B. Executed:
 - **main.tex §3** — inserted new `\paragraph{Diagnostic intuition.}` (3 lines) before existing `\paragraph{Arrival-process characterization.}`. Used `\ref{app:tables}` for the Appendix B forward ref to match existing label-based style (e.g., main.tex:47 uses `\ref{app:hour}`).
 
 Build verification: 2 pdflatex passes clean, **15 pages preserved**, `(Appendix B)` resolves correctly. PDF p.2 visual confirmation: new paragraph typesets cleanly between §2 Data and the existing §3 Arrival-process characterization paragraph; 4-paragraph §3 structure (Diagnostic intuition / Arrival-process characterization / Queueing models / Discrete-event simulation) is symmetric and readable.
+
+---
+
+## Prompt #198
+
+**Date / 日付:** 2026-05-07
+
+**Japanese / 日本語:**
+
+評価を提示 (続) ハザードって何 (続) Eで。
+
+**English:**
+
+Show me the evaluation. — What does "hazard" mean? — Go with E.
+
+**Response / 応答:**
+
+Per Plan §2.2, evaluated whether to add a 4-distribution rationale (exponential / log-normal / Weibull / gamma) to the §3 Methods Arrival-process characterization paragraph. Recommended Plan original (case A) initially because the pedagogical pairing (Weibull↔bursty, log-normal↔scheduled+jitter) sets up §4.1 results methodologically.
+
+User asked what "hazard" means. Explained in plain Japanese: hazard rate = conditional instantaneous arrival rate given no arrival yet, h(t) = f(t)/(1-F(t)). Constant hazard = Poisson memoryless; decreasing = bursty (Weibull c<1); increasing = scheduled-like (Weibull c>1); unimodal = log-normal. Tied this back to the report's findings (Bluebikes Weibull c≈0.72 → bursty, MBTA log-normal → scheduled+jitter).
+
+Flagged that the Plan's text used "hazard structure" jargon density that could trip a reader unfamiliar with the term, and offered a new option E that conveys the same coverage argument without the word "hazard".
+
+User chose E. Executed:
+- **main.tex §3** — inserted 4-line rationale after "We fit exponential, log-normal, Weibull, and gamma by maximum likelihood and rank them by AIC." in the Arrival-process characterization paragraph: "The four candidates span the relevant inter-arrival behaviors: exponential is the Poisson memoryless baseline; Weibull captures clustered or regular gaps through its shape parameter; log-normal arises naturally when arrivals are scheduled with multiplicative jitter; gamma is a flexible comparator that nests several of these regimes."
+
+Build verification: 2 pdflatex passes clean, **15 pages preserved**. PDF p.2 visual confirmation: rationale typesets cleanly between the AIC-ranking sentence and the GoF-statistics sentence; the Arrival-process characterization paragraph is now ~9 lines (was 5), still readable as a single block. If §2.3 GoF rationale is also approved, paragraph will reach ~12 lines and may warrant splitting (flag for next turn).
