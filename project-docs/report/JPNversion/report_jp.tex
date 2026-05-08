@@ -1,0 +1,67 @@
+% Japanese personal-reading version. NOT a deliverable.
+% Build: lualatex report_jp.tex && bibtex report_jp && lualatex report_jp.tex && lualatex report_jp.tex
+%
+% Engine: LuaLaTeX (NOT pdflatex). Required for Japanese support via luatexja.
+% Figures: symlinked from ../figures (do not modify originals).
+% references.bib: copied from ../references.bib.
+% main_jp.tex / appendix_jp.tex: Japanese translations of ../main.tex and ../appendix.tex.
+
+\documentclass[11pt]{article}
+
+% ===== Geometry and typography =====
+\usepackage[letterpaper,margin=0.85in]{geometry}
+\usepackage{setspace}
+\setstretch{1.10}
+
+% ===== Japanese support (LuaLaTeX) =====
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+
+% ===== Math =====
+\usepackage{amsmath,amssymb,amsthm}
+
+% ===== Figures and tables =====
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\usepackage{subcaption}
+
+% ===== Tighter section spacing =====
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{1.6ex plus 0.4ex minus 0.2ex}{0.8ex plus 0.2ex}
+\titlespacing*{\paragraph}{0pt}{0.8ex}{0.8em}
+
+% ===== References (numeric, IEEE-like) =====
+\usepackage[numbers,sort&compress]{natbib}
+
+% ===== Links =====
+\usepackage[hidelinks]{hyperref}
+
+% ===== Title =====
+\title{\vspace{-2em}\textbf{Poissonで十分か？}\\
+\large 都市モビリティシステムにおける待ち行列モデルの評価}
+\author{Alexander Lim Yu Sheng, Takayuki Tahara\\
+\small MIT 1.200, Spring 2026}
+\date{}
+
+\begin{document}
+\maketitle
+\vspace{-2em}
+
+% ===== Main body (Japanese) =====
+\input{main_jp}
+
+% ===== References (page break, citation entries kept English) =====
+\clearpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+% ===== Appendix (Japanese) =====
+\clearpage
+\appendix
+\input{appendix_jp}
+
+\end{document}

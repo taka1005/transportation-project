@@ -1,0 +1,132 @@
+% Main body — Japanese translation of ../main.tex
+% Mathematical notation, proper nouns (Bluebikes, MBTA, Kendall/MIT, Weibull, etc.),
+% and citation/cross-reference commands are kept identical to the English version.
+
+\begin{abstract}
+\noindent 本研究では、ボストンの2つの都市モビリティシステムが Poisson 到着の仮定からどの程度乖離しているかを検証し、結果として待ち行列予測に生じる誤差を定量化する。Bluebikes(Kendall/MIT および MIT Vassar~St、利用者駆動・有限容量)と MBTA Red Line(Kendall/MIT、時刻表駆動)の4か月分のデータを用いて、すべてのシステムで指数分布の到着間隔を棄却した($p \approx 0$、Kolmogorov--Smirnov、Anderson--Darling、$\chi^2$ 検定)。ただし方向は正反対で、Bluebikes は過分散($\mathrm{CV} = 1.75$--$1.90$、最良適合は Weibull)、MBTA は過小分散($\mathrm{CV} = 0.63$--$0.71$、最良適合は log-normal)を示す。解析的 Poisson 待ち行列モデルは Bluebikes の待ち時間を約1桁、Kendall/MIT における Erlang~B Blocking 確率を55倍、それぞれ過小評価する一方、MBTA の待ち時間は 5--12$\times$ 過大評価する。最良適合の Weibull/log-normal IAT は $W_q$ を秒単位で再現するが、$55\times$ の Blocking ギャップのうち約 1/7 しか埋めることができない。すなわち marginal な IAT 分布は待ち時間には十分だが Blocking には不十分であり、残差は $\lambda(t)$ および/または $\mu(t)$ の非定常性と整合する — これは定常的な到着過程の修正だけでは扱えない。
+\end{abstract}
+
+% ===== 1. Introduction =====
+\section{序論}\label{sec:intro}
+
+交通分野における待ち行列理論は Poisson 到着の仮定の上に構築されている。M/M/$c$ および M/M/$c/c$ モデル \cite{kleinrock1975,erlang1917} の閉形式解は、解析者に待ち時間と Blocking 確率の扱いやすい推定値を与える。これらのモデルが運用判断に直接影響する場面もある — bike-share の dock 数や再配置の頻度はその典型例である — 一方、交通インフラの規模設定は M/M/1 の待ち時間ではなく需要予測と運用制約に基づいて決定される。実際の都市モビリティの到着は時刻表、時間帯需要、運用障害によって形成されるため、Poisson の仮定はあくまで近似である。実務上の問いは「到着が Poisson か」(ほぼ Poisson ではない)ではなく、仮定が崩れたとき待ち行列予測がどの程度損なわれるか、そして残った誤差が予測の使われる判断にとって重要かどうか、である。
+
+本研究では、到着過程が構造的に対極にあるボストンの2つのシステムを扱う。Bluebikes は有限容量の dock を持つ利用者駆動の bike-share、MBTA Red Line(Kendall/MIT)は実質的に容量制約のないプラットフォームで公表された時刻表に従って運行する。次の3点を問う:(1)~観測された到着は Poisson からどの程度乖離するか、(2)~Poisson に基づくモデルは待ち時間と Blocking をどの程度正確に予測するか、(3)~Poisson が技術的近似として許容される条件は何か。
+
+本研究の貢献は次のとおり:両システムにおける Poisson からの乖離の定量計測、解析的 Poisson 待ち行列と経験 IAT・最良適合 IAT で駆動される離散事象シミュレーション(DES)との並列比較、Kendall/MIT における 55$\times$ の Erlang~B Blocking ギャップの同定 — これは定常的な到着過程の修正だけでは閉じることができず、$\lambda(t)$ および/または $\mu(t)$ の非定常性が独立した誤差源であることを示唆する — そして Poisson 誤差を \emph{方向}、\emph{大きさ}、そして \emph{予測がそもそも判断経路に乗っているか} の観点から評価する判断閾値フレームワーク。利用者側の Blocking 過小予測は決定的(binding)であり、MBTA の待ち時間過大予測は相対誤差は大きいものの、いかなる運用判断の入力にもなっていない。
+
+% ===== 2. Data =====
+\section{データ}\label{sec:data}
+
+\paragraph{Bluebikes.} 2025年9月--12月の公開トリップデータを使用、対象局は M32004 Kendall/MIT(23 dock、交通結節点)と M32042 MIT Vassar~St(53 dock、キャンパス寮エリア)。到着は trip-end タイムスタンプとして定義する。運用時間帯への制限、運用障害日除外、満車時除外(下記)の後、$N = 9{,}566$(Kendall/MIT)、$N = 19{,}300$(MIT Vassar)となる。
+
+\paragraph{MBTA Red Line.} 同期間の Kendall/MIT(\texttt{place-knncl})に対する LAMP performance データ \cite{mbta_lamp} を使用、Northbound($N = 20{,}366$)と Southbound($N = 20{,}880$)。到着は列車のプラットフォーム入線イベントとして定義する。夜間運休時間は除外する。
+
+\paragraph{満車時除外.} 観測される Bluebikes 到着はステーションが満車の時に censoring される。我々は記録のないオペレーターによる rebalancing を補正する clamp を含む前向きイベント再生によって station inventory を復元し、自然な $C_s-1 \to C_s$ trip-end による満車到達の直後に trip-start が起きる(間に trip-end が挟まらない)場合にのみ満車区間として確定する。確定区間と重なる IAT は $\lambda$、$\mu$、分布適合の対象から除外する。Kendall/MIT は運用時間中 $3.73\%$、MIT Vassar~St は $2.88\%$ が満車状態であった。これらを Erlang~B Blocking の検証ターゲットとして用いる(\S\ref{sec:results-erlangb})。アルゴリズムは Appendix~\ref{app:fullness} 参照。
+
+% ===== 3. Methods =====
+\section{方法}\label{sec:methods}
+
+\paragraph{診断指標の直感.} CV は連続する到着の間隔(到着間隔)が指数分布よりばらつきが大きいか小さいかを測る。IoD は固定時間窓内の到着件数が Poisson 過程よりばらつきが大きいか小さいかを測る。両者を時間帯・曜日・peak/off-peak で segmentation する(Appendix~\ref{app:tables})ことで、観測される非 Poisson 性が、率の異なる期間を混ぜ合わせたことによる aggregation 由来の見かけ上のものか、それとも各時間窓内で持続する構造的特徴かをテストできる。
+
+\paragraph{到着過程の特徴付け.} 各システムについて到着間隔の平均、標準偏差、変動係数($\mathrm{CV} = \sigma/\mu$)、歪度を計算し、15分・30分・60分の時間窓における到着件数の分散指数($\mathrm{IoD} = \mathrm{Var}[N]/\mathbb{E}[N]$)を計算する。$\mathrm{CV} = \mathrm{IoD} = 1$ が Poisson の値である。指数分布、log-normal、Weibull、gamma の4分布を最尤法で適合し、AIC で順位付けする。この4つは関連する到着間隔の挙動を網羅する:指数分布は Poisson 過程の memoryless ベースライン、Weibull は形状パラメータによって clustered または regular な間隔を捉える、log-normal は乗算的なジッタを伴う時刻表駆動の到着で自然に現れる、gamma は上記いくつかの体系をネストする柔軟な比較対照である。適合は Kolmogorov--Smirnov(KS)、Anderson--Darling(AD)、Pearson $\chi^2$ 統計量で検定する。KS は全体的な CDF 形状の不一致を捉え、AD は希少事象(Blocking など)が住む tail のずれを重視し、$\chi^2$ は binned 度数によるロバストネスチェックを提供する。
+
+\paragraph{待ち行列モデル.} Bluebikes:M/M/$c$(無限待ち行列の理想化、実際のステーションは queue ではなく reject する)、$c$ は dock 数、
+\begin{equation}
+W_q = \frac{C(c, a)}{c\mu - \lambda}, \quad a = \lambda/\mu,\ \rho = a/c,
+\label{eq:mmc}
+\end{equation}
+ここで $C(c,a)$ は Erlang~C による queue 発生確率である。M/M/$c/c$ は Erlang~B Blocking $B(c,a) = a\,B(c-1,a) / (c + a\,B(c-1,a))$($B(0,a) = 1$)を与える。MBTA:M/M/1、サービス時間 $=$ dwell time。Bluebikes の $\mu$ は満車でない期間の平均 dock 占有数から Little's Law \cite{little1961} で推定する。導出は Appendix~\ref{app:derivations} 参照。
+
+\paragraph{離散事象シミュレーション.} 各システムを SimPy \cite{simpy} で実装し、3つの到着生成器を用いる:Poisson($\mathrm{Exp}(1/\lambda)$)、観測 IAT からの経験 i.i.d.\ bootstrap、最尤推定された Weibull(Bluebikes)または log-normal(MBTA)からの最良適合サンプリング。経験 bootstrap は marginal な IAT 分布を厳密に保存する一方、i.i.d.\ サンプリングなので時系列構造や時間帯構造は意図的に取り除かれる。我々はこの性質を \S\ref{sec:results-erlangb} で活用し、残余の Blocking 誤差を marginal 分布ではなく非定常性に帰属させる。各構成は 20{,}000 件の到着、2{,}000 件の warmup、10 反復(95\% CI は Student's~$t$ で計算)を用いる。
+
+% ===== 4. Results =====
+\section{結果}\label{sec:results}
+
+\subsection{到着過程は Poisson を反対方向に棄却する}\label{sec:results-arrival}
+
+すべてのシステムは KS、AD、$\chi^2$ のいずれにおいても $p \approx 0$ で指数分布を棄却する(Appendix~\ref{app:gof})。Table~\ref{tab:summary} は方向の違いをまとめる:Bluebikes は過分散($\mathrm{CV}$ 1.75--1.90、IoD 3.2--4.7)、MBTA は過小分散($\mathrm{CV}$ 0.63--0.71、IoD 0.52--0.58)。最良パラメトリック適合は Bluebikes が Weibull(形状 $c \approx 0.72$、単調減少ハザード)、MBTA が log-normal(形状 $s \approx 0.5$)であり、指数分布に対し AIC で $2{,}167$ から $17{,}833$ の改善を示した。実際 MBTA の KS 距離(0.27--0.29)は Bluebikes(0.13--0.14)よりも指数分布から \emph{遠い}:規則性は burstiness と同じくらい強い Poisson からの乖離である。
+
+\begin{table}[h]
+\centering
+\caption{到着間隔の要約統計量。$\mathrm{CV} < 1$:過小分散、$\mathrm{CV} > 1$:過分散。}
+\label{tab:summary}
+\footnotesize
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+システム & $N$ & 平均 IAT (s) & $\mathrm{CV}$ & 歪度 & IoD\,(30\,min) \\
+\midrule
+BB Kendall/MIT   & 9{,}566  & 661 & 1.75 & 6.9 & 3.2 \\
+BB MIT Vassar    & 19{,}300 & 380 & 1.90 & 7.7 & 4.7 \\
+MBTA Northbound  & 20{,}366 & 390 & 0.71 & 3.3 & 0.58 \\
+MBTA Southbound  & 20{,}880 & 378 & 0.63 & 4.5 & 0.52 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+1日内 segmentation(Appendix~\ref{app:hour}、Table~\ref{tab:cv-hour}、経験 CDF と適合は Appendix~\ref{app:figures}、Fig.~\ref{fig:cdfs})から、Bluebikes の CV は非定常性と窓内の非 Poisson 性の両方を反映していることがわかる:Kendall/MIT は深夜に $\mathrm{CV} \approx 1.0$ に下がり、18:00 で $2.4$ にピークを迎えるが、すべての時間帯で $\mathrm{CV} \geq 1.0$ を維持する。一方 MBTA は終日 1 未満である。Poisson の棄却は集計起因の見かけだけではない — 単一窓 Poisson 仮説はすべての時間帯で棄却され、ピーク時間帯でより強く棄却される。
+
+\subsection{待ち行列予測は大きさと方向の双方で乖離する}\label{sec:results-queueing}
+
+Table~\ref{tab:queueing} は 3 つの到着生成器による DES と解析的 Poisson 予測を比較する。Poisson-DES は解析値の cross-check に、empirical-DES はベンチマークとして用いる。Bluebikes の $W_q$ は無限待ち行列の理想化値であり(キャプション参照)、観測可能な Bluebikes 指標は Blocking である(\S\ref{sec:results-erlangb})。
+
+\begin{table}[h]
+\centering
+\caption{平均待ち行列遅延 $W_q$(秒)。Bluebikes の値は無限待ち行列の理想化(実際のステーションは queue ではなく reject)であり、MBTA との共通抽象化のもとでの比較として報告する。DES 値の 95\% CI は $\pm$10\% 以内。}
+\label{tab:queueing}
+\footnotesize
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+システム & 解析値 & Poisson DES & Empirical DES & Best-fit DES \\
+\midrule
+BB Kendall/MIT   & 0.8  & 1.4  & 9.4  & 10.6 \\
+BB MIT Vassar    & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ \\
+MBTA Northbound  & 20.1 & 20.5 & 4.2  & 4.3 \\
+MBTA Southbound  & 10.7 & 10.9 & 0.9  & 1.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{phase3_wq_comparison.png}
+\caption{システム間の $W_q$ 比較(対数 $y$ 軸)。Poisson が過小予測するのは Bluebikes Kendall/MIT のみで、MBTA は両方向とも過大予測する。Best-fit DES は empirical DES を秒単位で追従する。}
+\label{fig:wq}
+\end{figure}
+
+Kendall/MIT では Poisson M/M/$c$ が $W_q = 0.8$~s を予測するのに対し、empirical では $9.4$~s — 約1桁の過小評価である。MBTA では符号が反転する:20.1~s vs 4.2~s(Northbound、5$\times$ 過大)、10.7~s vs 0.9~s(Southbound、12$\times$ 過大)。Northbound--Southbound のばらつきは Kendall/MIT における dwell time の非対称性(平均 dwell 82~s vs 61~s、朝ピークでの inbound プラットフォーム側の乗車が多いことに対応)が主要因であり、到着過程の差ではない。Best-fit DES はどの場合も empirical DES を秒単位で追従しており、Weibull または log-normal 適合は待ち行列の結果を再現するのに十分な到着過程の情報を保持していると言える。ただしこの結論は $W_q$ から Blocking へ移ると成立しない:\S\ref{sec:results-erlangb} に示すとおり、同じ適合は $55\times$ の Erlang~B ギャップを 1/7 程度しか埋められず、非定常性が支配的な残差として浮かび上がる。MIT Vassar~St はどのモデルでも $W_q$ がほぼゼロのケースだが、\S\ref{sec:results-erlangb} ではここでも自明でない Blocking ギャップを示す。
+
+\subsection{Erlang B Blocking ギャップは非定常性を示唆する}\label{sec:results-erlangb}
+
+Kendall/MIT における Erlang~B の Blocking 予測は $0.068\%$、対する観測 fullness 率は $3.73\%$ であり、$55\times$ のギャップが存在する。\emph{経験} IAT を使った有限容量 DES では $0.54\%$ となり、ギャップのおよそ 1/7 しか埋められない。最良適合 Weibull DES は $0.46\%$ で、経験 bootstrap と同水準であり、観測値 $3.73\%$ には遠く及ばない:marginal IAT 分布は経験 resampling であれパラメトリック適合であれ単独では不十分である。MIT Vassar~St のギャップも質的に同様(Erlang~B $\approx 0\%$ vs 観測 $2.88\%$、empirical-DES は Blocking イベントを生成しない)。定常モデルが捉えられない3つの時間構造効果がある:時間変動する $\lambda(t)$(bike returns は通勤時間帯にピークを迎えるが単一 $\lambda$ モデルでは平均化されて消失する)、時間変動する $\mu(t)$(Kendall では peak return demand 時に rentals が落ち込むため dock turnover が低下するが、固定 $\mu$ の仮定はこの dip を見落とす)、そしてこの2つの間の時間的結合 — $\lambda$ のピークが同じ時刻で $\mu$ の谷と一致し、定常 Erlang~B も i.i.d.\ empirical DES も明らかにできない形で Blocking 圧力を乗算的に増幅する。MBTA は $\rho = 0.15$--$0.20$ なのでこのアナログは存在しない。
+
+% ===== 5. Discussion =====
+\section{考察}\label{sec:discussion}
+
+本節の議論は2つの指標レベルの所見を軸とする。$W_q$ については、最良適合 Weibull または log-normal サンプルが4つの到着過程すべてで empirical DES と秒単位で一致する — marginal IAT は十分である。Blocking については同じ適合が Kendall/MIT における $55\times$ の Erlang~B ギャップの 1/7 しか埋めず、i.i.d.\ の天井にぶつかる。Poisson が「十分」かどうかはシステムだけでなく指標にも依存する。
+
+Poisson の誤差は直交する3つの軸を持つ:\emph{方向}(過大評価か過小評価か)、\emph{判断閾値に対する大きさ}、そして \emph{予測がそもそも判断経路に乗っているか}。本研究で扱う2つのシステムは質的に異なる体系に属する。
+
+\paragraph{利用者側、判断経路上:Bluebikes の Blocking.} Bike-share の計画担当者は dock 数と rebalancing 頻度の決定に待ち行列理論を用いるため、Poisson に基づく目標値ではサービス失敗を1桁見逃す。これが本研究での決定的(binding)な誤差である。
+
+\paragraph{判断経路外:MBTA の待ち時間.} MBTA は $\rho = 0.15$--$0.20$、Poisson は $W_q$ を 5--12$\times$ 過大評価する。相対誤差は大きいが、列車1本あたりの $W_q$ は交通インフラのサイジングに使われない(プラットフォーム長は既存資本、運行頻度は需要と運用から決まる)ので、この文脈では過大予測は low-risk である — どの計画判断も列車1本あたりの $W_q$ を入力として使っていない。誤差の \emph{方向} は構造から予測可能:利用者駆動システムは過分散、時刻表駆動システムは過小分散。
+
+% ===== 6. Limitations and future work =====
+\section{制約と将来課題}\label{sec:limitations}
+
+\paragraph{Bluebikes の潜在需要抑制.} 満車期間の IAT は $\lambda$ と分布適合から除外しているため(\S\ref{sec:data}、Appendix~\ref{app:fullness})、$\lambda$ は実現したトリップのみを計測する。残差は満車を予想して divert(別ステーションへ流れる)したユーザである。Mellou と Jaillet~\cite{mellou2019} はこの残差を狙った lost-demand 推定器を提供する。推定到着で置き換えると本来の Poisson からの乖離と推定器の artefact が混在するが、Mellou--Jaillet 復元した到着で \S\ref{sec:results-arrival} と \S\ref{sec:results-erlangb} を再実行すれば、censoring 起因の非 Poisson 性と本来の非 Poisson 性を分離できる。
+
+\paragraph{DES が到着間隔の自己相関を破壊する.} Empirical DES は IAT を i.i.d.\ にサンプリングするため時刻表の系列構造を失う。これが MBTA Southbound の empirical DES が $W_q = 0.9$~s(零ではなく)を報告する原因である。自己相関を保存する生成器(時系列 bootstrap または Markov-modulated Poisson)であれば empirical DES の $W_q$ を零に近づけるはずである。
+
+\paragraph{非定常性の未モデル化.} $55\times$ の残差は時間変動する $\lambda(t)$ および/または $\mu(t)$ と整合する。\S\ref{sec:results-erlangb} の定常 i.i.d.\ bootstrap はそのいずれもテストしないので、サービス側への帰属はあくまで示唆にとどまる。Bluebikes について非斉次 Poisson 生成器(時間帯ごとの $\lambda(t)$)と時間変動 $\mu(t)$ を組み合わせれば、joint な非定常性がギャップを閉じるかを検証できる。
+
+\paragraph{範囲.} Bluebikes 2局、MBTA 1局、4か月。構造的な議論は一般化されるはずだが、具体の数値の一般化は期待すべきでない。
+
+\paragraph{在庫復元の不確実性.} $I_s$ は clamp 間で有界な rebalancing バイアスを持つ。我々の retract 規則(Appendix~\ref{app:fullness})は短い満車区間を省略する側にバイアスがあるため、観測された fullness 率と $55\times$ ギャップは保守的な下限である。
+
+% ===== 7. Conclusion =====
+\section{結論}\label{sec:conclusion}
+
+Poisson が「十分」と言えるのは、誤差がそれが供する判断に対して相対的に小さく、かつ予測がそもそも判断経路に乗っている時に限られる。Bluebikes の Blocking 過小予測は binding である — dock 数と rebalancing は待ち行列理論に依拠しており、55 倍のギャップは Poisson が1桁分のサービス失敗を見逃すことを意味する。MBTA の待ち時間過大予測はこの文脈では low-risk である。なぜなら列車1本あたりの $W_q$ は transit 計画の入力にならないからである。
+
+待ち時間については marginal IAT で十分である:Weibull と log-normal は empirical $W_q$ を秒単位で再現する。Blocking については不十分である — 経験 i.i.d.\ 到着は $55\times$ のギャップを 1/7 しか埋められず、$\lambda(t)$ と $\mu(t)$ の非定常性が marginal な修正では届かない残差として残る。方向は構造から予測可能であり、方向・大きさ・判断経路の3軸で評価する。

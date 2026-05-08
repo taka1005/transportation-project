@@ -1,0 +1,254 @@
+% Appendix — Japanese translation of ../appendix.tex
+% Mathematical notation, proper nouns, and citation/cross-reference commands
+% are kept identical to the English version.
+
+% ===== A. Methodology details =====
+\section{方法論の詳細}\label{app:methods}
+
+\subsection{Bluebikes 満車除外アルゴリズム}\label{app:fullness}
+
+\paragraph{在庫復元.} $I_s(t) \in \{0, 1, \dots, C_s\}$ をステーション $s$ の時刻 $t$ における復元在庫(dock 占有数)とする。$C_s$ はステーション容量であり、$C_{\text{Kendall}} = 23$、$C_{\text{Vassar}} = 53$ である。$s$ における trip-end($+1$)と trip-start($-1$)の時系列イベント列を 1 回の前向きパスで処理し、初期値 $I_s = \lfloor C_s/2 \rfloor$ から開始する(GBFS のようなリアルタイムステーション状態は本研究の対象期間では取得できなかった)。オペレーターによる rebalancing(トラックでの集荷・配置)は公開データセットに記録されないため、clamp によって推定する:running count が $C_s$ を超える場合は超過分を事前の rebalancing 集荷に帰し $I_s = C_s$ とする。零を下回る場合は事前の配置に帰し $I_s = 0$ とする。clamp は記録されない rebalancing の補正であり、それ自体は満車・空車状態の証拠ではない。
+
+\paragraph{満車区間.} 「満車」を per-event の属性ではなく \emph{状態} として扱う。候補区間は、$I_s$ を $C_s - 1$ から $C_s$ へ自然に増加させる(clamp ではない)trip-end によって開始する。次のイベントが trip-start(出発)であった場合のみ、その区間は除外集合に確定し、その trip-start により区間は閉じる。次のイベントが trip-end であった場合、その成功した trip-end は当該瞬間に空き dock があった物理的証拠となるため、候補区間は \emph{完全に retract される}:期間中ずっと満車であった証拠が無いので、部分区間も保持しない。これが \S\ref{sec:data} の観測 fullness 率を保守的下限と読むべき理由である(\S\ref{sec:limitations} 参照)。
+
+\paragraph{除外規則.} 到着間隔 $(a_i, a_{i+1})$ は、区間 $[a_i, a_{i+1}]$ が確定した満車区間と重なる場合に $\lambda$、$\mu$、分布適合の対象から除外する。ただし censoring されていない到着 $a_i$ と $a_{i+1}$ そのものは隣接 IAT で利用するため保持する。確定区間は構成上重ならない(区間は $I_s$ を $C_s-1$ に下げる trip-start で終了するため、次の自然な満車到達には別の trip-end が必要)。Kendall/MIT では $668$ 件の IAT(未補正サンプルの $6.5\%$)を除外し $N = 9{,}566$ となる。MIT Vassar~St では $148$ 件($0.8\%$)を除外し $N = 19{,}300$ となる。
+
+\paragraph{頑健性.} 前向きパスは各 clamp で固定される:最初の clamp イベント以降、$I_s$ は初期値の影響なく境界値に固定される。よって $\lfloor C_s/2 \rfloor$ の影響は最初の clamp までで減衰する(運用初期数日内が典型)。満車フラグは retract-on-intervening-trip-end 規則のもとで自然な $C_s-1 \to C_s$ 遷移で定義されるため、clamp 起因のドリフト補正が fullness 率を膨らませることはない。2 つの clamp 間の $I_s$ の残差不確実性(記録されない rebalancing 量で抑えられる定数加算バイアス)は \S\ref{sec:limitations} で制約として議論する。
+
+\subsection{Little's Law によるサービス率推定}\label{app:service-rate}
+
+Bluebikes では各 dock slot を server として扱い、サービス時間を「自転車が dock に到着してから次の出発までの経過時間」として定義する。$L_{\text{non-full}}$ を満車でない期間の平均 dock 占有数、$\lambda$ を accepted arrival rate(除外後の到着率)とする。per-slot に Little's Law を適用すると、平均 dock 占有時間は $\bar{W}_{\text{slot}} = L_{\text{non-full}}/\lambda$ となるので、per-slot のサービス率は
+\[
+\mu = \frac{1}{\bar{W}_{\text{slot}}} = \frac{\lambda}{L_{\text{non-full}}}.
+\]
+満車補正後の推定平均サービス時間は Kendall/MIT で $7{,}367$~s、MIT Vassar~St で $6{,}670$~s であり、per-server 利用率はそれぞれ $\rho = 0.48$、$\rho = 0.33$ となる。MBTA ではサービス時間は観測されたプラットフォーム dwell time であり、$\rho$ は $0.15$--$0.20$ の範囲である。
+
+\subsection{離散事象シミュレーション}\label{app:des}
+
+SimPy 実装では各 dock(Bluebikes)またはプラットフォーム(MBTA)を物理 server 数と等しい capacity を持つ \texttt{simpy.Resource} としてモデル化する。到着は利用可能な server を即座に取得するか、無限待ち行列バリアントでは FIFO queue に並ぶ。有限容量バリアント(M/M/$c/c$、Bluebikes のみ)では全 server がビジーの到着は即座に reject され、Blocking 確率にカウントされる。サービス時間は前節で推定した率 $\mu$ の指数分布からサンプリングされる。各実行は 20{,}000 件の到着で構成され、最初の 2{,}000 件は warm-up として統計から除外する。warm-up 長 2{,}000 は $W_q$ の running mean の収束から経験的に選んだ:累積平均はどのシステムでもそのカットオフより十分前に安定する。各構成は独立シードで 10 反復され、95\% 信頼区間は 10 反復平均から Student's~$t$ 分布で計算する。
+
+\subsection{到着生成器}\label{app:arrival-generators}
+
+3 つの到着生成器は単一のサンプリング interface を共有し、生成元の分布のみが異なる:
+\begin{itemize}\itemsep 0pt
+\item \textbf{Poisson}:$T_i \sim \mathrm{Exp}(\lambda)$、$\lambda$ は除外後の観測到着率から設定。
+\item \textbf{Empirical}:$T_i$ は観測された到着間隔のリストから i.i.d.\ で復元抽出。marginal な IAT 分布を厳密に保存する一方、系列(自己相関)構造は破壊する。
+\item \textbf{Best-fit}:$T_i$ は Bluebikes では $\text{Weibull}(c, \text{scale})$、MBTA では $\text{Log-Normal}(s, \text{scale})$ からサンプリングし、パラメータは Appendix~\ref{app:gof} の最尤適合から取る。
+\end{itemize}
+
+% ===== B. Extended results tables =====
+\section{拡張結果表}\label{app:tables}
+
+\subsection{適合度検定統計量}\label{app:gof}
+
+Table~\ref{tab:gof} は各分布について Kolmogorov--Smirnov、Anderson--Darling(指数のみ、標準形)、Pearson $\chi^2$ 統計量、最尤推定パラメータ、AIC を報告する。すべての行で全検定が $p < 10^{-10}$ で帰無を棄却する。順位付けはあくまで相対的である。
+
+\begin{table}[h]
+\centering
+\caption{システムと候補分布ごとの適合度検定統計量。すべての検定が $p \approx 0$ で帰無を棄却する。各システムの最良 AIC を太字。$\chi^2$ は等確率 30 ビンを使用。}
+\label{tab:gof}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llrrrr@{}}
+\toprule
+システム & 分布 & KS stat & AD stat & $\chi^2$ & AIC \\
+\midrule
+\multirow{4}{*}{BB Kendall/MIT}
+  & Exponential (scale=674) & 0.131 & 479.5 & 1873.5 & 136{,}583 \\
+  & Log-normal ($s$=1.66, sc=246) & 0.067 & --- & 862.0 & 135{,}088 \\
+  & Weibull ($c$=0.72, sc=533) & 0.021 & --- & 87.5 & \textbf{134{,}416} \\
+  & Gamma ($a$=0.61, sc=1101) & 0.051 & --- & 237.9 & 134{,}804 \\
+\midrule
+\multirow{4}{*}{BB MIT Vassar}
+  & Exponential (scale=380) & 0.138 & 1081.6 & 3889.2 & 267{,}503 \\
+  & Log-normal ($s$=1.61, sc=139) & 0.061 & --- & 1693.7 & 263{,}220 \\
+  & Weibull ($c$=0.71, sc=297) & 0.027 & --- & 299.9 & \textbf{262{,}613} \\
+  & Gamma ($a$=0.61, sc=620) & 0.057 & --- & 1254.8 & 263{,}717 \\
+\midrule
+\multirow{4}{*}{MBTA Northbound}
+  & Exponential (scale=388) & 0.267 & 1888.6 & 11{,}364.2 & 283{,}526 \\
+  & Log-normal ($s$=0.57, sc=325) & 0.046 & --- & 2068.7 & \textbf{270{,}649} \\
+  & Weibull ($c$=1.60, sc=437) & 0.117 & --- & 5662.4 & 276{,}492 \\
+  & Gamma ($a$=2.97, sc=130) & 0.066 & --- & 3950.0 & 273{,}433 \\
+\midrule
+\multirow{4}{*}{MBTA Southbound}
+  & Exponential (scale=381) & 0.294 & 2734.0 & 15{,}628.9 & 289{,}901 \\
+  & Log-normal ($s$=0.49, sc=334) & 0.028 & --- & 1027.5 & \textbf{272{,}068} \\
+  & Weibull ($c$=1.76, sc=430) & 0.115 & --- & 5061.3 & 279{,}469 \\
+  & Gamma ($a$=3.97, sc=96) & 0.054 & --- & 2181.5 & 274{,}864 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{時間帯別 CV}\label{app:hour}
+
+Table~\ref{tab:cv-hour} は運用時間中の $\mathrm{CV}$ の推移を示す。Bluebikes Kendall/MIT は 23:00--01:00 の間に $\mathrm{CV} = 1.0$ に近づき、18:00 で $\mathrm{CV} = 2.4$ にピークを迎える。MBTA は終日 0.48--0.84 の範囲に収まる。MIT Vassar~St は終始過分散(1.03--2.16)で、Kendall/MIT より時間帯間の振れ幅が小さい。これはより均一な需要プロファイルを反映している。
+
+\begin{table}[h]
+\centering
+\caption{時間帯別の変動係数。$N < 20$ の時間帯は省略。}
+\label{tab:cv-hour}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrrrrrrrrrrrrrr@{}}
+\toprule
+時刻 & 05 & 06 & 07 & 08 & 09 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 \\
+\midrule
+BB Kendall/MIT & --- & --- & 1.30 & 2.00 & 1.47 & 1.58 & 1.48 & 1.44 & 1.44 & 1.52 & 1.35 & 1.26 & 1.67 & 2.38 \\
+BB MIT Vassar & --- & 1.40 & 1.03 & 1.41 & 1.41 & 1.52 & 2.16 & 1.37 & 1.71 & 1.59 & 1.50 & 1.68 & 1.96 & 1.55 \\
+MBTA North & 0.48 & 0.66 & 0.68 & 0.76 & 0.74 & 0.84 & 0.70 & 0.72 & 0.66 & 0.72 & 0.69 & 0.76 & 0.74 & 0.70 \\
+MBTA South & 0.35 & 0.56 & 0.67 & 0.72 & 0.71 & 0.84 & 0.59 & 0.62 & 0.57 & 0.57 & 0.57 & 0.69 & 0.61 & 0.62 \\
+\midrule
+時刻 & 19 & 20 & 21 & 22 & 23 & 00 & & & & & & & & \\
+\midrule
+BB Kendall/MIT & 1.29 & 1.16 & 1.18 & 1.15 & 1.08 & 1.01 & & & & & & & & \\
+BB MIT Vassar & 1.54 & 1.43 & 1.76 & 1.56 & 1.25 & 1.40 & & & & & & & & \\
+MBTA North & 0.71 & 0.69 & 0.68 & 0.63 & 0.62 & 0.67 & & & & & & & & \\
+MBTA South & 0.64 & 0.61 & 0.70 & 0.53 & 0.56 & 0.59 & & & & & & & & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{曜日別 CV と IoD segmentation}\label{app:dow}
+
+Table~\ref{tab:cv-dow} は $\mathrm{CV}$ の平日/週末パターンを示す。MBTA は週末により規則的になり($\mathrm{CV}$ は $\approx 0.74$ から $\approx 0.55$ へ低下) — ダイヤは間引かれるがより一貫性が増す。Bluebikes Kendall/MIT も週末はより規則的(通勤起因の burstiness が低下)。MIT Vassar~St は逆に週末の方がやや \emph{過分散}(レジャー利用が日中に分散し長い間隔を生む)。
+
+\begin{table}[h]
+\centering
+\caption{曜日別の変動係数、ならびに peak/off-peak の IoD(60 分窓)。}
+\label{tab:cv-dow}
+\footnotesize
+\begin{tabular}{@{}lrrrrrrr|rr|rr@{}}
+\toprule
+& 月 & 火 & 水 & 木 & 金 & 土 & 日 & \multicolumn{2}{c|}{CV} & \multicolumn{2}{c}{IoD} \\
+システム & & & & & & & & 平日 & 週末 & Peak & Off-Pk \\
+\midrule
+BB Kendall/MIT & 2.13 & 1.51 & 1.73 & 2.08 & 1.53 & 1.61 & 1.49 & 1.79 & 1.56 & 4.4 & 2.6 \\
+BB MIT Vassar  & 1.87 & 1.95 & 1.66 & 1.79 & 1.86 & 1.81 & 2.24 & 1.83 & 2.01 & 8.4 & 5.1 \\
+MBTA North     & 0.76 & 0.78 & 0.75 & 0.70 & 0.70 & 0.61 & 0.63 & 0.74 & 0.62 & 0.48 & 0.55 \\
+MBTA South     & 0.70 & 0.70 & 0.63 & 0.64 & 0.59 & 0.53 & 0.57 & 0.65 & 0.55 & 0.50 & 0.54 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{信頼区間付き待ち行列結果}\label{app:queueing-full}
+
+Table~\ref{tab:queueing-full} は本文の Table~2 を拡張し、10 反復にわたる 95\% 信頼区間と Bluebikes の Blocking 確率を併記する。$W_q$ の信頼区間は点推定の $\pm 3\%$--$10\%$ と狭い。例外は MIT Vassar~St(全値が実質ゼロ)と Kendall/MIT(Poisson DES の CI が広い理由は $\rho_{\text{server}} \approx 0.48$ の領域では反復ごとに発生する queue イベントが数件にとどまるため)。Kendall/MIT における Erlang~B 予測($0.068\%$)は empirical-DES の有限容量結果($0.54\%$)と観測 fullness 率($3.73\%$)の双方に圧倒される。MIT Vassar~St はこのギャップを質的にコピーする(Erlang~B と empirical-DES が共に $\approx 0$、観測 $2.88\%$)。
+
+\begin{table}[h]
+\centering
+\caption{$W_q$(秒、平均 $\pm$ 95\% CI の半幅)と Blocking 確率(Bluebikes のみ)。Bluebikes の $W_q$ は無限待ち行列の理想化値。実システムは queue ではなく reject するので、物理的に観測可能な指標は Blocking(右側 3 列)である。}
+\label{tab:queueing-full}
+\footnotesize
+\begin{tabular}{@{}lrrrr|rrr@{}}
+\toprule
+& \multicolumn{4}{c|}{$W_q$ (s)} & \multicolumn{3}{c}{$P_{\text{block}}$ (\%)} \\
+システム & 解析値 & Poisson DES & Empirical DES & Best-fit DES & Erlang B & Emp.\ DES & 観測値 \\
+\midrule
+BB Kendall/MIT   & 0.8  & $1.4 \pm 0.5$ & $9.4 \pm 1.7$  & $10.6 \pm 3.6$ & 0.068 & 0.54 & 3.73 \\
+BB MIT Vassar    & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ & $\approx 0$ & 2.88 \\
+MBTA Northbound  & 20.1 & $20.5 \pm 0.5$ & $4.2 \pm 0.1$  & $4.3 \pm 0.2$  & --- & --- & --- \\
+MBTA Southbound  & 10.7 & $10.9 \pm 0.2$ & $0.9 \pm 0.1$  & $1.0 \pm 0.1$  & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ===== C. Supplementary figures =====
+\section{補足図}\label{app:figures}
+
+Figures~\ref{fig:bb-daily}--\ref{fig:error-summary} は本文で要約した診断図の全セットである。ブロック構造は次のとおり:Phase 1 探索的(\ref{fig:bb-daily}--\ref{fig:mbta-headway})、Phase 2 分布適合(\ref{fig:iat-hist}--\ref{fig:cdfs})、Phase 3 待ち行列比較(\ref{fig:blocking}--\ref{fig:error-summary})。
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{bb_daily_arrivals.png}
+\caption{Bluebikes 両ステーションの日次到着件数(2025年9月--12月)。}
+\label{fig:bb-daily}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.48\linewidth}\includegraphics[width=\linewidth]{bb_arrivals_by_hour.png}\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\linewidth}\includegraphics[width=\linewidth]{bb_arrivals_by_dow.png}\end{subfigure}
+\caption{Bluebikes の到着件数:時間帯別(左)と曜日別(右)。}
+\label{fig:bb-seg}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\linewidth]{mbta_headway_by_hour.png}
+\caption{Kendall/MIT における MBTA Red Line の時間帯別 headway 分布。}
+\label{fig:mbta-headway}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{0.48\linewidth}\includegraphics[width=\linewidth]{phase2_histograms.png}\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\linewidth}\includegraphics[width=\linewidth]{phase2_histograms_log.png}\end{subfigure}
+\caption{適合分布を重ねた IAT ヒストグラム(線形軸と対数軸)。}
+\label{fig:iat-hist}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{phase2_fitted_distributions.png}
+\caption{経験 PDF に重ねた適合分布(Bluebikes は Weibull が最良、MBTA は log-normal が最良)。}
+\label{fig:fitted}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{phase2_cdfs.png}
+\caption{4 システムの経験 IAT CDF と適合した指数・Weibull・log-normal・gamma の重ね合わせ。指数(Poisson ベースライン)はどのパネルでも明らかに最も悪い適合である。}
+\label{fig:cdfs}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.75\linewidth]{phase3_blocking_comparison.png}
+\caption{Kendall/MIT における Blocking 確率:Erlang~B 解析値 vs.\ DES(Poisson) vs.\ DES(empirical) vs.\ DES(Weibull 最良適合) vs.\ 観測 fullness 率。対数 $y$ 軸。$55\times$ ギャップが視覚的中心。MIT Vassar~St(図示せず)も同様のギャップを持ち、予測 Blocking 実質ゼロに対して観測 $2.88\%$。}
+\label{fig:blocking}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{phase3_error_summary.png}
+\caption{解析的 Poisson 予測の empirical-DES ベンチマークに対する相対誤差:システム×指標。}
+\label{fig:error-summary}
+\end{figure}
+
+% ===== D. Derivations =====
+\section{導出}\label{app:derivations}
+
+\subsection{M/M/$c$ 待ち時間}\label{app:mmc}
+
+$\lambda$ と $\mu$ をそれぞれ到着率と per-server サービス率、$a = \lambda/\mu$、$c$ を server 数とする。安定条件は $\rho = a/c < 1$。到着が全 server をビジー状態と見出す(よって queue する)Erlang~C 確率は
+\begin{equation}
+C(c, a) = \frac{\frac{a^c}{c!}\cdot\frac{1}{1-\rho}}{\sum_{k=0}^{c-1} \frac{a^k}{k!} + \frac{a^c}{c!}\cdot\frac{1}{1-\rho}}.
+\end{equation}
+queue する条件下では、M/M/$c$ システムにおける残り待ち時間は率 $c\mu - \lambda$ の指数分布に従うので、無条件の期待待ち時間は
+\begin{equation}
+W_q = \frac{C(c, a)}{c\mu - \lambda}.
+\end{equation}
+期待 queue 長は Little's Law から $L_q = \lambda W_q$、期待滞在時間は $W = W_q + 1/\mu$。
+
+\subsection{Erlang B (M/M/$c/c$) Blocking 確率}\label{app:erlangb}
+
+有限容量 M/M/$c/c$ モデルは全 server がビジーの到着を reject する。reject の定常確率は Erlang~B Blocking 公式
+\begin{equation}
+B(c, a) = \frac{a^c / c!}{\sum_{k=0}^{c} a^k / k!},
+\end{equation}
+で与えられ、これは数値的に安定な再帰式
+\begin{equation}
+B(c, a) = \frac{a\,B(c-1, a)}{c + a\,B(c-1, a)}, \qquad B(0, a) = 1.
+\end{equation}
+を満たす。本研究では一貫して再帰式を用いる。
+
+\subsection{Little's Law による Bluebikes サービス率}\label{app:little}
+
+Little's Law \cite{little1961} は定常な待ち行列システムにおける平均存在数を、到着率と平均滞在時間に関係づける:$L = \lambda W$。これをステーション $s$ における単一 dock slot の満車でない期間に適用する。$L_{\text{slot}} = L_{\text{non-full}} / c$ を slot の平均占有率、$\lambda_{\text{slot}} = \lambda / c$ を per-slot 到着率、$W_{\text{slot}} = 1/\mu$ を平均サービス時間とすると、整理して
+\begin{equation}
+\mu = \frac{\lambda / c}{L_{\text{non-full}} / c} = \frac{\lambda}{L_{\text{non-full}}}.
+\end{equation}
+これはすべての slot を交換可能とみなし、censoring を回避するために満車でない期間に条件付ける一次推定値である。より精緻な推定器では $\mu$ を時間帯別に変動させることが可能であり、これは \S\ref{sec:limitations} の future work に挙げてある。

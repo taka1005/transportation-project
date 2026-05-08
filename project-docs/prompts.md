@@ -3774,3 +3774,34 @@ Could you put a page break before References so it stands on its own page?
 Added `\clearpage` before `\bibliographystyle{IEEEtran}` in `report.tex`, mirroring the existing `\clearpage` before `\appendix`. Result: §7 Conclusion now ends mid-p.5 with a clean white-space tail; References "section" begins at top of p.6 with all six entries [1]-[6] on a single dedicated page; Appendix still starts on p.7. Total page count still **15** because References were already spilling onto p.6 anyway — the clearpage just removes the awkward §7-then-Refs[1] sharing of p.5 without adding any page.
 
 Build clean, layout intact. No changes to main.tex / appendix.tex.
+
+---
+
+## Prompt #210
+
+**Date / 日付:** 2026-05-08
+
+**Japanese / 日本語:**
+
+私が読めるように、レポートを日本語にして提示してくれない？これは個人的なお願いなので、レポートのフォルダ中にJPNversionというフォルダを作ってそこで作業してください。元のレポート関係のファイルは一切変更しないでください。画像の中の文字は翻訳する必要はありません。
+
+**English:**
+
+Could you give me a Japanese version of the report so I can read it? This is a personal request — create a JPNversion folder inside the report directory and work there. Do not modify any of the original report files. Don't translate text inside images.
+
+**Response / 応答:**
+
+Created a Japanese personal-reading version isolated under `project-docs/report/JPNversion/`. Original `main.tex`, `appendix.tex`, `report.tex` left untouched.
+
+**Engine choice**: LuaLaTeX with `luatexja` + `luatexja-fontspec` (vs. xelatex+xeCJK or platex). LuaLaTeX is the most modern and robust path for Japanese with the existing math/geometry/natbib stack; HaranoAjiMincho/Gothic fonts auto-loaded from TeXLive 2026, no font installation needed.
+
+**Files created in JPNversion/**:
+- `report_jp.tex` — preamble, replicates the English geometry (margin 0.85in, setstretch 1.10) and adds `\usepackage{luatexja}` + `\usepackage{luatexja-fontspec}`. Uses `\input{main_jp}` and `\input{appendix_jp}`. Title translated to "Poissonで十分か？" / "都市モビリティシステムにおける待ち行列モデルの評価". `\clearpage` before References preserved (matches the English version).
+- `main_jp.tex` — full Japanese translation of the body (Abstract + §1 序論 / §2 データ / §3 方法 / §4 結果 (4.1-4.3) / §5 考察 / §6 制約と将来課題 / §7 結論). Mathematical notation (λ, μ, CV, IoD, W_q, ρ, etc.), all proper nouns (Bluebikes, MBTA, Kendall/MIT, MIT Vassar St, Weibull, Poisson, Erlang B/C, etc.), and every `\cite{}`, `\ref{}`, `\label{}`, `\S\ref{}`, table column with numeric data, table contents kept identical to the English version. Paragraph headers translated (`Bluebikes.` kept English; `満車時除外.`, `診断指標の直感.`, `到着過程の特徴付け.`, `待ち行列モデル.`, `離散事象シミュレーション.`, `利用者側、判断経路上:Bluebikes の Blocking.`, `判断経路外:MBTA の待ち時間.`, `Bluebikes の潜在需要抑制.`, `DES が到着間隔の自己相関を破壊する.`, `非定常性の未モデル化.`, `範囲.`, `在庫復元の不確実性.`).
+- `appendix_jp.tex` — full Japanese translation of the appendix (§A 方法論の詳細 / §B 拡張結果表 / §C 補足図 / §D 導出). Same notation/naming preservation rules. Figure captions translated; image content (Figure 1 panels, blocking comparison bars, error summary, etc.) kept English per user instruction.
+- `figures` — symlink to `../figures` so figure includes work without copying images (preserves "don't modify original" constraint).
+- `references.bib` — copied from `../references.bib` (citations stay English-language entries).
+
+**Build verification**: 1 lualatex pass + bibtex + 2 more lualatex passes, all clean. `report_jp.pdf` = **14 pages** (1 page shorter than English's 15 due to slightly denser Japanese line breaks). Visual confirmation across pp.1-5 (main body §1-§7) and pp.7-8 (appendix §A.1-§B.2) — all sections render with proper Japanese typography (HaranoAji Mincho default), math notation intact, tables preserved, cross-references resolve, citations resolve via bibtex. Main body still fits 5 pages.
+
+This is a personal-reading version; not part of the deliverable.
