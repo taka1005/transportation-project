@@ -3805,3 +3805,29 @@ Created a Japanese personal-reading version isolated under `project-docs/report/
 **Build verification**: 1 lualatex pass + bibtex + 2 more lualatex passes, all clean. `report_jp.pdf` = **14 pages** (1 page shorter than English's 15 due to slightly denser Japanese line breaks). Visual confirmation across pp.1-5 (main body §1-§7) and pp.7-8 (appendix §A.1-§B.2) — all sections render with proper Japanese typography (HaranoAji Mincho default), math notation intact, tables preserved, cross-references resolve, citations resolve via bibtex. Main body still fits 5 pages.
 
 This is a personal-reading version; not part of the deliverable.
+
+---
+
+## Prompt #211
+
+**Date / 日付:** 2026-05-08
+
+**Japanese / 日本語:**
+
+§6 "Non-stationarity unmodelled" のパラグラフを、サービス時間の指数分布仮定についての記述を含めて拡張してほしい。セクションタイトル変更:"Non-stationarity unmodelled" → "Non-stationarity and service-time assumptions unmodelled"。既存パラグラフの中間(2文目と3文目の間)に追加文を挿入。Future work の最後の文に "and an empirical service-time distribution" を追加。検証: pdflatex のクリーンビルド、ページ数が増えていないこと。
+
+**English:**
+
+Expand the §6 "Non-stationarity unmodelled" paragraph to include service-time exponential-distribution discussion. Title change. Insert new sentence between sentences 2 and 3. Modify the future-work sentence. Verify pdflatex clean build, page count not increased.
+
+**Response / 応答:**
+
+Applied the requested expansion in two coordinated edits to keep the page count constraint:
+
+(1) **main.tex §6** — paragraph header changed from "Non-stationarity unmodelled" to "Non-stationarity and service-time assumptions unmodelled"; inserted the user-specified sentence about MBTA dwell exponential sampling, the door-cycle / schedule bounds, the unimodal-vs-memoryless argument, the upper-bound interpretation of empirical-DES Wq, and the §5 over-prediction reinforcement; rewrote the future-work sentence to include "an empirical service-time distribution" and to expand the test scope to "the Bluebikes gap and refine the MBTA Wq estimate". The §5 reference uses `\S\ref{sec:discussion}`.
+
+(2) **main.tex §6** compensating compression — first build went 15 → 16 pages (main body spilled to p.6 with §7 Conclusion's last 2 lines). Applied the previously-prepared "Scope + Inventory reconstruction uncertainty" merge into a single `\paragraph{Scope and reconstruction uncertainty.}` paragraph (case W from the earlier Phase 4.4 discussion, originally set aside in favour of the density tightening). This frees ~1 paragraph break, and the page count returned to 15 with main body §1-§7 still on p.1-p.5.
+
+(3) **JPNversion/main_jp.tex** — applied the same two edits (paragraph expansion + scope/inventory merge) in Japanese to keep the personal reading aid in sync. Title translated to "非定常性とサービス時間仮定の未モデル化"; merged paragraph titled "範囲と復元の不確実性"; the new MBTA dwell sentence translated preserving the Japanese typography conventions established in the earlier translation. JPN build also clean at 14 pages, main body still on p.1-p.5.
+
+Build verification: 2 pdflatex passes (English) clean, 15 pages preserved, p.5 visual confirmation: §5/§6 (5 paragraphs)/§7 all fit on p.5 with the new expanded paragraph reading coherently. lualatex passes (JPN) clean, 14 pages preserved, parallel layout.

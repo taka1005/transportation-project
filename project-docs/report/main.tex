@@ -117,11 +117,9 @@ Poisson's error has three orthogonal axes: \emph{direction} (over- vs.\ under-es
 
 \paragraph{DES destroys inter-arrival autocorrelation.} Empirical-DES samples IATs i.i.d., losing the timetable's sequential structure; this is why MBTA Southbound empirical-DES reports $W_q = 0.9$~s rather than zero. An autocorrelation-preserving generator (time-series bootstrap or Markov-modulated Poisson) should drive empirical-DES $W_q$ toward zero.
 
-\paragraph{Non-stationarity unmodelled.} The $55\times$ residual is consistent with time-varying $\lambda(t)$ and/or $\mu(t)$; the stationary i.i.d.\ bootstrap of \S\ref{sec:results-erlangb} tests neither, so the attribution to service is suggestive. Pairing a non-homogeneous Poisson generator (hour-of-day $\lambda(t)$) with time-varying $\mu(t)$ for Bluebikes would test whether joint non-stationarity closes the gap.
+\paragraph{Non-stationarity and service-time assumptions unmodelled.} The $55\times$ residual is consistent with time-varying $\lambda(t)$ and/or $\mu(t)$; the stationary i.i.d.\ bootstrap of \S\ref{sec:results-erlangb} tests neither, so the attribution to service is suggestive. Our DES additionally samples MBTA dwell from an exponential distribution to match the M/M/1 framework, though physically dwell is bounded below by door-cycle time and above by schedule and is therefore likely unimodal rather than memoryless---if its true variance is smaller than exponential, our empirical-DES $W_q$ values are upper bounds and the true MBTA $W_q$ is closer to zero, reinforcing the over-prediction conclusion of \S\ref{sec:discussion}. Pairing a non-homogeneous Poisson generator (hour-of-day $\lambda(t)$) with time-varying $\mu(t)$ and an empirical service-time distribution would test whether joint non-stationarity closes the Bluebikes gap and refine the MBTA $W_q$ estimate.
 
-\paragraph{Scope.} Two Bluebikes stations, one MBTA station, four months. The structural argument should generalise; specific magnitudes should not.
-
-\paragraph{Inventory reconstruction uncertainty.} $I_s$ carries a bounded rebalancing bias between clamps; our retract rule (Appendix~\ref{app:fullness}) biases toward omitting short full spans, so observed fullness and the $55\times$ gap are conservative lower bounds.
+\paragraph{Scope and reconstruction uncertainty.} Two Bluebikes stations, one MBTA station, four months: the structural argument should generalise, specific magnitudes should not. $I_s$ carries a bounded rebalancing bias between clamps; the retract rule (Appendix~\ref{app:fullness}) biases toward omitting short full spans, so observed fullness and the $55\times$ gap are conservative lower bounds.
 
 % ===== 7. Conclusion =====
 \section{Conclusion}\label{sec:conclusion}
